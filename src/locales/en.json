@@ -4,21 +4,33 @@
   "config_title": "Title (Optional)",
   "config_select_device": "Please select a Gardena Smart System device in the card configuration.",
   "config_no_device": "Please select a device.",
+  "config_valve_entities": "Valve zones to display (leave empty for all)",
+  "config_socket_entities": "Power sockets to display (leave empty for all)",
 
   "state_online": "Online",
   "state_offline": "Offline",
   "state_unavailable": "Unavailable",
 
-  "mower_mowing": "Mowing",
-  "mower_paused": "Paused",
-  "mower_parked": "Parked",
-  "mower_error": "Error",
-  "mower_charging": "Charging",
+  "section_valves": "Valve Zones",
+  "section_socket": "Power Socket",
 
-  "chip_battery": "Battery",
+  "knob_unit_minutes": "Minutes",
 
+  "valve_ready": "Ready",
+  "valve_watering": "Watering",
   "valve_open": "Open",
   "valve_closed": "Closed",
+
+  "socket_off": "Off",
+  "socket_active": "Active",
+
+  "footer_connected": "Connected",
+  "footer_disconnected": "Disconnected",
+
+  "version_required_title": "Integration v2.0+ required",
+  "version_required_message": "This card requires the Gardena Smart System integration v2.0 or later. Please update via HACS (enable pre-releases).",
+
+  "chip_battery": "Battery",
 
   "sensor_temperature": "Temperature",
   "sensor_humidity": "Humidity",

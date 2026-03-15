@@ -13,68 +13,613 @@ ha-card {
     --gs-track: var(--divider-color, rgba(255,255,255,0.06));
     --gs-card-bg: var(--ha-card-background, var(--card-background-color, #1c1c1c));
     --gs-elevated: color-mix(in srgb, var(--primary-text-color, #fff) 6%, var(--gs-card-bg));
+
+    /* Gardena brand colors */
+    --gs-green-500: #00A86B;
+    --gs-green-400: #1DBF7B;
+    --gs-green-300: #5DCAA5;
+    --gs-green-200: #9FE1CB;
+    --gs-green-100: color-mix(in srgb, #1DBF7B 10%, var(--gs-card-bg));
+    --gs-green-600: #008756;
+    --gs-green-700: #006B44;
+
+    --gs-amber: #EF9F27;
+    --gs-amber-bg: color-mix(in srgb, #EF9F27 8%, var(--gs-card-bg));
+
+    --gs-surface: color-mix(in srgb, var(--primary-text-color, #fff) 4%, var(--gs-card-bg));
+    --gs-surface-hover: color-mix(in srgb, var(--primary-text-color, #fff) 8%, var(--gs-card-bg));
+
+    --gs-radius-sm: 6px;
+    --gs-radius-md: 10px;
+    --gs-radius-lg: 14px;
+    --gs-radius-xl: 20px;
 }
 
-/* -- HEADER -- */
+/* ── Header ── */
 .card-header {
-    padding: 16px 18px 12px;
+    padding: 1.25rem 1.5rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--divider-color, #e5e7eb);
+    justify-content: space-between;
+    border-bottom: 0.5px solid var(--gs-border);
 }
-.header-title {
+.header-left {
     display: flex;
-    align-items: baseline;
-    gap: 7px;
+    align-items: center;
+    gap: 12px;
     min-width: 0;
-    overflow: hidden;
+}
+.device-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--gs-radius-md);
+    background: var(--gs-green-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.device-icon:hover { opacity: 0.8; }
+.device-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: var(--gs-green-500);
+}
+.device-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    line-height: 1.2;
     cursor: pointer;
 }
-.header-title h2 {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    letter-spacing: -0.01em;
-}
-.header-sub {
+.device-sub {
     font-size: 12px;
-    font-weight: 400;
-    color: var(--secondary-text-color);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: var(--gs-text-dim);
+    margin-top: 1px;
 }
-.header-icons {
+.header-badges {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-shrink: 0;
 }
-.more-info-btn {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: opacity 0.2s;
-    color: var(--secondary-text-color) !important;
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gs-text-dim);
+    padding: 4px 10px;
+    background: var(--gs-surface);
+    border-radius: 20px;
+    white-space: nowrap;
 }
-.more-info-btn:hover {
-    opacity: 1;
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+.dot-online {
+    background: var(--gs-green-400);
+    box-shadow: 0 0 0 3px color-mix(in srgb, #1DBF7B 15%, transparent);
+}
+.dot-offline {
+    background: var(--gs-text-dimmer);
 }
 
-/* -- CONTENT -- */
+/* ── Content ── */
 .content {
-    padding: 14px;
+    padding: 0;
 }
 
-/* -- UNAVAILABLE -- */
+/* ── Knob Section ── */
+.knob-section {
+    padding: 1.5rem 1.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+.knob-container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+.knob-track {
+    position: absolute;
+    inset: 0;
+}
+.knob-track svg {
+    width: 100%;
+    height: 100%;
+}
+.knob-arc-bg {
+    fill: none;
+    stroke: var(--gs-surface);
+    stroke-width: 8;
+    stroke-linecap: round;
+}
+.knob-arc-fill {
+    fill: none;
+    stroke: var(--gs-green-400);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.15s ease-out;
+    filter: drop-shadow(0 0 6px color-mix(in srgb, #1DBF7B 25%, transparent));
+}
+.knob-handle {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gs-card-bg);
+    border: 2px solid var(--gs-green-400);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+    cursor: grab;
+    transform: translate(-50%, -50%);
+    transition: box-shadow 0.2s;
+    z-index: 2;
+}
+.knob-handle:active {
+    cursor: grabbing;
+    box-shadow: 0 0 0 6px color-mix(in srgb, #1DBF7B 15%, transparent), 0 2px 8px rgba(0,0,0,0.12);
+}
+.knob-handle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gs-green-400);
+    transform: translate(-50%, -50%);
+}
+.knob-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 1;
+}
+.knob-value {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    line-height: 1;
+}
+.knob-unit {
+    font-size: 12px;
+    color: var(--gs-text-dim);
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+}
+.knob-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.knob-preset {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: var(--gs-radius-md);
+    border: 0.5px solid var(--gs-border);
+    background: var(--gs-card-bg);
+    color: var(--gs-text-dim);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.knob-preset:hover {
+    background: var(--gs-surface);
+    color: var(--primary-text-color);
+    border-color: var(--gs-surface-hover);
+}
+.knob-preset.active {
+    background: var(--gs-green-100);
+    color: var(--gs-green-400);
+    border-color: var(--gs-green-300);
+}
+.knob-preset-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gs-text-dimmest);
+    flex-shrink: 0;
+    transition: background 0.2s;
+}
+.knob-preset.active .knob-preset-dot {
+    background: var(--gs-green-500);
+}
+
+/* ── Section Label ── */
+.section-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gs-text-dimmest);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.section-status {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    color: var(--gs-green-400);
+    cursor: pointer;
+}
+.section-status svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+.section-status.offline {
+    color: var(--gs-text-dimmer);
+}
+
+/* ── Valves Grid ── */
+.valves-section {
+    padding: 0 1.5rem 1.5rem;
+}
+.valves-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+.valves-grid.count-1 {
+    grid-template-columns: 1fr;
+}
+.valves-grid.count-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.valve {
+    background: var(--gs-surface);
+    border-radius: var(--gs-radius-md);
+    padding: 12px;
+    border: 0.5px solid transparent;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    animation: valveIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.valve::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0%;
+    background: linear-gradient(to top, color-mix(in srgb, #1DBF7B 8%, transparent), transparent);
+    transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+.valve.active {
+    background: var(--gs-green-100);
+    border-color: var(--gs-green-300);
+}
+.valve.active::before {
+    height: 100%;
+}
+.valve-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.valve-zone-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--gs-text-dimmest);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+.valve.active .valve-zone-label {
+    color: var(--gs-green-300);
+}
+.valve-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    margin-bottom: 4px;
+    line-height: 1.3;
+    cursor: pointer;
+}
+.valve-status {
+    font-size: 11px;
+    color: var(--gs-text-dimmest);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 16px;
+}
+.valve.active .valve-status {
+    color: var(--gs-green-200);
+}
+
+/* Valve Progress */
+.valve-progress {
+    margin-top: 8px;
+    height: 3px;
+    background: color-mix(in srgb, var(--primary-text-color, #fff) 6%, transparent);
+    border-radius: 2px;
+    overflow: hidden;
+    display: none;
+}
+.valve.active .valve-progress {
+    display: block;
+}
+.valve-progress-fill {
+    height: 100%;
+    background: var(--gs-green-400);
+    border-radius: 2px;
+    transition: width 1s linear;
+}
+
+/* ── Toggle Switch ── */
+.toggle {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.25s;
+    border: none;
+    outline: none;
+    flex-shrink: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 0;
+}
+.toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.toggle.on {
+    background: var(--gs-green-400);
+}
+.toggle.on::after {
+    transform: translateX(16px);
+}
+
+/* Socket toggle amber override */
+.toggle.socket-toggle-on {
+    background: var(--gs-amber);
+}
+
+/* Disabled toggle */
+.toggle.disabled,
+.toggle:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Offline valve/socket */
+.valve.offline {
+    opacity: 0.5;
+}
+.socket-card.offline {
+    opacity: 0.5;
+}
+
+/* ── Water drop animation ── */
+.water-icon {
+    display: inline-block;
+    width: 8px;
+    height: 10px;
+    position: relative;
+}
+.water-icon::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--gs-green-400);
+    animation: dropPulse 1.5s ease-in-out infinite;
+}
+
+/* ── Countdown animation ── */
+.countdown-text {
+    animation: countPulse 2s ease-in-out infinite;
+}
+
+/* ── Socket Section ── */
+.socket-section {
+    padding: 0 1.5rem 1rem;
+    margin-top: 0.25rem;
+}
+.socket-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--gs-surface);
+    border-radius: var(--gs-radius-md);
+    padding: 12px 14px;
+    border: 0.5px solid transparent;
+    transition: all 0.3s;
+}
+.socket-card.active {
+    background: var(--gs-amber-bg);
+    border-color: color-mix(in srgb, #EF9F27 30%, transparent);
+}
+.socket-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+.socket-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--gs-radius-sm);
+    background: var(--gs-surface-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gs-text-dimmest);
+    flex-shrink: 0;
+    transition: all 0.3s;
+}
+.socket-card.active .socket-icon {
+    background: color-mix(in srgb, #EF9F27 15%, var(--gs-card-bg));
+    color: var(--gs-amber);
+}
+.socket-info {
+    min-width: 0;
+}
+.socket-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    cursor: pointer;
+}
+.socket-status {
+    font-size: 11px;
+    color: var(--gs-text-dimmest);
+    margin-top: 1px;
+    transition: color 0.3s;
+}
+.socket-card.active .socket-status {
+    color: var(--gs-amber);
+}
+.socket-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+.socket-timer {
+    font-size: 12px;
+    font-family: var(--gs-font-mono, 'SF Mono', 'Cascadia Code', 'Consolas', monospace);
+    color: var(--gs-text-dimmest);
+    text-align: right;
+    white-space: nowrap;
+}
+.socket-progress-wrap {
+    padding: 0 2px;
+    margin-top: 6px;
+}
+.socket-progress-track {
+    height: 3px;
+    background: color-mix(in srgb, var(--primary-text-color, #000) 6%, transparent);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.socket-progress-fill {
+    height: 100%;
+    background: var(--gs-amber);
+    border-radius: 2px;
+    transition: width 1s linear;
+}
+
+/* ── Footer ── */
+.card-footer {
+    padding: 0.75rem 1.5rem;
+    border-top: 0.5px solid var(--gs-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--gs-text-dimmest);
+}
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.footer-time {
+    font-variant-numeric: tabular-nums;
+}
+.live-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gs-green-400);
+    animation: livePulse 2s ease-in-out infinite;
+}
+.live-dot.offline {
+    background: var(--gs-text-dimmer);
+    animation: none;
+}
+
+/* ── Unavailable ── */
 .unavailable {
     padding: 20px;
     text-align: center;
     color: var(--gs-text-dim);
     font-size: 14px;
+}
+.version-warning {
+    padding: 16px;
+    background: color-mix(in srgb, #EF9F27 10%, var(--gs-card-bg));
+    border: 0.5px solid color-mix(in srgb, #EF9F27 30%, transparent);
+    border-radius: var(--gs-radius-md);
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: left;
+    color: var(--primary-text-color);
+}
+
+/* ── Animations ── */
+@keyframes valveIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes dropPulse {
+    0%, 100% { opacity: 0.6; transform: rotate(-45deg) scale(1); }
+    50% { opacity: 1; transform: rotate(-45deg) scale(1.15); }
+}
+@keyframes countPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+}
+@keyframes livePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* ── Responsive ── */
+@container (max-width: 400px) {
+    .valves-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .valves-grid.count-1 {
+        grid-template-columns: 1fr;
+    }
+    .knob-section {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .knob-info {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }

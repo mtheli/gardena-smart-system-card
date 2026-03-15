@@ -1,6 +1,8 @@
 import { GardenaSmartSystemCard, CARD_VERSION } from "./gardena_smart_system_card.js";
 
-customElements.define("gardena-smart-system-card", GardenaSmartSystemCard);
+if (!customElements.get("gardena-smart-system-card")) {
+  customElements.define("gardena-smart-system-card", GardenaSmartSystemCard);
+}
 
 window.customCards = window.customCards || [];
 window.customCards.push({
