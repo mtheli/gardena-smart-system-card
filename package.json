@@ -1,0 +1,24 @@
+{
+  "name": "gardena_smart_system_card",
+  "version": "0.1.0",
+  "description": "Custom Lovelace card for the Gardena Smart System integration",
+  "source": "src/index.js",
+  "module": "dist/gardena_smart_system_card.js",
+  "targets": {
+    "module": {
+      "includeNodeModules": true
+    }
+  },
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build src/index.js --dist-dir dist --no-source-maps"
+  },
+  "devDependencies": {
+    "@parcel/transformer-inline-string": "^2.15.2",
+    "parcel": "^2.15.2"
+  },
+  "dependencies": {
+    "lit": "^3.3.1"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,80 @@
+ha-card {
+    container-type: inline-size;
+    overflow: hidden;
+    font-family: var(--paper-font-body1_-_font-family, var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif));
+    color: var(--primary-text-color, #fff);
+}
+
+:host {
+    --gs-text-dim: var(--secondary-text-color, rgba(255,255,255,0.5));
+    --gs-text-dimmer: var(--disabled-text-color, rgba(255,255,255,0.35));
+    --gs-text-dimmest: var(--disabled-text-color, rgba(255,255,255,0.25));
+    --gs-border: var(--divider-color, rgba(255,255,255,0.04));
+    --gs-track: var(--divider-color, rgba(255,255,255,0.06));
+    --gs-card-bg: var(--ha-card-background, var(--card-background-color, #1c1c1c));
+    --gs-elevated: color-mix(in srgb, var(--primary-text-color, #fff) 6%, var(--gs-card-bg));
+}
+
+/* -- HEADER -- */
+.card-header {
+    padding: 16px 18px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--divider-color, #e5e7eb);
+}
+.header-title {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    min-width: 0;
+    overflow: hidden;
+    cursor: pointer;
+}
+.header-title h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.01em;
+}
+.header-sub {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--secondary-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+.more-info-btn {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    color: var(--secondary-text-color) !important;
+}
+.more-info-btn:hover {
+    opacity: 1;
+}
+
+/* -- CONTENT -- */
+.content {
+    padding: 14px;
+}
+
+/* -- UNAVAILABLE -- */
+.unavailable {
+    padding: 20px;
+    text-align: center;
+    color: var(--gs-text-dim);
+    font-size: 14px;
+}

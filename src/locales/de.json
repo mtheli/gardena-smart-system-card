@@ -1,0 +1,28 @@
+{
+  "default_title": "Gardena Smart System",
+
+  "config_title": "Titel (Optional)",
+  "config_select_device": "Bitte wähle ein Gardena Smart System Gerät in der Kartenkonfiguration.",
+  "config_no_device": "Bitte wähle ein Gerät.",
+
+  "state_online": "Online",
+  "state_offline": "Offline",
+  "state_unavailable": "Nicht verfügbar",
+
+  "mower_mowing": "Mäht",
+  "mower_paused": "Pausiert",
+  "mower_parked": "Geparkt",
+  "mower_error": "Fehler",
+  "mower_charging": "Lädt",
+
+  "chip_battery": "Akku",
+
+  "valve_open": "Offen",
+  "valve_closed": "Geschlossen",
+
+  "sensor_temperature": "Temperatur",
+  "sensor_humidity": "Feuchtigkeit",
+  "sensor_light": "Licht",
+  "sensor_soil_temperature": "Bodentemp.",
+  "sensor_soil_humidity": "Bodenfeuchtigkeit"
+}
