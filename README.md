@@ -31,6 +31,13 @@ A **Custom Lovelace Card** for [Home Assistant](https://www.home-assistant.io/) 
 | Water Control        | Valve control, duration selection, progress bar             |
 | Power Socket         | On/off toggle, countdown timer, progress bar               |
 
+### Tested With
+
+- [Smart Gateway](https://www.gardena.com/int/products/smart-system/smart-system/smart-gateway-wireless-connection-for-smart-products/970527401.html)
+- [SILENO city 250](https://www.gardena.com/int/products/lawn-care/robotic-lawnmowers/robotic-mower-sileno-city-250-m/967646803.html)
+- [Smart Irrigation Control](https://www.gardena.com/int/products/watering/sprinklersystem/smart-irrigation-control/970658701.html)
+- [Smart Power Adapter](https://www.gardena.com/int/products/smart-system/smart-system/smart-power-adapter/967796001.html)
+
 ## Installation
 
 ### HACS (Recommended)
