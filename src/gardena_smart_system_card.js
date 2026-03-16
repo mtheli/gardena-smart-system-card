@@ -92,6 +92,7 @@ export class GardenaSmartSystemCard extends LitElement {
       _selectedDuration: { type: Number, state: true },
       _now: { type: Object, state: true },
       _hasV2Services: { type: Boolean, state: true },
+      _historyData: { type: Array, state: true },
     };
   }
 
@@ -102,6 +103,8 @@ export class GardenaSmartSystemCard extends LitElement {
     this._clockInterval = null;
     this._isDragging = false;
     this._hasV2Services = false;
+    this._historyData = null;
+    this._historyLastFetch = 0;
     // Local countdown tracking: entityId -> { startTime, durationSec }
     this._valveTimers = _persistedTimers;
   }
@@ -142,6 +145,11 @@ export class GardenaSmartSystemCard extends LitElement {
 
     if (!this._entities || !this._entities.valves) {
       this._entities = this._findEntities(hass);
+    }
+
+    // Fetch history data if needed
+    if (this.config?.show_history !== false && this._entities) {
+      this._fetchHistory();
     }
 
     // Clean up local timers for valves/sockets that closed externally
@@ -327,6 +335,12 @@ export class GardenaSmartSystemCard extends LitElement {
     }));
   }
 
+  _navigateHistory(entityId) {
+    if (!entityId) return;
+    history.pushState(null, '', `/history?entity_id=${entityId}`);
+    window.dispatchEvent(new CustomEvent('location-changed'));
+  }
+
   _getFirstDeviceId() {
     const deviceIds = this._entities?.deviceIds;
     if (deviceIds && deviceIds.size > 0) return deviceIds.values().next().value;
@@ -388,6 +402,7 @@ export class GardenaSmartSystemCard extends LitElement {
           ${hasMowers ? this._renderMowerSection() : ''}
           ${hasValves ? this._renderValvesSection() : ''}
           ${hasSockets ? this._renderSocketSection() : ''}
+          ${this.config.show_history !== false && (hasValves || hasSockets) ? this._renderHistorySection() : ''}
         </div>
       </ha-card>
     `;
@@ -910,6 +925,204 @@ export class GardenaSmartSystemCard extends LitElement {
     _saveTimers();
   }
 
+  // ---------- History Section ----------
+  static HISTORY_COLORS = ['#1DBF7B','#00A86B','#5DCAA5','#EF9F27','#378ADD','#D85A30','#D4537E','#8E6FBF','#3AAFA9','#FF6F61'];
+
+  async _fetchHistory() {
+    const now = Date.now();
+    if (now - this._historyLastFetch < 300000) return; // cache 5 min
+    this._historyLastFetch = now;
+
+    const valves = this._getVisibleValves();
+    const sockets = this._getVisibleSockets();
+    const entities = [...valves, ...sockets];
+    if (entities.length === 0) { this._historyData = []; return; }
+
+    const end = new Date();
+    const start = new Date(end);
+    start.setDate(start.getDate() - 6);
+    start.setHours(0, 0, 0, 0);
+
+    const entityFilter = entities.join(',');
+    const url = `history/period/${start.toISOString()}?end_time=${end.toISOString()}&filter_entity_id=${entityFilter}&minimal_response&no_attributes&significant_changes_only`;
+
+    try {
+      const result = await this._hass.callApi('GET', url);
+      this._historyData = this._processHistory(result, entities, start, end);
+    } catch (e) {
+      console.warn('Gardena Card: Failed to fetch history', e);
+      this._historyData = [];
+    }
+  }
+
+  _processHistory(result, entities, start, end) {
+    // Build 7-day structure
+    const days = [];
+    for (let d = 0; d < 7; d++) {
+      const date = new Date(start);
+      date.setDate(start.getDate() + d);
+      days.push({ date, minutes: new Array(entities.length).fill(0) });
+    }
+
+    if (!result || !Array.isArray(result)) return days;
+
+    result.forEach((entityHistory) => {
+      if (!Array.isArray(entityHistory) || entityHistory.length === 0) return;
+      // Find which entity index this corresponds to
+      const eid = entityHistory[0]?.entity_id;
+      const idx = entities.indexOf(eid);
+      if (idx === -1) return;
+
+      for (let i = 0; i < entityHistory.length; i++) {
+        const entry = entityHistory[i];
+        const isActive = entry.state === 'open' || entry.state === 'on';
+        if (!isActive) continue;
+
+        const entryStart = new Date(entry.last_changed);
+        const nextEntry = entityHistory[i + 1];
+        const entryEnd = nextEntry ? new Date(nextEntry.last_changed) : end;
+
+        // Distribute minutes across days
+        for (const day of days) {
+          const dayStart = new Date(day.date);
+          dayStart.setHours(0, 0, 0, 0);
+          const dayEnd = new Date(dayStart);
+          dayEnd.setDate(dayEnd.getDate() + 1);
+
+          const overlapStart = Math.max(entryStart.getTime(), dayStart.getTime());
+          const overlapEnd = Math.min(entryEnd.getTime(), dayEnd.getTime());
+          if (overlapStart < overlapEnd) {
+            day.minutes[idx] += (overlapEnd - overlapStart) / 60000;
+          }
+        }
+      }
+    });
+
+    // Round minutes
+    days.forEach(d => d.minutes = d.minutes.map(m => Math.round(m)));
+    return days;
+  }
+
+  _renderHistorySection() {
+    const valves = this._getVisibleValves();
+    const sockets = this._getVisibleSockets();
+    const entities = [...valves, ...sockets];
+    if (entities.length === 0 || !this._historyData || this._historyData.length === 0) return '';
+
+    const days = this._historyData;
+
+    // Check if there's any data at all
+    const hasAnyData = days.some(d => d.minutes.some(m => m > 0));
+    if (!hasAnyData) return '';
+
+    const dayNames = [
+      this._t('day_sun'), this._t('day_mon'), this._t('day_tue'),
+      this._t('day_wed'), this._t('day_thu'), this._t('day_fri'), this._t('day_sat')
+    ];
+
+    // Entity names for legend — valves use friendly_name, others use device name
+    const valveSet = new Set(valves);
+    const entityNames = entities.map(eid => {
+      const state = this._hass.states[eid];
+      if (valveSet.has(eid)) {
+        const name = state?.attributes?.friendly_name || eid.split('.').pop();
+        let short = name.includes(' - ') ? name.split(' - ').pop().trim() : name;
+        short = short.replace(/\b(\w+)(?:\s+\1)+\b/gi, '$1');
+        return short || eid.split('.').pop();
+      }
+      return this._shortEntityName(state, eid.split('.').pop());
+    });
+
+    let maxTotal = 0;
+    const dayTotals = days.map(d => {
+      const sum = d.minutes.reduce((a, b) => a + b, 0);
+      if (sum > maxTotal) maxTotal = sum;
+      return sum;
+    });
+    maxTotal = Math.max(maxTotal, 20);
+    maxTotal = Math.ceil(maxTotal / 20) * 20;
+
+    const grandTotal = dayTotals.reduce((a, b) => a + b, 0);
+    const totalHrs = Math.floor(grandTotal / 60);
+    const totalMins = grandTotal % 60;
+    const totalStr = (totalHrs > 0 ? totalHrs + 'h ' : '') + totalMins + 'min';
+
+    const first = days[0].date;
+    const last = days[days.length - 1].date;
+    const periodStr = `${first.getDate()}.–${last.getDate()}.${last.getMonth() + 1}. ${last.getFullYear()}`;
+
+    const chartHeight = 124;
+    const gridSteps = 4;
+    const today = new Date();
+
+    // Find which entities have any data
+    const usedEntities = new Set();
+    days.forEach(d => d.minutes.forEach((m, i) => { if (m > 0) usedEntities.add(i); }));
+
+    return html`
+      <div class="history-section">
+        <div class="section-label">${this._t('section_history')}</div>
+        <div class="history-header">
+          <div class="history-period">${periodStr}</div>
+          <div class="history-total">${totalStr}</div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-y-axis">
+            ${Array.from({ length: gridSteps + 1 }, (_, i) => html`
+              <span class="chart-y-label" style="top:${(i / gridSteps) * 100}%">${Math.round(maxTotal - (maxTotal / gridSteps) * i)}</span>
+            `)}
+          </div>
+          <div class="chart-main">
+            <div class="chart-gridlines">
+              ${Array.from({ length: gridSteps + 1 }, () => html`<div class="chart-gridline"></div>`)}
+            </div>
+            <div class="chart-bars">
+              ${days.map((day, di) => {
+                const isToday = day.date.getDate() === today.getDate() && day.date.getMonth() === today.getMonth();
+                const dayTotal = dayTotals[di];
+                const dateStr = day.date.getDate() + '.' + (day.date.getMonth() + 1) + '.';
+                return html`
+                  <div class="chart-bar-group ${isToday ? 'today' : ''}">
+                    <div class="chart-stack">
+                      ${day.minutes.map((mins, zi) => mins > 0 ? html`
+                        <div class="chart-segment" style="height:${Math.max(1, (mins / maxTotal) * chartHeight)}px;background:${GardenaSmartSystemCard.HISTORY_COLORS[zi % 10]};cursor:pointer" @click="${() => this._navigateHistory(entities[zi])}"></div>
+                      ` : '')}
+                    </div>
+                    <div class="chart-day-label">${isToday ? this._t('day_today') : dateStr}</div>
+                    ${dayTotal > 0 ? html`
+                      <div class="chart-tooltip">
+                        <div class="tooltip-title">${dayNames[day.date.getDay()]}, ${dateStr}</div>
+                        ${day.minutes.map((mins, zi) => mins > 0 ? html`
+                          <div class="tooltip-line">
+                            <span class="tooltip-dot" style="background:${GardenaSmartSystemCard.HISTORY_COLORS[zi % 10]}"></span>
+                            <span>${entityNames[zi]}</span>
+                            <span class="tooltip-mins">${mins} min</span>
+                          </div>
+                        ` : '')}
+                        <div class="tooltip-total">
+                          <span>${this._t('history_total_label')}</span>
+                          <span>${dayTotal} min</span>
+                        </div>
+                      </div>
+                    ` : ''}
+                  </div>
+                `;
+              })}
+            </div>
+          </div>
+        </div>
+        <div class="chart-legend">
+          ${entityNames.map((name, i) => usedEntities.has(i) ? html`
+            <div class="legend-item" @click="${() => this._navigateHistory(entities[i])}" style="cursor:pointer">
+              <span class="legend-dot" style="background:${GardenaSmartSystemCard.HISTORY_COLORS[i % 10]}"></span>
+              ${name}
+            </div>
+          ` : '')}
+        </div>
+      </div>
+    `;
+  }
+
   // ---------- Styles ----------
   static get styles() {
     return unsafeCSS(styles);
@@ -933,6 +1146,12 @@ export class GardenaSmartSystemCard extends LitElement {
         {
           name: "show_duration",
           label: t(null, "config_show_duration"),
+          selector: { boolean: {} },
+          default: true,
+        },
+        {
+          name: "show_history",
+          label: t(null, "config_show_history"),
           selector: { boolean: {} },
           default: true,
         },

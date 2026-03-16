@@ -67,6 +67,13 @@
   "patch_warning_title": "Patched integration required",
   "patch_warning_message": "Controls are disabled. Please install the patched integration from mtheli/hass-gardena-smart-system to enable device control.",
 
+  "section_history": "History",
+  "config_show_history": "Show history chart",
+  "day_today": "Today",
+  "day_sun": "Sun", "day_mon": "Mon", "day_tue": "Tue", "day_wed": "Wed",
+  "day_thu": "Thu", "day_fri": "Fri", "day_sat": "Sat",
+  "history_total_label": "Total",
+
   "chip_battery": "Battery",
 
   "sensor_temperature": "Temperature",

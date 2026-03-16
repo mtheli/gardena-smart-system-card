@@ -67,6 +67,13 @@
   "patch_warning_title": "Gepatchte Integration erforderlich",
   "patch_warning_message": "Steuerung deaktiviert. Bitte die gepatchte Integration von mtheli/hass-gardena-smart-system installieren, um Geräte steuern zu können.",
 
+  "section_history": "Historie",
+  "config_show_history": "Verlaufsdiagramm anzeigen",
+  "day_today": "Heute",
+  "day_sun": "So", "day_mon": "Mo", "day_tue": "Di", "day_wed": "Mi",
+  "day_thu": "Do", "day_fri": "Fr", "day_sat": "Sa",
+  "history_total_label": "Gesamt",
+
   "chip_battery": "Akku",
 
   "sensor_temperature": "Temperatur",
