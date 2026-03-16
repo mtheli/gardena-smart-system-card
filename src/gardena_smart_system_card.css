@@ -786,6 +786,22 @@ ha-card {
     text-align: left;
     color: var(--primary-text-color);
 }
+.patch-warning {
+    margin: 0 1.5rem 8px;
+    padding: 10px 14px;
+    background: color-mix(in srgb, #EF9F27 8%, var(--gs-card-bg));
+    border: 0.5px solid color-mix(in srgb, #EF9F27 25%, transparent);
+    border-radius: var(--gs-radius-sm);
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--gs-text-dim);
+}
+.patch-warning strong {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--gs-amber);
+    font-size: 12px;
+}
 
 /* ── Animations ── */
 @keyframes valveIn {

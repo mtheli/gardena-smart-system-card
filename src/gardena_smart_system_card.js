@@ -134,6 +134,12 @@ export class GardenaSmartSystemCard extends LitElement {
       }
     }
 
+    // Detect patched integration (service_id attribute on valves)
+    if (this._isPatchedIntegration === undefined && this._entities?.valves?.length) {
+      const firstValve = hass.states[this._entities.valves[0]];
+      this._isPatchedIntegration = firstValve?.attributes?.service_id != null;
+    }
+
     if (!this._entities || !this._entities.valves) {
       this._entities = this._findEntities(hass);
     }
@@ -373,7 +379,12 @@ export class GardenaSmartSystemCard extends LitElement {
       <ha-card>
         ${this.config.show_header !== false ? this._renderHeader() : ''}
         <div class="content">
-          ${this.config.show_duration !== false && (hasValves || hasSockets || hasMowers) ? this._renderKnobSection() : ''}
+          ${this._isPatchedIntegration === false ? html`
+            <div class="patch-warning">
+              <strong>${this._t("patch_warning_title")}</strong>
+              ${this._t("patch_warning_message")}
+            </div>
+          ` : this.config.show_duration !== false && (hasValves || hasSockets || hasMowers) ? this._renderKnobSection() : ''}
           ${hasMowers ? this._renderMowerSection() : ''}
           ${hasValves ? this._renderValvesSection() : ''}
           ${hasSockets ? this._renderSocketSection() : ''}
@@ -580,14 +591,21 @@ export class GardenaSmartSystemCard extends LitElement {
     const gardenaId = this._getGardenaDeviceId(entityId);
     if (!gardenaId) return;
     const state = this._hass.states[entityId];
-    const serviceId = state?.attributes?.service_id;
+    const patched = this._isPatchedIntegration;
 
     if (isActive) {
-      await this._hass.callService(DOMAIN, 'valve_close', { device_id: gardenaId, service_id: serviceId });
+      const closeData = { device_id: gardenaId };
+      if (patched) closeData.service_id = state?.attributes?.service_id;
+      await this._hass.callService(DOMAIN, 'valve_close', closeData);
       delete this._valveTimers[entityId];
     } else {
       const durationSec = this._selectedDuration * 60;
-      await this._hass.callService(DOMAIN, 'valve_open', { device_id: gardenaId, service_id: serviceId, duration: durationSec });
+      const openData = { device_id: gardenaId };
+      if (patched) {
+        openData.service_id = state?.attributes?.service_id;
+        openData.duration = durationSec;
+      }
+      await this._hass.callService(DOMAIN, 'valve_open', openData);
       this._valveTimers[entityId] = { startTime: new Date(), durationSec };
     }
     _saveTimers();
@@ -877,13 +895,16 @@ export class GardenaSmartSystemCard extends LitElement {
   async _toggleSocket(entityId, isOn) {
     const gardenaId = this._getGardenaDeviceId(entityId);
     if (!gardenaId) return;
+    const patched = this._isPatchedIntegration;
 
     if (isOn) {
       await this._hass.callService(DOMAIN, 'power_socket_off', { device_id: gardenaId });
       delete this._valveTimers[entityId];
     } else {
       const durationSec = this._selectedDuration * 60;
-      await this._hass.callService(DOMAIN, 'power_socket_on', { device_id: gardenaId, duration: durationSec });
+      const onData = { device_id: gardenaId };
+      if (patched) onData.duration = durationSec;
+      await this._hass.callService(DOMAIN, 'power_socket_on', onData);
       this._valveTimers[entityId] = { startTime: new Date(), durationSec };
     }
     _saveTimers();
