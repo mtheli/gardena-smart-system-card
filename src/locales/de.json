@@ -64,8 +64,8 @@
   "version_required_title": "Integration v2.0+ erforderlich",
   "version_required_message": "Diese Karte benötigt die Gardena Smart System Integration v2.0 oder neuer. Bitte über HACS aktualisieren (Vorabversionen aktivieren).",
 
-  "patch_warning_title": "Eingeschränkte Funktionalität",
-  "patch_warning_message": "Multi-Ventil-Steuerung und Zeitauswahl benötigen die gepatchte Integration (mtheli/hass-gardena-smart-system). Ohne den Patch funktioniert nur einfaches Ein/Aus.",
+  "patch_warning_title": "Gepatchte Integration erforderlich",
+  "patch_warning_message": "Steuerung deaktiviert. Bitte die gepatchte Integration von mtheli/hass-gardena-smart-system installieren, um Geräte steuern zu können.",
 
   "chip_battery": "Akku",
 

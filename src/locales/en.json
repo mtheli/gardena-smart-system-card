@@ -64,8 +64,8 @@
   "version_required_title": "Integration v2.0+ required",
   "version_required_message": "This card requires the Gardena Smart System integration v2.0 or later. Please update via HACS (enable pre-releases).",
 
-  "patch_warning_title": "Limited functionality",
-  "patch_warning_message": "Multi-valve targeting and duration control require the patched integration (mtheli/hass-gardena-smart-system). Without it, only basic on/off works.",
+  "patch_warning_title": "Patched integration required",
+  "patch_warning_message": "Controls are disabled. Please install the patched integration from mtheli/hass-gardena-smart-system to enable device control.",
 
   "chip_battery": "Battery",
 

@@ -379,12 +379,12 @@ export class GardenaSmartSystemCard extends LitElement {
       <ha-card>
         ${this.config.show_header !== false ? this._renderHeader() : ''}
         <div class="content">
-          ${this._isPatchedIntegration === false ? html`
+          ${this._isPatchedIntegration === false && this.config.show_duration !== false ? html`
             <div class="patch-warning">
               <strong>${this._t("patch_warning_title")}</strong>
               ${this._t("patch_warning_message")}
             </div>
-          ` : this.config.show_duration !== false && (hasValves || hasSockets || hasMowers) ? this._renderKnobSection() : ''}
+          ` : this._isPatchedIntegration !== false && this.config.show_duration !== false && (hasValves || hasSockets || hasMowers) ? this._renderKnobSection() : ''}
           ${hasMowers ? this._renderMowerSection() : ''}
           ${hasValves ? this._renderValvesSection() : ''}
           ${hasSockets ? this._renderSocketSection() : ''}
@@ -568,9 +568,9 @@ export class GardenaSmartSystemCard extends LitElement {
       <div class="valve ${isActive ? 'active' : ''} ${isOffline ? 'offline' : ''}" style="animation-delay:${(index * 0.05 + 0.05)}s">
         <div class="valve-header">
           <span class="valve-zone-label">${zoneLabel}</span>
-          <button class="toggle ${isActive ? 'on' : ''} ${isOffline && !isActive ? 'disabled' : ''}"
-            @click="${() => !isOffline && this._toggleValve(entityId, isActive)}"
-            ?disabled="${isOffline && !isActive}"></button>
+          <button class="toggle ${isActive ? 'on' : ''} ${(isOffline && !isActive) || this._isPatchedIntegration === false ? 'disabled' : ''}"
+            @click="${() => !isOffline && this._isPatchedIntegration !== false && this._toggleValve(entityId, isActive)}"
+            ?disabled="${(isOffline && !isActive) || this._isPatchedIntegration === false}"></button>
         </div>
         <div class="valve-name" @click="${() => this._fireMoreInfo(entityId)}">${shortName}</div>
         <div class="valve-status">
@@ -777,9 +777,9 @@ export class GardenaSmartSystemCard extends LitElement {
         <div class="mower-actions">
           ${actions.map(a => html`
             <button class="mower-btn ${a.primary ? 'primary' : ''}"
-              @click="${() => this._callMowerAction(entityId, a.action)}"
-              ?disabled="${isOffline}">
-              ${this._t(a.key)}${a.action === 'start_override' ? ` (${this._selectedDuration}m)` : ''}
+              @click="${() => this._isPatchedIntegration !== false && this._callMowerAction(entityId, a.action)}"
+              ?disabled="${isOffline || this._isPatchedIntegration === false}">
+              ${this._t(a.key)}${a.action === 'start_override' && this._isPatchedIntegration !== false ? ` (${this._selectedDuration}m)` : ''}
             </button>
           `)}
         </div>
@@ -877,9 +877,9 @@ export class GardenaSmartSystemCard extends LitElement {
         <div class="socket-right">
           ${isActive && remaining > 0
             ? html`<span class="socket-timer">${this._formatTime(remaining)}</span>` : ''}
-          <button class="toggle ${isActive ? 'on socket-toggle-on' : ''} ${isOffline && !isActive ? 'disabled' : ''}"
-            @click="${() => !isOffline && this._toggleSocket(entityId, isActive)}"
-            ?disabled="${isOffline && !isActive}"></button>
+          <button class="toggle ${isActive ? 'on socket-toggle-on' : ''} ${(isOffline && !isActive) || this._isPatchedIntegration === false ? 'disabled' : ''}"
+            @click="${() => !isOffline && this._isPatchedIntegration !== false && this._toggleSocket(entityId, isActive)}"
+            ?disabled="${(isOffline && !isActive) || this._isPatchedIntegration === false}"></button>
         </div>
         ${isActive && pct > 0 ? html`
           <div class="socket-progress-wrap">
