@@ -4,7 +4,7 @@
  * https://github.com/py-smart-gardena/hass-gardena-smart-system
  */
 
-import { LitElement, html, css, unsafeCSS } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import styles from 'bundle-text:./gardena_smart_system_card.css';
 import { t } from './translations.js';
 
@@ -24,6 +24,25 @@ const KNOB_PRESETS = [10, 30, 60, 120];
 
 // Integration domain for custom services (v2+)
 const DOMAIN = 'gardena_smart_system';
+
+// ---------- Mower activity mapping ----------
+const MOWER_ACTIVITY_MAP = {
+  'OK_CUTTING':                  'mower_cutting',
+  'OK_CUTTING_TIMER_OVERRIDDEN': 'mower_cutting_manual',
+  'OK_SEARCHING':                'mower_searching',
+  'OK_LEAVING':                  'mower_leaving',
+  'INITIATE_NEXT_ACTION':        'mower_next_action',
+  'PAUSED':                      'mower_paused',
+  'PAUSED_IN_CS':                'mower_paused_cs',
+  'OK_CHARGING':                 'mower_charging',
+  'PARKED_TIMER':                'mower_parked_timer',
+  'PARKED_PARK_SELECTED':        'mower_parked_manual',
+  'PARKED_AUTOTIMER':            'mower_parked_auto',
+  'PARKED_FROST':                'mower_parked_frost',
+  'STOPPED_IN_GARDEN':           'mower_stopped_garden',
+  'SEARCHING_FOR_SATELLITES':    'mower_searching_sat',
+  'NONE':                        'mower_error',
+};
 
 // Module-level timer storage — survives card re-creation during config edits
 const TIMER_STORAGE_KEY = 'gardena_card_timers';
@@ -109,19 +128,21 @@ export class GardenaSmartSystemCard extends LitElement {
     this._hass = hass;
 
     // Check for v2 custom services
-    if (!this._hasV2Services && hass.services?.[DOMAIN]?.valve_open) {
-      this._hasV2Services = true;
+    if (!this._hasV2Services && hass.services?.[DOMAIN]) {
+      if (hass.services[DOMAIN].valve_open || hass.services[DOMAIN].start_override) {
+        this._hasV2Services = true;
+      }
     }
 
-    if ((!this._entities || !this._entities.valves) && this.config?.device_id) {
-      this._entities = this._findEntities(hass, this.config.device_id);
+    if (!this._entities || !this._entities.valves) {
+      this._entities = this._findEntities(hass);
     }
 
     // Clean up local timers for valves/sockets that closed externally
     let timerChanged = false;
     for (const entityId of Object.keys(this._valveTimers)) {
       const state = hass.states[entityId];
-      if (!state || (state.state !== 'open' && state.state !== 'on')) {
+      if (!state || (state.state !== 'open' && state.state !== 'on' && state.state !== 'mowing')) {
         delete this._valveTimers[entityId];
         timerChanged = true;
       }
@@ -136,13 +157,11 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   setConfig(config) {
-    if (!config.device_id) {
-      throw new Error(t(null, "config_select_device"));
-    }
     this.config = config;
+    this._selectedDuration = config.default_duration || 30;
     this._entities = null;
     if (this._hass) {
-      this._entities = this._findEntities(this._hass, config.device_id);
+      this._entities = this._findEntities(this._hass);
     }
   }
 
@@ -151,41 +170,31 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   // ---------- Entity discovery (domain-based) ----------
-  _findEntities(hass, deviceId) {
+  _findEntities(hass) {
     const allEntities = hass.entities || {};
-    const devices = hass.devices || {};
-    const found = { valves: [], sockets: [], connection: null, battery: null, deviceConnections: {} };
-
-    // Collect all device IDs sharing the same config_entry
-    const deviceIds = new Set([deviceId]);
-    const mainDevice = devices[deviceId];
-    if (mainDevice) {
-      const configEntries = mainDevice.config_entries || [];
-      for (const [id, dev] of Object.entries(devices)) {
-        if (id === deviceId) continue;
-        const devEntries = dev.config_entries || [];
-        if (configEntries.some((ce) => devEntries.includes(ce))) {
-          deviceIds.add(id);
-        }
-      }
-    }
+    const found = { valves: [], sockets: [], mowers: [], connection: null, battery: null, deviceBatteries: {}, deviceConnections: {}, deviceIds: new Set() };
 
     for (const entityId in allEntities) {
       const entity = allEntities[entityId];
-      if (!deviceIds.has(entity.device_id)) continue;
+      if (entity.platform !== DOMAIN) continue;
 
       const domain = entityId.split('.')[0];
       const state = hass.states[entityId];
+
+      if (entity.device_id) found.deviceIds.add(entity.device_id);
 
       if (domain === 'valve') {
         found.valves.push(entityId);
       } else if (domain === 'switch') {
         found.sockets.push(entityId);
+      } else if (domain === 'lawn_mower') {
+        found.mowers.push(entityId);
       } else if (domain === 'binary_sensor') {
         found.deviceConnections[entity.device_id] = entityId;
         if (!found.connection) found.connection = entityId;
-      } else if (domain === 'sensor' && !found.battery && state?.attributes?.device_class === 'battery') {
-        found.battery = entityId;
+      } else if (domain === 'sensor' && state?.attributes?.device_class === 'battery') {
+        if (!found.battery) found.battery = entityId;
+        if (entity.device_id) found.deviceBatteries[entity.device_id] = entityId;
       }
     }
 
@@ -194,10 +203,19 @@ export class GardenaSmartSystemCard extends LitElement {
 
   // ---------- Helpers ----------
   _shortEntityName(state, fallback) {
+    // Prefer device name over entity friendly_name to avoid redundancy
+    const entityId = state?.entity_id;
+    if (entityId) {
+      const entityReg = (this._hass.entities || {})[entityId];
+      if (entityReg?.device_id) {
+        const device = (this._hass.devices || {})[entityReg.device_id];
+        if (device?.name_by_user || device?.name) {
+          return device.name_by_user || device.name;
+        }
+      }
+    }
     const name = state?.attributes?.friendly_name || fallback;
-    // Strip device-name prefix (e.g. "Gardena Device - Power Socket" → "Power Socket")
     let short = name.includes(' - ') ? name.split(' - ').pop().trim() : name;
-    // Deduplicate consecutive repeated words (e.g. "Power Power Power Socket" → "Power Socket")
     short = short.replace(/\b(\w+)(?:\s+\1)+\b/gi, '$1');
     return short || fallback;
   }
@@ -281,6 +299,20 @@ export class GardenaSmartSystemCard extends LitElement {
     return null;
   }
 
+  _getMinRfLink(entityIds) {
+    let min = null;
+    for (const eid of entityIds) {
+      const rf = this._hass.states[eid]?.attributes?.rf_link_level;
+      if (rf != null && (min === null || rf < min)) min = rf;
+    }
+    return min;
+  }
+
+  _renderSignalBars(level) {
+    const dim = 0.2;
+    return html`<svg viewBox="0 0 24 24"><path d="M3,21H6V18H3Z" fill="currentColor" opacity="${level >= 1 ? 1 : dim}"/><path d="M8,21H11V14H8Z" fill="currentColor" opacity="${level >= 25 ? 1 : dim}"/><path d="M13,21H16V9H13Z" fill="currentColor" opacity="${level >= 50 ? 1 : dim}"/><path d="M18,21H21V3H18V21Z" fill="currentColor" opacity="${level >= 75 ? 1 : dim}"/></svg>`;
+  }
+
   _fireMoreInfo(entityId) {
     if (!entityId) return;
     this.dispatchEvent(new CustomEvent('hass-more-info', {
@@ -289,8 +321,14 @@ export class GardenaSmartSystemCard extends LitElement {
     }));
   }
 
+  _getFirstDeviceId() {
+    const deviceIds = this._entities?.deviceIds;
+    if (deviceIds && deviceIds.size > 0) return deviceIds.values().next().value;
+    return null;
+  }
+
   _navigateToDevice() {
-    const deviceId = this.config?.device_id;
+    const deviceId = this._getFirstDeviceId();
     if (!deviceId) return;
     const path = `/config/devices/device/${deviceId}`;
     history.pushState(null, "", path);
@@ -305,8 +343,8 @@ export class GardenaSmartSystemCard extends LitElement {
     const config = this.config;
 
     if (!hass || !config || !this._entities) {
-      if (hass && config?.device_id) {
-        this._entities = this._findEntities(hass, config.device_id);
+      if (hass && config) {
+        this._entities = this._findEntities(hass);
       }
       if (!this._entities) {
         return html`<ha-card><div class="unavailable">${this._t("config_no_device")}</div></ha-card>`;
@@ -314,7 +352,7 @@ export class GardenaSmartSystemCard extends LitElement {
     }
 
     // Show warning if v2 services not detected
-    if (hass.services && !hass.services[DOMAIN]?.valve_open) {
+    if (hass.services && !hass.services[DOMAIN]?.valve_open && !hass.services[DOMAIN]?.start_override) {
       return html`
         <ha-card>
           <div class="unavailable">
@@ -329,16 +367,17 @@ export class GardenaSmartSystemCard extends LitElement {
 
     const hasValves = this._getVisibleValves().length > 0;
     const hasSockets = this._getVisibleSockets().length > 0;
+    const hasMowers = this._getVisibleMowers().length > 0;
 
     return html`
       <ha-card>
-        ${this._renderHeader()}
+        ${this.config.show_header !== false ? this._renderHeader() : ''}
         <div class="content">
-          ${hasValves || hasSockets ? this._renderKnobSection() : ''}
+          ${this.config.show_duration !== false && (hasValves || hasSockets || hasMowers) ? this._renderKnobSection() : ''}
+          ${hasMowers ? this._renderMowerSection() : ''}
           ${hasValves ? this._renderValvesSection() : ''}
           ${hasSockets ? this._renderSocketSection() : ''}
         </div>
-        ${this._renderFooter()}
       </ha-card>
     `;
   }
@@ -350,27 +389,22 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   _renderHeader() {
-    const device = this._hass.devices?.[this.config.device_id];
-    const model = device?.model || "Gardena Smart System";
-    const name = this.config.title || device?.name || this._t("default_title");
+    const name = this.config.title || this._t("default_title");
     const wsOnline = this._isGlobalOnline();
 
     return html`
       <div class="card-header">
-        <div class="header-left">
-          <div class="device-icon" @click="${() => this._navigateToDevice()}">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-          </div>
-          <div>
-            <div class="device-name" @click="${() => this._fireMoreInfo(this._entities?.connection)}">${name}</div>
-            <div class="device-sub">${model}</div>
-          </div>
-        </div>
-        <div class="header-badges">
-          <div class="badge">
-            <span class="dot ${wsOnline ? 'dot-online' : 'dot-offline'}"></span>
-            WebSocket
-          </div>
+        <div class="header-title">${name}</div>
+        <div class="header-right">
+          <span class="ws-icon ${wsOnline ? 'online' : 'offline'}" title="${wsOnline ? this._t('ws_connected') : this._t('ws_disconnected')}"
+            @click="${() => this._fireMoreInfo(this._entities?.connection)}">
+            ${wsOnline
+              ? html`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M3,13V18L3,20H10V18H5V13H3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M14,15H20V19H14V15Z"/></svg>`
+              : html`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M3.88,13.46L2.46,14.88L4.59,17L2.46,19.12L3.88,20.54L6,18.41L8.12,20.54L9.54,19.12L7.41,17L9.54,14.88L8.12,13.46L6,15.59L3.88,13.46M14,15H20V19H14V15Z"/></svg>`}
+          </span>
+          <span class="header-menu" @click="${() => this._navigateToDevice()}">
+            <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          </span>
         </div>
       </div>
     `;
@@ -483,23 +517,21 @@ export class GardenaSmartSystemCard extends LitElement {
   _getVisibleValves() {
     const allValves = this._entities?.valves || [];
     const configured = this.config?.valve_entities;
-    // If valve_entities is configured, filter to only those; otherwise show all
-    if (configured && configured.length > 0) {
-      return configured.filter(id => allValves.includes(id));
-    }
-    return allValves;
+    if (!configured || configured.length === 0) return allValves;
+    return configured.filter(id => allValves.includes(id));
   }
 
   _renderValvesSection() {
     const valves = this._getVisibleValves();
     if (valves.length === 0) return '';
     const status = this._getDeviceOnlineStatus(valves);
+    const rfLink = this._getMinRfLink(valves);
 
     return html`
       <div class="valves-section">
         <div class="section-label">
           ${this._t('section_valves')}
-          ${status !== null ? this._renderConnectionIcon(status, valves) : ''}
+          ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(valves))}">${this._renderSignalBars(rfLink)}</span>` : ''}
         </div>
         <div class="valves-grid count-${Math.min(valves.length, 3)}">
           ${valves.map((entityId, i) => this._renderValve(entityId, i, status === 'offline'))}
@@ -513,8 +545,8 @@ export class GardenaSmartSystemCard extends LitElement {
     if (!state) return '';
 
     const isActive = state.state === 'open';
-    const shortName = this._shortEntityName(state, `Valve ${index + 1}`);
-    const zoneLabel = `Zone ${index + 1}`;
+    const shortName = state.attributes?.friendly_name || `Valve ${index + 1}`;
+    const zoneLabel = `${this._t('valve_zone')} ${index + 1}`;
 
     const { remaining, total } = this._getValveRemaining(entityId, state);
     const pct = (isActive && total > 0 && remaining > 0)
@@ -547,13 +579,15 @@ export class GardenaSmartSystemCard extends LitElement {
   async _toggleValve(entityId, isActive) {
     const gardenaId = this._getGardenaDeviceId(entityId);
     if (!gardenaId) return;
+    const state = this._hass.states[entityId];
+    const serviceId = state?.attributes?.service_id;
 
     if (isActive) {
-      await this._hass.callService(DOMAIN, 'valve_close', { device_id: gardenaId });
+      await this._hass.callService(DOMAIN, 'valve_close', { device_id: gardenaId, service_id: serviceId });
       delete this._valveTimers[entityId];
     } else {
       const durationSec = this._selectedDuration * 60;
-      await this._hass.callService(DOMAIN, 'valve_open', { device_id: gardenaId, duration: durationSec });
+      await this._hass.callService(DOMAIN, 'valve_open', { device_id: gardenaId, service_id: serviceId, duration: durationSec });
       this._valveTimers[entityId] = { startTime: new Date(), durationSec };
     }
     _saveTimers();
@@ -563,22 +597,219 @@ export class GardenaSmartSystemCard extends LitElement {
   _getVisibleSockets() {
     const allSockets = this._entities?.sockets || [];
     const configured = this.config?.socket_entities;
-    if (configured && configured.length > 0) {
-      return configured.filter(id => allSockets.includes(id));
+    if (configured === undefined) return allSockets;
+    return configured.filter(id => allSockets.includes(id));
+  }
+
+  // ---------- Mower Section ----------
+  _getVisibleMowers() {
+    const allMowers = this._entities?.mowers || [];
+    const configured = this.config?.mower_entities;
+    if (configured === undefined) return allMowers;
+    return configured.filter(id => allMowers.includes(id));
+  }
+
+  _getMowerInfo(state) {
+    return {
+      haState: state.state,
+      activity: state.attributes.activity,
+      battery: state.attributes.battery_level,
+      batteryState: state.attributes.battery_state,
+      opHours: state.attributes.operating_hours,
+      lastError: state.attributes.last_error_code,
+      deviceState: state.attributes.state,
+    };
+  }
+
+  _getBatteryIconPath(level, charging) {
+    const bolt = 'M23,11H20V4L15,14H18V22';
+    const shell = 'M12.67,4H11V2H5V4H3.33A1.33,1.33 0 0,0 2,5.33V20.67C2,21.4 2.6,22 3.33,22H12.67C13.4,22 14,21.4 14,20.67V5.33A1.33,1.33 0 0,0 12.67,4Z';
+    if (charging) {
+      if (level >= 95) return `${bolt}${shell}`;
+      if (level >= 85) return `${bolt}M12,8H4V6H12${shell}`;
+      if (level >= 75) return `${bolt}M12,9H4V6H12${shell}`;
+      if (level >= 55) return `${bolt}M12,11H4V6H12${shell}`;
+      if (level >= 35) return `M13,4H11V2H5V4H3C2.4,4 2,4.4 2,5V21C2,21.6 2.4,22 3,22H13C13.6,22 14,21.6 14,21V5C14,4.4 13.6,4 13,4M12,14.5H4V6H12V14.5${bolt}`;
+      return `${bolt}M12.05,17H4.05V6H12.05M12.72,4H11.05V2H5.05V4H3.38A1.33,1.33 0 0,0 2.05,5.33V20.67C2.05,21.4 2.65,22 3.38,22H12.72C13.45,22 14.05,21.4 14.05,20.67V5.33A1.33,1.33 0 0,0 12.72,4Z`;
     }
-    return allSockets;
+    if (level >= 95) return 'M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    if (level >= 85) return 'M16,8H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    if (level >= 75) return 'M16,9H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    if (level >= 65) return 'M16,10H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    if (level >= 55) return 'M16,12H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    if (level >= 45) return 'M16,13H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    if (level >= 35) return 'M16,14H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    if (level >= 25) return 'M16,15H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    if (level >= 15) return 'M16,17H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    if (level >= 5) return 'M16,18H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z';
+    return 'M14,20H6V6H14M14.67,4H13V2H7V4H5.33C4.6,4 4,4.6 4,5.33V20.67C4,21.4 4.6,22 5.33,22H14.67C15.4,22 16,21.4 16,20.67V5.33C16,4.6 15.4,4 14.67,4M21,7H19V13H21V8M21,15H19V17H21V15Z';
+  }
+
+  _getMowerActions(haState) {
+    switch (haState) {
+      case 'docked':
+        return [
+          { key: 'mower_start', action: 'start_override', primary: true },
+          { key: 'mower_resume_schedule', action: 'start_automatic' },
+        ];
+      case 'mowing':
+        return [
+          { key: 'mower_pause', action: 'pause', primary: true },
+          { key: 'mower_park_next', action: 'park_until_next_task' },
+          { key: 'mower_park', action: 'park_until_further_notice' },
+        ];
+      case 'paused':
+        return [
+          { key: 'mower_resume', action: 'resume', primary: true },
+          { key: 'mower_park_next', action: 'park_until_next_task' },
+          { key: 'mower_park', action: 'park_until_further_notice' },
+        ];
+      default:
+        return [
+          { key: 'mower_start', action: 'start_override', primary: true },
+          { key: 'mower_park', action: 'park_until_further_notice' },
+        ];
+    }
+  }
+
+  _renderMowerSection() {
+    const mowers = this._getVisibleMowers();
+    if (mowers.length === 0) return '';
+    const status = this._getDeviceOnlineStatus(mowers);
+    const rfLink = this._getMinRfLink(mowers);
+
+    return html`
+      <div class="mower-section">
+        <div class="section-label">
+          ${this._t('section_mower')}
+          ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(mowers))}">${this._renderSignalBars(rfLink)}</span>` : ''}
+        </div>
+        ${mowers.map(entityId => this._renderMower(entityId, status === 'offline'))}
+      </div>
+    `;
+  }
+
+  _getMowerRemaining(entityId, info) {
+    const timer = this._valveTimers[entityId];
+    if (timer && info.haState === 'mowing') {
+      const elapsed = (this._now.getTime() - timer.startTime.getTime()) / 1000;
+      const remaining = Math.max(0, timer.durationSec - elapsed);
+      return { remaining, total: timer.durationSec };
+    }
+    return { remaining: 0, total: 0 };
+  }
+
+  _renderMower(entityId, isOffline = false) {
+    const state = this._hass.states[entityId];
+    if (!state) return '';
+
+    const info = this._getMowerInfo(state);
+    const shortName = this._shortEntityName(state, this._t('section_mower'));
+    const activityKey = MOWER_ACTIVITY_MAP[info.activity] || `mower_${info.haState}`;
+    const activityText = this._t(activityKey);
+    const actions = this._getMowerActions(info.haState);
+    const isMowing = info.haState === 'mowing';
+    const stateClass = isMowing ? 'active'
+      : info.haState === 'error' ? 'error'
+      : info.haState === 'paused' ? 'paused'
+      : 'docked';
+
+    const { remaining, total } = this._getMowerRemaining(entityId, info);
+    const pct = (isMowing && total > 0 && remaining > 0)
+      ? Math.round((remaining / total) * 100) : 0;
+
+    return html`
+      <div class="mower-card ${stateClass} ${isOffline ? 'offline' : ''}">
+        <div class="mower-header">
+          <div class="mower-icon ${isMowing ? 'mowing' : ''}">
+            <span class="mower-drive">
+              <svg viewBox="0 0 24 24"><path d="M1 14C1 16.76 3.24 19 6 19C7.64 19 9.09 18.21 10 17H15.17C15.58 18.17 16.7 19 18 19C19.31 19 20.42 18.17 20.83 17H23V15C23 9.5 18.5 5 13 5H1V14M21 15H10.9C10.97 14.68 11 14.34 11 14C11 11.24 8.76 9 6 9C4.87 9 3.84 9.37 3 10V7H12.5C15.1 7 17.42 8.16 19 10H15V12H20.25C20.67 12.92 20.92 13.94 21 15M6 11C7.66 11 9 12.34 9 14C9 15.66 7.66 17 6 17C4.34 17 3 15.66 3 14C3 12.34 4.34 11 6 11Z"/></svg>
+              ${isMowing ? html`<span class="grass-particles"></span>` : ''}
+            </span>
+          </div>
+          <div class="mower-info">
+            <div class="mower-name" @click="${() => this._fireMoreInfo(entityId)}">${shortName}</div>
+            <div class="mower-activity">
+              ${isMowing ? html`<span class="mow-dot"></span>` : ''}
+              ${activityText}
+              ${isMowing && remaining > 0 ? html`<span class="mower-remaining">${this._formatTime(remaining)}</span>` : ''}
+            </div>
+          </div>
+          ${info.battery != null ? html`
+            <div class="mower-battery-chip ${info.battery < 20 ? 'low' : ''} ${info.batteryState === 'CHARGING' ? 'charging' : ''}"
+              @click="${() => { const devId = (this._hass.entities || {})[entityId]?.device_id; const batId = devId && this._entities?.deviceBatteries?.[devId]; this._fireMoreInfo(batId || entityId); }}" style="cursor:pointer">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="${this._getBatteryIconPath(info.battery, info.batteryState === 'CHARGING')}"/></svg>
+              <span>${info.battery}%</span>
+            </div>
+          ` : ''}
+        </div>
+
+        ${isMowing && pct > 0 ? html`
+          <div class="mower-progress">
+            <div class="mower-progress-fill" style="width:${pct}%"></div>
+          </div>
+        ` : ''}
+
+        ${info.haState === 'error' && info.lastError ? html`
+          <div class="mower-error-banner">
+            ${this._t('mower_error_prefix')}: ${info.lastError}
+          </div>
+        ` : ''}
+
+        <div class="mower-actions">
+          ${actions.map(a => html`
+            <button class="mower-btn ${a.primary ? 'primary' : ''}"
+              @click="${() => this._callMowerAction(entityId, a.action)}"
+              ?disabled="${isOffline}">
+              ${this._t(a.key)}${a.action === 'start_override' ? ` (${this._selectedDuration}m)` : ''}
+            </button>
+          `)}
+        </div>
+      </div>
+    `;
+  }
+
+  async _callMowerAction(entityId, action) {
+    switch (action) {
+      case 'start_override': {
+        const durationSec = this._selectedDuration * 60;
+        await this._hass.callService(DOMAIN, 'start_override', {
+          entity_id: entityId,
+          duration: durationSec,
+        });
+        this._valveTimers[entityId] = { startTime: new Date(), durationSec };
+        _saveTimers();
+        break;
+      }
+      case 'start_automatic':
+        await this._hass.callService(DOMAIN, 'start_automatic', { entity_id: entityId });
+        break;
+      case 'park_until_next_task':
+        await this._hass.callService(DOMAIN, 'park_until_next_task', { entity_id: entityId });
+        break;
+      case 'park_until_further_notice':
+        await this._hass.callService(DOMAIN, 'park_until_further_notice', { entity_id: entityId });
+        break;
+      case 'pause':
+        await this._hass.callService('lawn_mower', 'pause', { entity_id: entityId });
+        break;
+      case 'resume':
+        await this._hass.callService('lawn_mower', 'start_mowing', { entity_id: entityId });
+        break;
+    }
   }
 
   _renderSocketSection() {
     const sockets = this._getVisibleSockets();
     if (sockets.length === 0) return '';
     const status = this._getDeviceOnlineStatus(sockets);
+    const rfLink = this._getMinRfLink(sockets);
 
     return html`
       <div class="socket-section">
         <div class="section-label">
           ${this._t('section_socket')}
-          ${status !== null ? this._renderConnectionIcon(status, sockets) : ''}
+          ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(sockets))}">${this._renderSignalBars(rfLink)}</span>` : ''}
         </div>
         ${sockets.map(entityId => this._renderSocket(entityId, status === 'offline'))}
       </div>
@@ -620,7 +851,7 @@ export class GardenaSmartSystemCard extends LitElement {
               ${isOffline && !isActive
                 ? this._t('state_offline')
                 : isActive && remaining > 0
-                  ? html`<span class="countdown-text">${this._formatTime(remaining)} verbleibend</span>`
+                  ? html`<span class="countdown-text">${this._formatTime(remaining)} ${this._t('socket_remaining')}</span>`
                   : isActive ? this._t('socket_active') : this._t('socket_off')}
             </div>
           </div>
@@ -632,14 +863,14 @@ export class GardenaSmartSystemCard extends LitElement {
             @click="${() => !isOffline && this._toggleSocket(entityId, isActive)}"
             ?disabled="${isOffline && !isActive}"></button>
         </div>
-      </div>
-      ${isActive && pct > 0 ? html`
-        <div class="socket-progress-wrap">
-          <div class="socket-progress-track">
-            <div class="socket-progress-fill" style="width:${pct}%"></div>
+        ${isActive && pct > 0 ? html`
+          <div class="socket-progress-wrap">
+            <div class="socket-progress-track">
+              <div class="socket-progress-fill" style="width:${pct}%"></div>
+            </div>
           </div>
-        </div>
-      ` : ''}
+        ` : ''}
+      </div>
     `;
   }
 
@@ -658,26 +889,6 @@ export class GardenaSmartSystemCard extends LitElement {
     _saveTimers();
   }
 
-  // ---------- Footer ----------
-  _renderFooter() {
-    const isOnline = this._isGlobalOnline();
-
-    const timeStr = this._now.toLocaleTimeString(
-      this._hass?.language || 'en',
-      { hour: '2-digit', minute: '2-digit', second: '2-digit' }
-    );
-
-    return html`
-      <div class="card-footer">
-        <div class="footer-left">
-          <span class="live-dot ${isOnline ? '' : 'offline'}"></span>
-          <span>${isOnline ? this._t('footer_connected') : this._t('footer_disconnected')}</span>
-        </div>
-        <span class="footer-time">${timeStr}</span>
-      </div>
-    `;
-  }
-
   // ---------- Styles ----------
   static get styles() {
     return unsafeCSS(styles);
@@ -693,12 +904,31 @@ export class GardenaSmartSystemCard extends LitElement {
           selector: { text: {} },
         },
         {
-          name: "device_id",
-          required: true,
+          name: "show_header",
+          label: t(null, "config_show_header"),
+          selector: { boolean: {} },
+          default: true,
+        },
+        {
+          name: "show_duration",
+          label: t(null, "config_show_duration"),
+          selector: { boolean: {} },
+          default: true,
+        },
+        {
+          name: "default_duration",
+          label: t(null, "config_default_duration"),
           selector: {
-            device: {
-              filter: [{ integration: "gardena_smart_system" }],
-              multiple: false,
+            number: { min: 5, max: 120, step: 5, unit_of_measurement: "min", mode: "slider" },
+          },
+        },
+        {
+          name: "mower_entities",
+          label: t(null, "config_mower_entities"),
+          selector: {
+            entity: {
+              filter: [{ domain: "lawn_mower", integration: "gardena_smart_system" }],
+              multiple: true,
             },
           },
         },
@@ -727,9 +957,17 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   static getStubConfig(hass) {
-    const entry = Object.values(hass.entities).find(
+    const allEntities = Object.values(hass.entities).filter(
       (e) => e.platform === "gardena_smart_system"
     );
-    return { device_id: entry ? entry.device_id : "" };
+    const byDomain = (domain) => allEntities
+      .filter(e => e.entity_id.startsWith(domain + '.'))
+      .map(e => e.entity_id);
+    return {
+      default_duration: 30,
+      valve_entities: byDomain('valve'),
+      socket_entities: byDomain('switch'),
+      mower_entities: byDomain('lawn_mower'),
+    };
   }
 }
