@@ -646,7 +646,7 @@ function $d8078e452c66bdbe$export$625550452a3fa3ec(hass, key) {
 }
 
 
-const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.2.0";
+const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.3.0";
 // ---------- Knob constants ----------
 const $ce06635095588d37$var$KNOB_MIN = 5;
 const $ce06635095588d37$var$KNOB_MAX = 120;

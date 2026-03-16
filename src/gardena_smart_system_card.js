@@ -8,7 +8,7 @@ import { LitElement, html, unsafeCSS } from 'lit';
 import styles from 'bundle-text:./gardena_smart_system_card.css';
 import { t } from './translations.js';
 
-export const CARD_VERSION = "0.2.0";
+export const CARD_VERSION = "0.3.0";
 
 // ---------- Knob constants ----------
 const KNOB_MIN = 5;
