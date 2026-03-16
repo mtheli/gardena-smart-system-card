@@ -26,6 +26,9 @@ ha-card {
     --gs-amber: #EF9F27;
     --gs-amber-bg: color-mix(in srgb, #EF9F27 8%, var(--gs-card-bg));
 
+    --gs-red: #E53935;
+    --gs-red-bg: color-mix(in srgb, #E53935 8%, var(--gs-card-bg));
+
     --gs-surface: color-mix(in srgb, var(--primary-text-color, #fff) 4%, var(--gs-card-bg));
     --gs-surface-hover: color-mix(in srgb, var(--primary-text-color, #fff) 8%, var(--gs-card-bg));
 
@@ -37,77 +40,50 @@ ha-card {
 
 /* ── Header ── */
 .card-header {
-    padding: 1.25rem 1.5rem;
+    padding: 12px 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 0.5px solid var(--gs-border);
+    border-bottom: 1px solid var(--gs-border);
 }
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-}
-.device-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--gs-radius-md);
-    background: var(--gs-green-100);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-.device-icon:hover { opacity: 0.8; }
-.device-icon svg {
-    width: 22px;
-    height: 22px;
-    fill: var(--gs-green-500);
-}
-.device-name {
-    font-size: 15px;
-    font-weight: 500;
+.header-title {
+    font-size: 16px;
+    font-weight: 600;
     color: var(--primary-text-color);
     line-height: 1.2;
-    cursor: pointer;
 }
-.device-sub {
-    font-size: 12px;
-    color: var(--gs-text-dim);
-    margin-top: 1px;
-}
-.header-badges {
+.header-right {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0px;
     flex-shrink: 0;
+    margin-right: -8px;
 }
-.badge {
+.ws-icon, .header-menu {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--gs-text-dim);
-    padding: 4px 10px;
-    background: var(--gs-surface);
-    border-radius: 20px;
-    white-space: nowrap;
-}
-.dot {
-    width: 6px;
-    height: 6px;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
     border-radius: 50%;
+    transition: background 0.2s, opacity 0.2s;
 }
-.dot-online {
-    background: var(--gs-green-400);
-    box-shadow: 0 0 0 3px color-mix(in srgb, #1DBF7B 15%, transparent);
+.ws-icon:hover, .header-menu:hover {
+    background: var(--gs-surface-hover);
 }
-.dot-offline {
-    background: var(--gs-text-dimmer);
+.ws-icon svg, .header-menu svg {
+    width: 18px;
+    height: 18px;
+}
+.ws-icon.online svg {
+    fill: var(--gs-green-400);
+}
+.ws-icon.offline svg {
+    fill: var(--gs-text-dimmer);
+}
+.header-menu svg {
+    fill: var(--gs-text-dim);
 }
 
 /* ── Content ── */
@@ -450,6 +426,257 @@ ha-card {
     animation: countPulse 2s ease-in-out infinite;
 }
 
+/* ── Mower Section ── */
+.mower-section {
+    padding: 0 1.5rem 1rem;
+    margin-top: 0.25rem;
+}
+.mower-card {
+    background: var(--gs-surface);
+    border-radius: var(--gs-radius-md);
+    padding: 14px;
+    border: 0.5px solid transparent;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: valveIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.mower-card.active {
+    background: var(--gs-green-100);
+    border-color: var(--gs-green-300);
+}
+.mower-card.paused {
+    background: var(--gs-amber-bg);
+    border-color: color-mix(in srgb, #EF9F27 30%, transparent);
+}
+.mower-card.error {
+    background: var(--gs-red-bg);
+    border-color: color-mix(in srgb, #E53935 30%, transparent);
+}
+.mower-card.offline {
+    opacity: 0.5;
+}
+.mower-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.mower-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--gs-radius-sm);
+    background: var(--gs-surface-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gs-text-dimmest);
+    flex-shrink: 0;
+    transition: all 0.3s;
+    overflow: hidden;
+    position: relative;
+}
+.mower-card.active .mower-icon {
+    background: color-mix(in srgb, #1DBF7B 15%, var(--gs-card-bg));
+    color: var(--gs-green-400);
+}
+.mower-card.paused .mower-icon {
+    background: color-mix(in srgb, #EF9F27 15%, var(--gs-card-bg));
+    color: var(--gs-amber);
+}
+.mower-card.error .mower-icon {
+    background: color-mix(in srgb, #E53935 15%, var(--gs-card-bg));
+    color: var(--gs-red);
+}
+/* Mower drive wrapper — moves SVG + particles together */
+.mower-drive {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+.mower-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+.mower-icon.mowing .mower-drive {
+    animation: mowerDrive 3s linear infinite;
+}
+/* Grass particles — fly up behind the mower */
+.grass-particles {
+    position: absolute;
+    left: -2px;
+    bottom: 2px;
+    width: 4px;
+    height: 4px;
+    pointer-events: none;
+}
+.grass-particles::before,
+.grass-particles::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+.grass-particles::before {
+    width: 3px;
+    height: 3px;
+    background: #66BB6A;
+    animation: particleA 0.8s ease-out infinite;
+}
+.grass-particles::after {
+    width: 2px;
+    height: 2px;
+    background: #43A047;
+    animation: particleB 0.8s ease-out 0.2s infinite;
+}
+.mower-info {
+    min-width: 0;
+    flex: 1;
+}
+.mower-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    cursor: pointer;
+}
+.mower-activity {
+    font-size: 11px;
+    color: var(--gs-text-dimmest);
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.3s;
+}
+.mower-card.active .mower-activity {
+    color: var(--gs-green-200);
+}
+.mower-card.paused .mower-activity {
+    color: var(--gs-amber);
+}
+.mower-card.error .mower-activity {
+    color: var(--gs-red);
+}
+.mow-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gs-green-400);
+    animation: mowPulse 1s ease-in-out infinite;
+}
+
+/* Mower Battery Chip */
+.mower-battery-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: var(--gs-surface-hover);
+    color: var(--gs-text-dim);
+    font-size: 11px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.mower-battery-chip.low {
+    background: color-mix(in srgb, #E53935 12%, var(--gs-card-bg));
+    color: var(--gs-red);
+}
+.mower-battery-chip.charging {
+    background: color-mix(in srgb, #1DBF7B 12%, var(--gs-card-bg));
+    color: var(--gs-green-400);
+}
+.mower-battery-chip svg {
+    flex-shrink: 0;
+}
+
+/* Signal Icon in Section Labels */
+.section-signal {
+    display: inline-flex;
+    align-items: center;
+    margin-left: auto;
+    color: var(--gs-green-400);
+    cursor: pointer;
+}
+.section-signal svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Mower Progress Bar */
+.mower-progress {
+    height: 4px;
+    background: color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+.mower-progress-fill {
+    height: 100%;
+    background: var(--gs-green-400);
+    border-radius: 2px;
+    transition: width 1s linear;
+}
+
+/* Mower remaining time */
+.mower-remaining {
+    font-variant-numeric: tabular-nums;
+    opacity: 0.8;
+}
+
+/* Mower Error Banner */
+.mower-error-banner {
+    padding: 8px 10px;
+    background: color-mix(in srgb, #E53935 12%, transparent);
+    border-radius: var(--gs-radius-sm);
+    font-size: 11px;
+    color: var(--gs-red);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+/* Mower Action Buttons */
+.mower-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.mower-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border-radius: var(--gs-radius-md);
+    border: 0.5px solid var(--gs-border);
+    background: var(--gs-card-bg);
+    color: var(--gs-text-dim);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.mower-btn:hover {
+    background: var(--gs-surface);
+    color: var(--primary-text-color);
+    border-color: var(--gs-surface-hover);
+}
+.mower-btn.primary {
+    background: var(--gs-green-100);
+    color: var(--gs-green-400);
+    border-color: var(--gs-green-300);
+}
+.mower-btn.primary:hover {
+    background: color-mix(in srgb, #1DBF7B 15%, var(--gs-card-bg));
+}
+.mower-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* ── Socket Section ── */
 .socket-section {
     padding: 0 1.5rem 1rem;
@@ -459,6 +686,7 @@ ha-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     background: var(--gs-surface);
     border-radius: var(--gs-radius-md);
     padding: 12px 14px;
@@ -523,8 +751,9 @@ ha-card {
     white-space: nowrap;
 }
 .socket-progress-wrap {
-    padding: 0 2px;
-    margin-top: 6px;
+    width: 100%;
+    padding: 0;
+    margin-top: 8px;
 }
 .socket-progress-track {
     height: 3px;
@@ -539,35 +768,6 @@ ha-card {
     transition: width 1s linear;
 }
 
-/* ── Footer ── */
-.card-footer {
-    padding: 0.75rem 1.5rem;
-    border-top: 0.5px solid var(--gs-border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--gs-text-dimmest);
-}
-.footer-left {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.footer-time {
-    font-variant-numeric: tabular-nums;
-}
-.live-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--gs-green-400);
-    animation: livePulse 2s ease-in-out infinite;
-}
-.live-dot.offline {
-    background: var(--gs-text-dimmer);
-    animation: none;
-}
 
 /* ── Unavailable ── */
 .unavailable {
@@ -600,9 +800,21 @@ ha-card {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.55; }
 }
-@keyframes livePulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+@keyframes mowerDrive {
+    0% { transform: translateX(-130%); }
+    100% { transform: translateX(130%); }
+}
+@keyframes particleA {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.9; }
+    100% { transform: translate(-8px, -10px) scale(0.3); opacity: 0; }
+}
+@keyframes particleB {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+    100% { transform: translate(-5px, -12px) scale(0.2); opacity: 0; }
+}
+@keyframes mowPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
 }
 
 /* ── Responsive ── */
@@ -620,6 +832,12 @@ ha-card {
     .knob-info {
         flex-direction: row;
         flex-wrap: wrap;
+        justify-content: center;
+    }
+    .mower-actions {
+        flex-direction: column;
+    }
+    .mower-btn {
         justify-content: center;
     }
 }

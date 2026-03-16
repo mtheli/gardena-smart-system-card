@@ -4,6 +4,9 @@
   "config_title": "Titel (Optional)",
   "config_select_device": "Bitte wähle ein Gardena Smart System Gerät in der Kartenkonfiguration.",
   "config_no_device": "Bitte wähle ein Gerät.",
+  "config_show_header": "Header anzeigen",
+  "config_show_duration": "Zeitauswahl anzeigen",
+  "config_default_duration": "Standard-Laufzeit (Minuten)",
   "config_valve_entities": "Anzuzeigende Ventilzonen (leer = alle)",
   "config_socket_entities": "Anzuzeigende Steckdosen (leer = alle)",
 
@@ -16,6 +19,7 @@
 
   "knob_unit_minutes": "Minuten",
 
+  "valve_zone": "Zone",
   "valve_ready": "Bereit",
   "valve_watering": "Bewässerung",
   "valve_open": "Offen",
@@ -23,9 +27,39 @@
 
   "socket_off": "Aus",
   "socket_active": "Aktiv",
+  "socket_remaining": "verbleibend",
 
-  "footer_connected": "Verbunden",
-  "footer_disconnected": "Getrennt",
+  "section_mower": "Mäher",
+  "config_mower_entities": "Anzuzeigende Mäher (leer = alle)",
+
+  "mower_cutting": "Mäht",
+  "mower_cutting_manual": "Mäht (manuell)",
+  "mower_searching": "Rückkehr zur Station",
+  "mower_leaving": "Verlässt Station",
+  "mower_next_action": "Nächste Aktion",
+  "mower_paused": "Pausiert",
+  "mower_paused_cs": "Pausiert (in Station)",
+  "mower_charging": "Lädt",
+  "mower_parked_timer": "Geparkt (Zeitplan)",
+  "mower_parked_manual": "Geparkt (manuell)",
+  "mower_parked_auto": "Geparkt (Autotimer)",
+  "mower_parked_frost": "Geparkt (Frost)",
+  "mower_stopped_garden": "Gestoppt im Garten",
+  "mower_searching_sat": "Satellitensuche",
+  "mower_error": "Fehler",
+  "mower_error_prefix": "Fehler",
+  "mower_mowing": "Mäht",
+  "mower_docked": "In Station",
+
+  "mower_start": "Starten",
+  "mower_resume_schedule": "Zeitplan fortsetzen",
+  "mower_pause": "Pause",
+  "mower_resume": "Fortsetzen",
+  "mower_park_next": "Parken bis nächster",
+  "mower_park": "Parken",
+
+  "ws_connected": "Verbunden",
+  "ws_disconnected": "Getrennt",
 
   "version_required_title": "Integration v2.0+ erforderlich",
   "version_required_message": "Diese Karte benötigt die Gardena Smart System Integration v2.0 oder neuer. Bitte über HACS aktualisieren (Vorabversionen aktivieren).",
