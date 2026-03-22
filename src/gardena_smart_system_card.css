@@ -273,7 +273,7 @@ ha-card {
     border: 0.5px solid transparent;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     animation: valveIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
     container-type: inline-size;
 }
@@ -287,6 +287,7 @@ ha-card {
     background: linear-gradient(to top, color-mix(in srgb, #1DBF7B 8%, transparent), transparent);
     transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
+    border-radius: inherit;
 }
 .valve.active {
     background: var(--gs-green-100);
@@ -298,7 +299,7 @@ ha-card {
 .valve-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 6px;
     margin-bottom: 8px;
 }
 .valve-zone-label {
@@ -307,6 +308,7 @@ ha-card {
     color: var(--gs-text-dimmest);
     letter-spacing: 0.6px;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 .valve.active .valve-zone-label {
     color: var(--gs-green-300);
@@ -396,6 +398,157 @@ ha-card {
     opacity: 0.3;
     cursor: not-allowed;
     pointer-events: none;
+}
+
+/* ── Pill Track (duration + toggle combo) ── */
+.pill {
+    display: inline-flex;
+    align-items: center;
+    background: var(--gs-card-bg);
+    border: 1px solid color-mix(in srgb, var(--primary-text-color, #fff) 15%, transparent);
+    border-radius: 22px;
+    padding: 3px;
+    transition: all 0.35s;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+.valve.active .pill {
+    background: color-mix(in srgb, #1DBF7B 6%, var(--gs-card-bg));
+    border-color: color-mix(in srgb, #1DBF7B 20%, transparent);
+}
+
+.pill-dur {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    padding: 0 4px 0 8px;
+    height: 22px;
+    border-radius: 11px;
+    border: none;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gs-text-dim);
+    cursor: pointer;
+    font-family: var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    background: transparent;
+    transition: all 0.2s;
+    position: relative;
+}
+.pill-dur:hover { background: var(--gs-surface); }
+.pill-dur.locked { cursor: default; opacity: 0.5; }
+.pill-dur.locked:hover { background: transparent; }
+.valve.active .pill-dur { color: var(--gs-green-700); }
+.pill-dur svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+    opacity: 0.4;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pill-dur.open svg { transform: rotate(180deg); opacity: 0.7; }
+
+.pill-tog {
+    position: relative;
+    width: 38px;
+    height: 22px;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+    background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));
+}
+.pill-tog.on { background: var(--gs-green-400); }
+.pill-tog.amber { background: var(--gs-amber); }
+.pill-tog::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.pill-tog.on::after { transform: translateX(16px); }
+.pill-tog.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Pill popup */
+.pill-pop {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--gs-card-bg);
+    border: 0.5px solid color-mix(in srgb, var(--primary-text-color, #fff) 12%, transparent);
+    border-radius: 12px;
+    padding: 6px;
+    display: none;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: max-content;
+    max-width: 170px;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.pill-pop.show { display: flex; }
+.valve.pill-open { z-index: 50; }
+.socket-card.pill-open { z-index: 50; }
+
+.pop-chip {
+    padding: 5px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    border: 0.5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);
+    color: var(--gs-text-dim);
+    cursor: pointer;
+    background: transparent;
+    font-family: inherit;
+    transition: all 0.15s;
+    line-height: 1;
+}
+.pop-chip:hover {
+    background: var(--gs-surface);
+    border-color: color-mix(in srgb, var(--primary-text-color, #fff) 14%, transparent);
+}
+.pop-chip.sel {
+    background: var(--gs-green-100);
+    color: var(--gs-green-600);
+    border-color: var(--gs-green-300);
+}
+.pop-input {
+    width: 44px;
+    padding: 5px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    border: 0.5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);
+    color: var(--gs-text-dim);
+    background: transparent;
+    font-family: inherit;
+    line-height: 1;
+    text-align: center;
+    outline: none;
+    -moz-appearance: textfield;
+}
+.pop-input::-webkit-inner-spin-button,
+.pop-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.pop-input:focus {
+    border-color: var(--gs-green-300);
+    background: var(--gs-green-100);
+}
+.pop-input.sel {
+    background: var(--gs-green-100);
+    color: var(--gs-green-600);
+    border-color: var(--gs-green-300);
 }
 
 /* Offline valve/socket */
@@ -690,6 +843,50 @@ ha-card {
     pointer-events: none;
 }
 
+/* Mower duration split button */
+.mower-btn-wrap {
+    display: inline-flex;
+    align-items: stretch;
+    position: relative;
+}
+.mower-btn-wrap .mower-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+.mower-dur-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 7px 8px;
+    border-top-right-radius: var(--gs-radius-md);
+    border-bottom-right-radius: var(--gs-radius-md);
+    border: 0.5px solid var(--gs-green-300);
+    border-left: 0.5px solid color-mix(in srgb, var(--gs-green-300) 40%, transparent);
+    background: var(--gs-green-100);
+    color: var(--gs-green-400);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    position: relative;
+}
+.mower-dur-btn:hover {
+    background: color-mix(in srgb, #1DBF7B 15%, var(--gs-card-bg));
+}
+.mower-dur-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.mower-dur-btn svg {
+    opacity: 0.5;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mower-dur-btn.open svg { transform: rotate(180deg); opacity: 0.8; }
+
 /* ── Socket Section ── */
 .socket-section {
     padding: 0 1.5rem 1rem;
@@ -813,6 +1010,23 @@ ha-card {
     display: block;
     margin-bottom: 2px;
     color: var(--gs-amber);
+    font-size: 12px;
+}
+
+.schedule-missing {
+    margin: 0 1.5rem 8px;
+    padding: 10px 14px;
+    background: color-mix(in srgb, var(--info-color, #039be5) 8%, var(--gs-card-bg));
+    border: 0.5px solid color-mix(in srgb, var(--info-color, #039be5) 25%, transparent);
+    border-radius: var(--gs-radius-sm);
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--gs-text-dim);
+}
+.schedule-missing strong {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--info-color, #039be5);
     font-size: 12px;
 }
 

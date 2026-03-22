@@ -110,6 +110,9 @@
   "schedule_day_sa": "Sa",
   "schedule_day_su": "So",
 
+  "schedule_missing_title": "Schedule-Integration nicht installiert",
+  "schedule_missing_message": "Installiere Gardena Smart Schedule über HACS, um Zeitpläne aus der Gardena App anzuzeigen.",
+
   "sensor_temperature": "Temperatur",
   "sensor_humidity": "Feuchtigkeit",
   "sensor_light": "Licht",

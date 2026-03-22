@@ -119,6 +119,10 @@ export class GardenaSmartSystemCard extends LitElement {
     this._backend = null;
     this._historyData = null;
     this._historyLastFetch = 0;
+    // Per-entity duration: entityId -> minutes
+    this._entityDurations = {};
+    // Which pill popup is currently open (entityId or null)
+    this._openPillPopup = null;
     // Local countdown tracking: entityId -> { startTime, durationSec }
     this._valveTimers = _persistedTimers;
   }
@@ -507,21 +511,50 @@ export class GardenaSmartSystemCard extends LitElement {
     const hasMowers = this._getVisibleMowers().length > 0;
 
     return html`
-      <ha-card>
+      <ha-card @click="${() => this._closePillPopups()}">
         ${this.config.show_header !== false ? this._renderHeader() : ''}
         <div class="content">
-          ${this._isPatchedIntegration === false && this.config.show_duration !== false ? html`
+          ${this._isPatchedIntegration === false ? html`
             <div class="patch-warning">
               <strong>${this._t("patch_warning_title")}</strong>
               ${this._t("patch_warning_message")}
             </div>
-          ` : this._isPatchedIntegration !== false && this.config.show_duration !== false && (hasValves || hasSockets || hasMowers) ? this._renderKnobSection() : ''}
+          ` : ''}
+          ${this._renderScheduleMissingBanner()}
           ${hasMowers ? this._renderMowerSection() : ''}
           ${hasValves ? this._renderValvesSection() : ''}
           ${hasSockets ? this._renderSocketSection() : ''}
           ${this.config.show_history !== false && (hasValves || hasSockets) ? this._renderHistorySection() : ''}
         </div>
       </ha-card>
+    `;
+  }
+
+  // ---------- Schedule missing banner ----------
+  _renderScheduleMissingBanner() {
+    if (this.config?.show_schedules === false) return '';
+    // Check if any gardena_smart_schedule entity exists (integration installed)
+    const entities = this._hass.entities || {};
+    const hasScheduleIntegration = Object.values(entities).some(
+      e => e.platform === 'gardena_smart_schedule'
+    );
+    if (hasScheduleIntegration) return '';
+    // Also skip if the main integration provides schedules natively (patched fork)
+    const allEntityIds = [
+      ...(this._entities?.valves || []),
+      ...(this._entities?.sockets || []),
+      ...(this._entities?.mowers || []),
+    ];
+    const hasNativeSchedules = allEntityIds.some(eid => {
+      const st = this._hass.states[eid];
+      return st?.attributes?.scheduled_events?.length > 0;
+    });
+    if (hasNativeSchedules) return '';
+    return html`
+      <div class="schedule-missing">
+        <strong>${this._t('schedule_missing_title')}</strong>
+        ${this._t('schedule_missing_message')}
+      </div>
     `;
   }
 
@@ -669,6 +702,70 @@ export class GardenaSmartSystemCard extends LitElement {
     return angle;
   }
 
+  // ---------- Pill Track Duration Helpers ----------
+  static PILL_DURATIONS = [5, 10, 15, 20, 30, 45, 60, 90];
+  static MOWER_DURATIONS = [30, 60, 120, 180, 360];
+
+  _getEntityDuration(entityId) {
+    if (this._entityDurations[entityId]) return this._entityDurations[entityId];
+    // Mowers default to 60min, valves/sockets to config default
+    const entity = (this._hass?.entities || {})[entityId];
+    if (entity && entityId.startsWith('lawn_mower.')) return 60;
+    return this._selectedDuration;
+  }
+
+  _formatDurationLabel(minutes) {
+    if (minutes >= 60 && minutes % 60 === 0) return `${minutes / 60}h`;
+    return `${minutes}m`;
+  }
+
+  _setEntityDuration(entityId, minutes) {
+    this._entityDurations[entityId] = minutes;
+    this._openPillPopup = null;
+    this.requestUpdate();
+  }
+
+  _togglePillPopup(entityId, e) {
+    e.stopPropagation();
+    this._openPillPopup = this._openPillPopup === entityId ? null : entityId;
+    this.requestUpdate();
+  }
+
+  _closePillPopups() {
+    if (this._openPillPopup) {
+      this._openPillPopup = null;
+      this.requestUpdate();
+    }
+  }
+
+  _renderPill(entityId, isActive, isDisabled, onToggle, amberToggle = false) {
+    const dur = this._getEntityDuration(entityId);
+    const isOpen = this._openPillPopup === entityId;
+    const isCustom = !GardenaSmartSystemCard.PILL_DURATIONS.includes(dur);
+    return html`
+      <div class="pill">
+        <button class="pill-dur ${isOpen ? 'open' : ''} ${isActive ? 'locked' : ''}"
+          @click="${(e) => !isActive && this._togglePillPopup(entityId, e)}">
+          <span>${dur}m</span>
+          ${isActive ? '' : html`<svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>`}
+          <div class="pill-pop ${isOpen ? 'show' : ''}" @click="${(e) => e.stopPropagation()}">
+            ${GardenaSmartSystemCard.PILL_DURATIONS.map(d => html`
+              <span class="pop-chip ${d === dur ? 'sel' : ''}"
+                @click="${(e) => { e.stopPropagation(); this._setEntityDuration(entityId, d); }}">${d}m</span>
+            `)}
+            <input class="pop-input ${isCustom ? 'sel' : ''}" type="number" min="1" max="90" placeholder="min"
+              .value="${isCustom ? String(dur) : ''}"
+              @click="${(e) => e.stopPropagation()}"
+              @keydown="${(e) => { if (e.key === 'Enter') { const v = Math.max(1, Math.min(90, parseInt(e.target.value))); if (v) this._setEntityDuration(entityId, v); } }}"
+            />
+          </div>
+        </button>
+        <div class="pill-tog ${isActive ? 'on' : ''} ${amberToggle && isActive ? 'amber' : ''} ${isDisabled ? 'disabled' : ''}"
+          @click="${() => !isDisabled && onToggle()}"></div>
+      </div>
+    `;
+  }
+
   // ---------- Valves Section ----------
   _getVisibleValves() {
     const allValves = this._entities?.valves || [];
@@ -716,12 +813,12 @@ export class GardenaSmartSystemCard extends LitElement {
     const isSchedulePaused = scheduleEvents.some(ev => ev.paused === true);
 
     return html`
-      <div class="valve ${isActive ? 'active' : ''} ${isOffline ? 'offline' : ''} ${isSchedulePaused ? 'schedule-paused' : ''}" style="animation-delay:${(index * 0.05 + 0.05)}s">
+      <div class="valve ${isActive ? 'active' : ''} ${isOffline ? 'offline' : ''} ${isSchedulePaused ? 'schedule-paused' : ''} ${this._openPillPopup === entityId ? 'pill-open' : ''}" style="animation-delay:${(index * 0.05 + 0.05)}s">
         <div class="valve-header">
           <span class="valve-zone-label">${zoneLabel}</span>
-          <button class="toggle ${isActive ? 'on' : ''} ${(isOffline && !isActive) || this._isPatchedIntegration === false ? 'disabled' : ''}"
-            @click="${() => !isOffline && this._isPatchedIntegration !== false && this._toggleValve(entityId, isActive)}"
-            ?disabled="${(isOffline && !isActive) || this._isPatchedIntegration === false}"></button>
+          ${this._renderPill(entityId, isActive,
+            (isOffline && !isActive) || this._isPatchedIntegration === false,
+            () => this._toggleValve(entityId, isActive))}
         </div>
         <div class="valve-name" @click="${() => this._fireMoreInfo(entityId)}">${shortName}</div>
         <div class="valve-status">
@@ -746,7 +843,7 @@ export class GardenaSmartSystemCard extends LitElement {
       await this._backend.closeValve(this._hass, { entityId, gardenaDeviceId: gardenaId, serviceId });
       delete this._valveTimers[entityId];
     } else {
-      const durationSec = this._selectedDuration * 60;
+      const durationSec = this._getEntityDuration(entityId) * 60;
       await this._backend.openValve(this._hass, { entityId, gardenaDeviceId: gardenaId, serviceId, durationSec });
       this._valveTimers[entityId] = { startTime: new Date(), durationSec };
     }
@@ -927,11 +1024,37 @@ export class GardenaSmartSystemCard extends LitElement {
         ` : ''}
 
         <div class="mower-actions">
-          ${actions.map(a => html`
+          ${actions.map(a => a.showDuration && this._isPatchedIntegration !== false ? html`
+            <div class="mower-btn-wrap" style="position:relative">
+              <button class="mower-btn ${a.primary ? 'primary' : ''}"
+                @click="${() => this._callMowerAction(entityId, a.action)}"
+                ?disabled="${isOffline || this._isPatchedIntegration === false}">
+                ${this._t(a.key)}
+              </button>
+              <button class="mower-dur-btn ${this._openPillPopup === entityId ? 'open' : ''}"
+                @click="${(e) => { e.stopPropagation(); this._togglePillPopup(entityId, e); }}"
+                ?disabled="${isOffline || this._isPatchedIntegration === false}">
+                ${this._formatDurationLabel(this._getEntityDuration(entityId))}
+                <svg viewBox="0 0 24 24" width="10" height="10"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+                <div class="pill-pop ${this._openPillPopup === entityId ? 'show' : ''}" @click="${(e) => e.stopPropagation()}">
+                  ${GardenaSmartSystemCard.MOWER_DURATIONS.map(d => html`
+                    <span class="pop-chip ${d === this._getEntityDuration(entityId) ? 'sel' : ''}"
+                      @click="${(e) => { e.stopPropagation(); this._setEntityDuration(entityId, d); }}">${this._formatDurationLabel(d)}</span>
+                  `)}
+                  <input class="pop-input ${!GardenaSmartSystemCard.MOWER_DURATIONS.includes(this._getEntityDuration(entityId)) ? 'sel' : ''}"
+                    type="number" min="1" max="360" placeholder="min"
+                    .value="${!GardenaSmartSystemCard.MOWER_DURATIONS.includes(this._getEntityDuration(entityId)) ? String(this._getEntityDuration(entityId)) : ''}"
+                    @click="${(e) => e.stopPropagation()}"
+                    @keydown="${(e) => { if (e.key === 'Enter') { const v = Math.max(1, Math.min(360, parseInt(e.target.value))); if (v) this._setEntityDuration(entityId, v); } }}"
+                  />
+                </div>
+              </button>
+            </div>
+          ` : html`
             <button class="mower-btn ${a.primary ? 'primary' : ''}"
               @click="${() => this._isPatchedIntegration !== false && this._callMowerAction(entityId, a.action)}"
               ?disabled="${isOffline || this._isPatchedIntegration === false}">
-              ${this._t(a.key)}${a.showDuration && this._isPatchedIntegration !== false ? ` (${this._selectedDuration}m)` : ''}
+              ${this._t(a.key)}
             </button>
           `)}
         </div>
@@ -941,7 +1064,7 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   async _callMowerAction(entityId, action) {
-    const durationSec = this._selectedDuration * 60;
+    const durationSec = this._getEntityDuration(entityId) * 60;
     const startedTimer = await this._backend.callMowerAction(this._hass, entityId, action, durationSec);
     if (startedTimer) {
       this._valveTimers[entityId] = { startTime: new Date(), durationSec };
@@ -1027,34 +1150,34 @@ export class GardenaSmartSystemCard extends LitElement {
 
   _getScheduleEventsFromScheduleIntegration(entityId) {
     if (!this._hass) return [];
-    const entities = this._hass.entities || Object.keys(this._hass.states).reduce((acc, id) => {
-      acc[id] = { entity_id: id }; return acc;
-    }, {});
-    const sourceEntity = entities[entityId];
-    if (!sourceEntity?.device_id) return [];
-    const deviceId = sourceEntity.device_id;
-    // For valve entities, extract the valve index (e.g. "uuid:1" -> 1)
+    // Get the Gardena device ID for this entity
+    const gardenaDeviceId = this._getGardenaDeviceId(entityId);
+    if (!gardenaDeviceId) return [];
+    // For valve entities, extract the valve index
     const valveIdx = this._getValveIndex(entityId);
+    // Find all gardena_smart_schedule sensors matching this Gardena device ID
+    const entities = this._hass.entities || {};
     const candidates = [];
     for (const eid of Object.keys(entities)) {
-      if (!eid.startsWith('sensor.') || eid === entityId) continue;
+      if (!eid.startsWith('sensor.')) continue;
       const e = entities[eid];
-      if (e.device_id === deviceId && e.platform === 'gardena_smart_schedule') {
-        const st = this._hass.states[eid];
-        if (st?.attributes?.scheduled_events) {
-          candidates.push(st);
-        }
+      if (e.platform !== 'gardena_smart_schedule') continue;
+      const st = this._hass.states[eid];
+      if (st?.attributes?.scheduled_events && (st.attributes.gardena_device_id === gardenaDeviceId || st.attributes.gardena_serial === gardenaDeviceId)) {
+        candidates.push(st);
       }
     }
     if (candidates.length === 0) return [];
-    if (candidates.length === 1) return candidates[0].attributes.scheduled_events;
-    // Multiple schedule sensors on same device: match by valve_id
+    // For valve entities, always match by valve_id
     if (valveIdx !== null) {
       const match = candidates.find(st => st.attributes.valve_id === valveIdx);
-      if (match) return match.attributes.scheduled_events;
+      return match ? match.attributes.scheduled_events : [];
     }
-    // Fallback: return first candidate's events
-    return candidates[0].attributes.scheduled_events;
+    // Non-valve entities (mower, socket): return first match
+    if (candidates.length === 1) return candidates[0].attributes.scheduled_events;
+    // Multiple candidates without valve context — return the one without valve_id
+    const noValve = candidates.find(st => st.attributes.valve_id == null);
+    return noValve ? noValve.attributes.scheduled_events : candidates[0].attributes.scheduled_events;
   }
 
   _getValveIndex(entityId) {
@@ -1069,7 +1192,7 @@ export class GardenaSmartSystemCard extends LitElement {
       .filter(eid => eid.startsWith('valve.') && entities[eid]?.device_id === deviceId)
       .sort();
     const idx = valveEntities.indexOf(entityId);
-    // Return 1-based index to match BFF API valve_id
+    // Return 1-based index to match schedule API valve_id
     return idx >= 0 ? idx + 1 : null;
   }
 
@@ -1218,7 +1341,7 @@ export class GardenaSmartSystemCard extends LitElement {
       ? Math.round((remaining / total) * 100) : 0;
 
     return html`
-      <div class="socket-card ${isActive ? 'active' : ''} ${isOffline && !isActive ? 'offline' : ''}">
+      <div class="socket-card ${isActive ? 'active' : ''} ${isOffline && !isActive ? 'offline' : ''} ${this._openPillPopup === entityId ? 'pill-open' : ''}">
         <div class="socket-left">
           <div class="socket-icon">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1240,9 +1363,9 @@ export class GardenaSmartSystemCard extends LitElement {
         <div class="socket-right">
           ${isActive && remaining > 0
             ? html`<span class="socket-timer">${this._formatTime(remaining)}</span>` : ''}
-          <button class="toggle ${isActive ? 'on socket-toggle-on' : ''} ${(isOffline && !isActive) || this._isPatchedIntegration === false ? 'disabled' : ''}"
-            @click="${() => !isOffline && this._isPatchedIntegration !== false && this._toggleSocket(entityId, isActive)}"
-            ?disabled="${(isOffline && !isActive) || this._isPatchedIntegration === false}"></button>
+          ${this._renderPill(entityId, isActive,
+            (isOffline && !isActive) || this._isPatchedIntegration === false,
+            () => this._toggleSocket(entityId, isActive), true)}
         </div>
         ${isActive && pct > 0 ? html`
           <div class="socket-progress-wrap">
@@ -1263,7 +1386,7 @@ export class GardenaSmartSystemCard extends LitElement {
       await this._backend.turnOffSocket(this._hass, { entityId, gardenaDeviceId: gardenaId });
       delete this._valveTimers[entityId];
     } else {
-      const durationSec = this._selectedDuration * 60;
+      const durationSec = this._getEntityDuration(entityId) * 60;
       await this._backend.turnOnSocket(this._hass, { entityId, gardenaDeviceId: gardenaId, durationSec, patched: this._isPatchedIntegration });
       this._valveTimers[entityId] = { startTime: new Date(), durationSec };
     }
@@ -1564,6 +1687,7 @@ export class GardenaSmartSystemCard extends LitElement {
       .map(e => e.entity_id);
     return {
       default_duration: 30,
+      valve_columns: 3,
       valve_entities: byDomain('valve'),
       socket_entities: byDomain('switch'),
       mower_entities: byDomain('lawn_mower'),
