@@ -1,12 +1,15 @@
 /**
  * Gardena Smart System Card for Home Assistant
- * Requires py-smart-gardena integration v2.0+
- * https://github.com/py-smart-gardena/hass-gardena-smart-system
+ * Supports multiple backend integrations:
+ *   - hass-gardena-smart-system (thecem / py-smart-gardena)
+ *   - ha-gardena-smart-system (kayloehmann)
  */
 
 import { LitElement, html, unsafeCSS } from 'lit';
 import styles from 'bundle-text:./gardena_smart_system_card.css';
 import { t } from './translations.js';
+import { ThecemBackend } from './backends/thecem.js';
+import { KayloehmannBackend } from './backends/kayloehmann.js';
 
 export const CARD_VERSION = "0.3.0";
 
@@ -42,6 +45,17 @@ const MOWER_ACTIVITY_MAP = {
   'STOPPED_IN_GARDEN':           'mower_stopped_garden',
   'SEARCHING_FOR_SATELLITES':    'mower_searching_sat',
   'NONE':                        'mower_error',
+};
+
+const MOWER_ERROR_MAP = {
+  'TRAPPED':                     'error_trapped',
+  'LIFTED':                      'error_lifted',
+  'OUTSIDE_WORKING_AREA':        'error_outside',
+  'COLLISION':                   'error_collision',
+  'UPSIDE_DOWN':                 'error_upside_down',
+  'LOW_BATTERY':                 'error_low_battery',
+  'TEMPORARILY_STOPPED':         'error_temp_stopped',
+  'CHARGING_STATION_BLOCKED':    'error_cs_blocked',
 };
 
 // Module-level timer storage — survives card re-creation during config edits
@@ -91,7 +105,7 @@ export class GardenaSmartSystemCard extends LitElement {
       _entities: { type: Object, state: true },
       _selectedDuration: { type: Number, state: true },
       _now: { type: Object, state: true },
-      _hasV2Services: { type: Boolean, state: true },
+      _backend: { type: Object, state: true },
       _historyData: { type: Array, state: true },
     };
   }
@@ -102,7 +116,7 @@ export class GardenaSmartSystemCard extends LitElement {
     this._now = new Date();
     this._clockInterval = null;
     this._isDragging = false;
-    this._hasV2Services = false;
+    this._backend = null;
     this._historyData = null;
     this._historyLastFetch = 0;
     // Local countdown tracking: entityId -> { startTime, durationSec }
@@ -130,17 +144,19 @@ export class GardenaSmartSystemCard extends LitElement {
   set hass(hass) {
     this._hass = hass;
 
-    // Check for v2 custom services
-    if (!this._hasV2Services && hass.services?.[DOMAIN]) {
-      if (hass.services[DOMAIN].valve_open || hass.services[DOMAIN].start_override) {
-        this._hasV2Services = true;
+    // Auto-detect backend adapter
+    if (!this._backend && hass.services?.[DOMAIN]) {
+      // valve_open is a domain-level service only registered by thecem's integration
+      if (hass.services[DOMAIN].valve_open) {
+        this._backend = new ThecemBackend();
+      } else {
+        this._backend = new KayloehmannBackend();
       }
     }
 
-    // Detect patched integration (service_id attribute on valves)
-    if (this._isPatchedIntegration === undefined && this._entities?.valves?.length) {
-      const firstValve = hass.states[this._entities.valves[0]];
-      this._isPatchedIntegration = firstValve?.attributes?.service_id != null;
+    // Detect patched integration via backend
+    if (this._isPatchedIntegration === undefined && this._backend && this._entities?.valves?.length) {
+      this._isPatchedIntegration = this._backend.isPatchedIntegration(hass, this._entities);
     }
 
     if (!this._entities || !this._entities.valves) {
@@ -186,7 +202,7 @@ export class GardenaSmartSystemCard extends LitElement {
   // ---------- Entity discovery (domain-based) ----------
   _findEntities(hass) {
     const allEntities = hass.entities || {};
-    const found = { valves: [], sockets: [], mowers: [], connection: null, battery: null, deviceBatteries: {}, deviceConnections: {}, deviceIds: new Set() };
+    const found = { valves: [], sockets: [], mowers: [], connection: null, battery: null, deviceBatteries: {}, deviceConnections: {}, deviceSignals: {}, deviceIds: new Set() };
 
     for (const entityId in allEntities) {
       const entity = allEntities[entityId];
@@ -203,12 +219,16 @@ export class GardenaSmartSystemCard extends LitElement {
         found.sockets.push(entityId);
       } else if (domain === 'lawn_mower') {
         found.mowers.push(entityId);
-      } else if (domain === 'binary_sensor') {
+      } else if (domain === 'binary_sensor' && state?.attributes?.device_class === 'connectivity') {
         found.deviceConnections[entity.device_id] = entityId;
         if (!found.connection) found.connection = entityId;
-      } else if (domain === 'sensor' && state?.attributes?.device_class === 'battery') {
-        if (!found.battery) found.battery = entityId;
-        if (entity.device_id) found.deviceBatteries[entity.device_id] = entityId;
+      } else if (domain === 'sensor') {
+        if (state?.attributes?.device_class === 'battery') {
+          if (!found.battery) found.battery = entityId;
+          if (entity.device_id) found.deviceBatteries[entity.device_id] = entityId;
+        } else if (entity.translation_key === 'rf_link_level' && entity.device_id) {
+          found.deviceSignals[entity.device_id] = entityId;
+        }
       }
     }
 
@@ -234,7 +254,23 @@ export class GardenaSmartSystemCard extends LitElement {
     return short || fallback;
   }
 
+  _entityNameWithoutDevice(entityId, fallback) {
+    const state = this._hass.states[entityId];
+    const name = state?.attributes?.friendly_name || fallback;
+    const entityReg = (this._hass.entities || {})[entityId];
+    if (entityReg?.device_id) {
+      const device = (this._hass.devices || {})[entityReg.device_id];
+      const devName = device?.name_by_user || device?.name;
+      if (devName && name.startsWith(devName)) {
+        const suffix = name.substring(devName.length).replace(/^[\s\-–]+/, '').trim();
+        if (suffix) return suffix;
+      }
+    }
+    return name;
+  }
+
   _getGardenaDeviceId(entityId) {
+    if (this._backend) return this._backend.getGardenaDeviceId(this._hass, entityId);
     const entity = (this._hass.entities || {})[entityId];
     if (!entity?.device_id) return null;
     const device = (this._hass.devices || {})[entity.device_id];
@@ -269,15 +305,58 @@ export class GardenaSmartSystemCard extends LitElement {
       const remaining = Math.max(0, timer.durationSec - elapsed);
       return { remaining, total: timer.durationSec };
     }
+    // Fall back to schedule-based timer
+    const scheduleTimer = this._getScheduleRemaining(entityId, state);
+    if (scheduleTimer) return scheduleTimer;
     return { remaining: 0, total: 0 };
+  }
+
+  _getScheduleRemaining(entityId, state) {
+    const activity = state.attributes?.activity;
+    if (activity !== 'SCHEDULED_WATERING' && activity !== 'SCHEDULED_ON') return null;
+    const events = state.attributes?.scheduled_events;
+    if (!events || events.length === 0) return null;
+    const now = this._now;
+    const dayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const today = dayMap[now.getDay()];
+    const nowMins = now.getHours() * 60 + now.getMinutes();
+    for (const ev of events) {
+      if (!(ev.weekdays || []).includes(today)) continue;
+      const startRaw = ev.start_at || '';
+      const endRaw = ev.end_at || '';
+      if (startRaw.startsWith('SR') || startRaw.startsWith('SS') || endRaw.startsWith('SR') || endRaw.startsWith('SS')) continue;
+      const [sh, sm] = startRaw.split(':').map(Number);
+      const [eh, em] = endRaw.split(':').map(Number);
+      if (isNaN(sh) || isNaN(eh)) continue;
+      const startMins = sh * 60 + (sm || 0);
+      const endMins = eh * 60 + (em || 0);
+      const crossesMidnight = endMins <= startMins;
+      const inRange = crossesMidnight
+        ? (nowMins >= startMins || nowMins <= endMins)
+        : (nowMins >= startMins && nowMins <= endMins);
+      if (inRange) {
+        const totalSec = crossesMidnight
+          ? (1440 - startMins + endMins) * 60
+          : (endMins - startMins) * 60;
+        const elapsedSec = crossesMidnight && nowMins < startMins
+          ? (1440 - startMins + nowMins) * 60 + now.getSeconds()
+          : (nowMins - startMins) * 60 + now.getSeconds();
+        return { remaining: Math.max(0, totalSec - elapsedSec), total: totalSec };
+      }
+    }
+    return null;
   }
 
   _getConnectionEntityForDevices(entityIds) {
     const connections = this._entities?.deviceConnections || {};
+    const signals = this._entities?.deviceSignals || {};
     const entities = this._hass.entities || {};
     for (const eid of entityIds) {
       const devId = entities[eid]?.device_id;
-      if (devId && connections[devId]) return connections[devId];
+      if (devId) {
+        if (connections[devId]) return connections[devId];
+        if (signals[devId]) return signals[devId];
+      }
     }
     return null;
   }
@@ -298,15 +377,29 @@ export class GardenaSmartSystemCard extends LitElement {
     const entities = this._hass.entities || {};
     const checked = new Set();
     let online = false, offline = false;
+    let hasConnSensor = false;
     for (const eid of entityIds) {
       const devId = entities[eid]?.device_id;
       if (!devId || checked.has(devId)) continue;
       checked.add(devId);
       const connId = connections[devId];
       if (connId) {
+        hasConnSensor = true;
         if (this._hass.states[connId]?.state === 'on') online = true;
         else offline = true;
       }
+    }
+    if (hasConnSensor) {
+      if (online && !offline) return 'online';
+      if (offline) return 'offline';
+      return null;
+    }
+    // Fallback: check entity availability (e.g. kayloehmann backend)
+    for (const eid of entityIds) {
+      const state = this._hass.states[eid];
+      if (!state) continue;
+      if (state.state === 'unavailable') offline = true;
+      else online = true;
     }
     if (online && !offline) return 'online';
     if (offline) return 'offline';
@@ -316,7 +409,18 @@ export class GardenaSmartSystemCard extends LitElement {
   _getMinRfLink(entityIds) {
     let min = null;
     for (const eid of entityIds) {
-      const rf = this._hass.states[eid]?.attributes?.rf_link_level;
+      let rf = this._backend
+        ? this._backend.getRfLinkLevel(this._hass, eid)
+        : this._hass.states[eid]?.attributes?.rf_link_level;
+      // Fallback: look up device signal sensor (e.g. kayloehmann)
+      if (rf == null) {
+        const devId = (this._hass.entities || {})[eid]?.device_id;
+        const sigId = devId && this._entities?.deviceSignals?.[devId];
+        if (sigId) {
+          rf = parseInt(this._hass.states[sigId]?.state, 10);
+          if (isNaN(rf)) rf = null;
+        }
+      }
       if (rf != null && (min === null || rf < min)) min = rf;
     }
     return min;
@@ -325,6 +429,19 @@ export class GardenaSmartSystemCard extends LitElement {
   _renderSignalBars(level) {
     const dim = 0.2;
     return html`<svg viewBox="0 0 24 24"><path d="M3,21H6V18H3Z" fill="currentColor" opacity="${level >= 1 ? 1 : dim}"/><path d="M8,21H11V14H8Z" fill="currentColor" opacity="${level >= 25 ? 1 : dim}"/><path d="M13,21H16V9H13Z" fill="currentColor" opacity="${level >= 50 ? 1 : dim}"/><path d="M18,21H21V3H18V21Z" fill="currentColor" opacity="${level >= 75 ? 1 : dim}"/></svg>`;
+  }
+
+  _getDeviceNameForEntities(entityIds) {
+    const entities = this._hass.entities || {};
+    const devices = this._hass.devices || {};
+    for (const eid of entityIds) {
+      const devId = entities[eid]?.device_id;
+      if (devId) {
+        const dev = devices[devId];
+        if (dev) return dev.name_by_user || dev.name || null;
+      }
+    }
+    return null;
   }
 
   _fireMoreInfo(entityId) {
@@ -371,8 +488,8 @@ export class GardenaSmartSystemCard extends LitElement {
       }
     }
 
-    // Show warning if v2 services not detected
-    if (hass.services && !hass.services[DOMAIN]?.valve_open && !hass.services[DOMAIN]?.start_override) {
+    // Show warning if no supported backend detected
+    if (!this._backend) {
       return html`
         <ha-card>
           <div class="unavailable">
@@ -411,7 +528,20 @@ export class GardenaSmartSystemCard extends LitElement {
   // ---------- Header ----------
   _isGlobalOnline() {
     const connections = this._entities?.deviceConnections || {};
-    return Object.values(connections).some(eid => this._hass.states[eid]?.state === 'on');
+    const connIds = Object.values(connections);
+    if (connIds.length > 0) {
+      return connIds.some(eid => this._hass.states[eid]?.state === 'on');
+    }
+    // Fallback: check if any main entity is available
+    const allEntityIds = [
+      ...(this._entities?.valves || []),
+      ...(this._entities?.sockets || []),
+      ...(this._entities?.mowers || []),
+    ];
+    return allEntityIds.some(eid => {
+      const s = this._hass.states[eid]?.state;
+      return s && s !== 'unavailable';
+    });
   }
 
   _renderHeader() {
@@ -553,13 +683,16 @@ export class GardenaSmartSystemCard extends LitElement {
     const status = this._getDeviceOnlineStatus(valves);
     const rfLink = this._getMinRfLink(valves);
 
+    const deviceName = this._getDeviceNameForEntities(valves);
+
     return html`
       <div class="valves-section">
         <div class="section-label">
-          ${this._t('section_valves')}
-          ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(valves))}">${this._renderSignalBars(rfLink)}</span>` : ''}
+          ${deviceName ? `${deviceName} – ` : ''}${this._t('section_valves')}
+          ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(valves))}">${this._renderSignalBars(rfLink)}</span>`
+            : status ? this._renderConnectionIcon(status, valves) : ''}
         </div>
-        <div class="valves-grid count-${Math.min(valves.length, 3)}">
+        <div class="valves-grid count-${Math.min(valves.length, this.config?.valve_columns || 3)}">
           ${valves.map((entityId, i) => this._renderValve(entityId, i, status === 'offline'))}
         </div>
       </div>
@@ -571,7 +704,7 @@ export class GardenaSmartSystemCard extends LitElement {
     if (!state) return '';
 
     const isActive = state.state === 'open';
-    const shortName = state.attributes?.friendly_name || `Valve ${index + 1}`;
+    const shortName = this._entityNameWithoutDevice(entityId, `Valve ${index + 1}`);
     const zoneLabel = `${this._t('valve_zone')} ${index + 1}`;
 
     const { remaining, total } = this._getValveRemaining(entityId, state);
@@ -579,8 +712,11 @@ export class GardenaSmartSystemCard extends LitElement {
       ? Math.round((remaining / total) * 100)
       : 0;
 
+    const scheduleEvents = this._getScheduleEvents(entityId);
+    const isSchedulePaused = scheduleEvents.some(ev => ev.paused === true);
+
     return html`
-      <div class="valve ${isActive ? 'active' : ''} ${isOffline ? 'offline' : ''}" style="animation-delay:${(index * 0.05 + 0.05)}s">
+      <div class="valve ${isActive ? 'active' : ''} ${isOffline ? 'offline' : ''} ${isSchedulePaused ? 'schedule-paused' : ''}" style="animation-delay:${(index * 0.05 + 0.05)}s">
         <div class="valve-header">
           <span class="valve-zone-label">${zoneLabel}</span>
           <button class="toggle ${isActive ? 'on' : ''} ${(isOffline && !isActive) || this._isPatchedIntegration === false ? 'disabled' : ''}"
@@ -591,36 +727,27 @@ export class GardenaSmartSystemCard extends LitElement {
         <div class="valve-status">
           ${isOffline && !isActive
             ? this._t('state_offline')
-            : isActive
-              ? html`<span class="water-icon"></span><span class="countdown-text">${this._formatTime(remaining) || this._t('valve_watering')}</span>`
-              : this._t('valve_ready')}
+            : this._getValveStatusText(state, remaining)}
         </div>
         <div class="valve-progress">
           ${isActive ? html`<div class="valve-progress-fill" style="width:${pct}%"></div>` : ''}
         </div>
+        ${this._renderValveScheduleMini(entityId)}
       </div>
     `;
   }
 
   async _toggleValve(entityId, isActive) {
     const gardenaId = this._getGardenaDeviceId(entityId);
-    if (!gardenaId) return;
     const state = this._hass.states[entityId];
-    const patched = this._isPatchedIntegration;
+    const serviceId = state?.attributes?.service_id;
 
     if (isActive) {
-      const closeData = { device_id: gardenaId };
-      if (patched) closeData.service_id = state?.attributes?.service_id;
-      await this._hass.callService(DOMAIN, 'valve_close', closeData);
+      await this._backend.closeValve(this._hass, { entityId, gardenaDeviceId: gardenaId, serviceId });
       delete this._valveTimers[entityId];
     } else {
       const durationSec = this._selectedDuration * 60;
-      const openData = { device_id: gardenaId };
-      if (patched) {
-        openData.service_id = state?.attributes?.service_id;
-        openData.duration = durationSec;
-      }
-      await this._hass.callService(DOMAIN, 'valve_open', openData);
+      await this._backend.openValve(this._hass, { entityId, gardenaDeviceId: gardenaId, serviceId, durationSec });
       this._valveTimers[entityId] = { startTime: new Date(), durationSec };
     }
     _saveTimers();
@@ -643,6 +770,14 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   _getMowerInfo(state) {
+    if (this._backend) {
+      const entityId = state.entity_id;
+      const deviceId = (this._hass.entities || {})[entityId]?.device_id;
+      return this._backend.getMowerInfo(this._hass, state, {
+        entities: this._entities,
+        deviceId,
+      });
+    }
     return {
       haState: state.state,
       activity: state.attributes.activity,
@@ -679,10 +814,11 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   _getMowerActions(haState) {
+    if (this._backend) return this._backend.getMowerActions(haState);
     switch (haState) {
       case 'docked':
         return [
-          { key: 'mower_start', action: 'start_override', primary: true },
+          { key: 'mower_start', action: 'start_override', primary: true, showDuration: true },
           { key: 'mower_resume_schedule', action: 'start_automatic' },
         ];
       case 'mowing':
@@ -699,7 +835,7 @@ export class GardenaSmartSystemCard extends LitElement {
         ];
       default:
         return [
-          { key: 'mower_start', action: 'start_override', primary: true },
+          { key: 'mower_start', action: 'start_override', primary: true, showDuration: true },
           { key: 'mower_park', action: 'park_until_further_notice' },
         ];
     }
@@ -715,7 +851,8 @@ export class GardenaSmartSystemCard extends LitElement {
       <div class="mower-section">
         <div class="section-label">
           ${this._t('section_mower')}
-          ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(mowers))}">${this._renderSignalBars(rfLink)}</span>` : ''}
+          ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(mowers))}">${this._renderSignalBars(rfLink)}</span>`
+            : status ? this._renderConnectionIcon(status, mowers) : ''}
         </div>
         ${mowers.map(entityId => this._renderMower(entityId, status === 'offline'))}
       </div>
@@ -769,7 +906,7 @@ export class GardenaSmartSystemCard extends LitElement {
             </div>
           </div>
           ${info.battery != null ? html`
-            <div class="mower-battery-chip ${info.battery < 20 ? 'low' : ''} ${info.batteryState === 'CHARGING' ? 'charging' : ''}"
+            <div class="mower-battery-chip ${info.batteryState === 'REPLACE_NOW' ? 'replace' : (info.batteryState === 'LOW' || info.battery < 20) ? 'low' : ''} ${info.batteryState === 'CHARGING' ? 'charging' : ''}"
               @click="${() => { const devId = (this._hass.entities || {})[entityId]?.device_id; const batId = devId && this._entities?.deviceBatteries?.[devId]; this._fireMoreInfo(batId || entityId); }}" style="cursor:pointer">
               <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="${this._getBatteryIconPath(info.battery, info.batteryState === 'CHARGING')}"/></svg>
               <span>${info.battery}%</span>
@@ -785,7 +922,7 @@ export class GardenaSmartSystemCard extends LitElement {
 
         ${info.haState === 'error' && info.lastError ? html`
           <div class="mower-error-banner">
-            ${this._t('mower_error_prefix')}: ${info.lastError}
+            ${this._t('mower_error_prefix')}: ${MOWER_ERROR_MAP[info.lastError] ? this._t(MOWER_ERROR_MAP[info.lastError]) : info.lastError}
           </div>
         ` : ''}
 
@@ -794,42 +931,249 @@ export class GardenaSmartSystemCard extends LitElement {
             <button class="mower-btn ${a.primary ? 'primary' : ''}"
               @click="${() => this._isPatchedIntegration !== false && this._callMowerAction(entityId, a.action)}"
               ?disabled="${isOffline || this._isPatchedIntegration === false}">
-              ${this._t(a.key)}${a.action === 'start_override' && this._isPatchedIntegration !== false ? ` (${this._selectedDuration}m)` : ''}
+              ${this._t(a.key)}${a.showDuration && this._isPatchedIntegration !== false ? ` (${this._selectedDuration}m)` : ''}
             </button>
           `)}
         </div>
+        ${this._renderScheduleStrip(entityId)}
       </div>
     `;
   }
 
   async _callMowerAction(entityId, action) {
-    switch (action) {
-      case 'start_override': {
-        const durationSec = this._selectedDuration * 60;
-        await this._hass.callService(DOMAIN, 'start_override', {
-          entity_id: entityId,
-          duration: durationSec,
-        });
-        this._valveTimers[entityId] = { startTime: new Date(), durationSec };
-        _saveTimers();
-        break;
-      }
-      case 'start_automatic':
-        await this._hass.callService(DOMAIN, 'start_automatic', { entity_id: entityId });
-        break;
-      case 'park_until_next_task':
-        await this._hass.callService(DOMAIN, 'park_until_next_task', { entity_id: entityId });
-        break;
-      case 'park_until_further_notice':
-        await this._hass.callService(DOMAIN, 'park_until_further_notice', { entity_id: entityId });
-        break;
-      case 'pause':
-        await this._hass.callService('lawn_mower', 'pause', { entity_id: entityId });
-        break;
-      case 'resume':
-        await this._hass.callService('lawn_mower', 'start_mowing', { entity_id: entityId });
-        break;
+    const durationSec = this._selectedDuration * 60;
+    const startedTimer = await this._backend.callMowerAction(this._hass, entityId, action, durationSec);
+    if (startedTimer) {
+      this._valveTimers[entityId] = { startTime: new Date(), durationSec };
+      _saveTimers();
     }
+  }
+
+  // ---------- Schedule Helpers ----------
+  static SCHEDULE_WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+  static SCHEDULE_DAY_KEYS = ['schedule_day_mo', 'schedule_day_tu', 'schedule_day_we', 'schedule_day_th', 'schedule_day_fr', 'schedule_day_sa', 'schedule_day_su'];
+
+  // ---------- Activity Helpers ----------
+  _getValveStatusText(state, remaining) {
+    const activity = state.attributes?.activity;
+    if (state.state === 'open') {
+      const timeText = this._formatTime(remaining);
+      if (activity === 'SCHEDULED_WATERING') {
+        return html`<span class="water-icon"></span><span class="countdown-text">${timeText || this._t('valve_watering_scheduled')}</span>`;
+      }
+      if (activity === 'MANUAL_WATERING') {
+        return html`<span class="water-icon"></span><span class="countdown-text">${timeText || this._t('valve_watering_manual')}</span>`;
+      }
+      // Fallback: no activity attribute available
+      return html`<span class="water-icon"></span><span class="countdown-text">${timeText || this._t('valve_watering')}</span>`;
+    }
+    return this._t('valve_ready');
+  }
+
+  _getSocketStatusText(state, remaining) {
+    const activity = state.attributes?.activity;
+    if (state.state === 'on') {
+      if (remaining > 0) {
+        return html`<span class="countdown-text">${this._formatTime(remaining)} ${this._t('socket_remaining')}</span>`;
+      }
+      if (activity === 'SCHEDULED_ON') return this._t('socket_active_scheduled');
+      if (activity === 'FOREVER_ON') return this._t('socket_active_manual');
+      if (activity === 'TIME_LIMITED_ON') return this._t('socket_active');
+      return this._t('socket_active');
+    }
+    return this._t('socket_off');
+  }
+
+  _isScheduleActive(ev, entityId) {
+    const state = this._hass.states[entityId];
+    if (!state) return false;
+    const activity = state.attributes?.activity;
+    const isScheduled = activity === 'SCHEDULED_WATERING' || activity === 'SCHEDULED_ON';
+    if (!isScheduled) return false;
+    const now = this._now;
+    const dayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const today = dayMap[now.getDay()];
+    if (!(ev.weekdays || []).includes(today)) return false;
+    const startRaw = ev.start_at || '';
+    const endRaw = ev.end_at || '';
+    if (startRaw.startsWith('SR') || startRaw.startsWith('SS') || endRaw.startsWith('SR') || endRaw.startsWith('SS')) return true;
+    const nowMins = now.getHours() * 60 + now.getMinutes();
+    const [sh, sm] = (startRaw.startsWith('MN+') ? startRaw.substring(3) : startRaw).split(':').map(Number);
+    const [eh, em] = (endRaw.startsWith('MN+') ? endRaw.substring(3) : endRaw).split(':').map(Number);
+    if (isNaN(sh) || isNaN(eh)) return true;
+    const startMins = sh * 60 + (sm || 0);
+    const endMins = eh * 60 + (em || 0);
+    if (endMins <= startMins) {
+      // Midnight crossing (e.g. 22:45 – 00:00)
+      return nowMins >= startMins || nowMins <= endMins;
+    }
+    return nowMins >= startMins && nowMins <= endMins;
+  }
+
+  _scheduleIcon(isPaused = false, isActive = false) {
+    const tooltip = isPaused ? this._t('schedule_tooltip_paused') : isActive ? this._t('schedule_tooltip_active') : this._t('schedule_tooltip');
+    return html`<span class="schedule-icon-wrap"><svg class="schedule-icon" viewBox="0 0 24 24"><title>${tooltip}</title><path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"/></svg></span>`;
+  }
+
+  _getScheduleEvents(entityId) {
+    if (this.config?.show_schedules === false) return [];
+    const state = this._hass.states[entityId];
+    // Primary: check main entity attributes (patched integration / fork)
+    const mainEvents = state?.attributes?.scheduled_events;
+    if (mainEvents && mainEvents.length > 0) return mainEvents;
+    // Fallback: look for gardena_smart_schedule sensor on the same device
+    return this._getScheduleEventsFromScheduleIntegration(entityId);
+  }
+
+  _getScheduleEventsFromScheduleIntegration(entityId) {
+    if (!this._hass) return [];
+    const entities = this._hass.entities || Object.keys(this._hass.states).reduce((acc, id) => {
+      acc[id] = { entity_id: id }; return acc;
+    }, {});
+    const sourceEntity = entities[entityId];
+    if (!sourceEntity?.device_id) return [];
+    const deviceId = sourceEntity.device_id;
+    // For valve entities, extract the valve index (e.g. "uuid:1" -> 1)
+    const valveIdx = this._getValveIndex(entityId);
+    const candidates = [];
+    for (const eid of Object.keys(entities)) {
+      if (!eid.startsWith('sensor.') || eid === entityId) continue;
+      const e = entities[eid];
+      if (e.device_id === deviceId && e.platform === 'gardena_smart_schedule') {
+        const st = this._hass.states[eid];
+        if (st?.attributes?.scheduled_events) {
+          candidates.push(st);
+        }
+      }
+    }
+    if (candidates.length === 0) return [];
+    if (candidates.length === 1) return candidates[0].attributes.scheduled_events;
+    // Multiple schedule sensors on same device: match by valve_id
+    if (valveIdx !== null) {
+      const match = candidates.find(st => st.attributes.valve_id === valveIdx);
+      if (match) return match.attributes.scheduled_events;
+    }
+    // Fallback: return first candidate's events
+    return candidates[0].attributes.scheduled_events;
+  }
+
+  _getValveIndex(entityId) {
+    if (!entityId.startsWith('valve.')) return null;
+    const entities = this._hass.entities;
+    if (!entities) return null;
+    const sourceEntity = entities[entityId];
+    if (!sourceEntity?.device_id) return null;
+    // Find all valve entities on the same device, sorted by entity_id
+    const deviceId = sourceEntity.device_id;
+    const valveEntities = Object.keys(entities)
+      .filter(eid => eid.startsWith('valve.') && entities[eid]?.device_id === deviceId)
+      .sort();
+    const idx = valveEntities.indexOf(entityId);
+    // Return 1-based index to match BFF API valve_id
+    return idx >= 0 ? idx + 1 : null;
+  }
+
+  _renderScheduleStrip(entityId) {
+    const events = this._getScheduleEvents(entityId);
+    if (events.length === 0) return '';
+
+    return html`
+      <div class="schedule-strip">
+        ${events.map(ev => {
+          const isPaused = ev.paused === true;
+          const weekdays = ev.weekdays || [];
+          const nowActive = this._isScheduleActive(ev, entityId);
+          return html`
+            <div class="schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
+              <span class="schedule-time">${this._scheduleIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
+              <span class="schedule-days">
+                ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                  const isActive = weekdays.includes(day);
+                  const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
+                  return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                })}
+              </span>
+              ${isPaused ? html`<span class="schedule-pause-badge">${ev.paused_until ? `${this._t('schedule_paused_until')} ${this._formatPauseDate(ev.paused_until)}` : this._t('schedule_paused')}</span>` : ''}
+            </div>
+          `;
+        })}
+      </div>
+    `;
+  }
+
+  _renderValveScheduleMini(entityId) {
+    const events = this._getScheduleEvents(entityId);
+    if (events.length === 0) return '';
+
+    return html`
+      <div class="valve-schedule-mini">
+        ${events.map(ev => {
+          const isPaused = ev.paused === true;
+          const weekdays = ev.weekdays || [];
+          const nowActive = this._isScheduleActive(ev, entityId);
+          return html`
+            <div class="valve-schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
+              <span class="valve-schedule-time">${this._scheduleIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)}–${this._cleanTime(ev.end_at)}</span>
+              <span class="schedule-days">
+                ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                  const isActive = weekdays.includes(day);
+                  const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
+                  return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                })}
+              </span>
+            </div>
+          `;
+        })}
+      </div>
+    `;
+  }
+
+  _renderSocketSchedule(entityId) {
+    const events = this._getScheduleEvents(entityId);
+    if (events.length === 0) return '';
+
+    return html`
+      ${events.map(ev => {
+        const isPaused = ev.paused === true;
+        const weekdays = ev.weekdays || [];
+        const nowActive = this._isScheduleActive(ev, entityId);
+        return html`
+          <div class="socket-schedule-mini ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
+            <span class="schedule-time">${this._scheduleIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
+            <span class="schedule-days">
+              ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                const isActive = weekdays.includes(day);
+                const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
+                return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+              })}
+            </span>
+            ${isPaused ? html`<span class="schedule-pause-badge">${ev.paused_until ? `${this._t('schedule_paused_until')} ${this._formatPauseDate(ev.paused_until)}` : this._t('schedule_paused')}</span>` : ''}
+          </div>
+        `;
+      })}
+    `;
+  }
+
+  _cleanTime(t) {
+    if (!t) return '';
+    if (t.startsWith('MN+')) return t.substring(3);
+    if (t.startsWith('SR') || t.startsWith('SS')) {
+      const symbol = t.startsWith('SR') ? '☀\uFE0E' : '☾';
+      const offset = t.substring(2);
+      if (offset === '+00:00' || offset === '-00:00' || offset === '') return symbol;
+      const sign = offset[0];
+      const [h, m] = offset.substring(1).split(':').map(Number);
+      const mins = h * 60 + (m || 0);
+      return `${symbol}${sign}${mins}min`;
+    }
+    return t;
+  }
+
+  _formatPauseDate(isoString) {
+    try {
+      const d = new Date(isoString);
+      return `${d.getDate()}.${d.getMonth() + 1}.`;
+    } catch { return ''; }
   }
 
   _renderSocketSection() {
@@ -842,7 +1186,8 @@ export class GardenaSmartSystemCard extends LitElement {
       <div class="socket-section">
         <div class="section-label">
           ${this._t('section_socket')}
-          ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(sockets))}">${this._renderSignalBars(rfLink)}</span>` : ''}
+          ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(sockets))}">${this._renderSignalBars(rfLink)}</span>`
+            : status ? this._renderConnectionIcon(status, sockets) : ''}
         </div>
         ${sockets.map(entityId => this._renderSocket(entityId, status === 'offline'))}
       </div>
@@ -864,6 +1209,11 @@ export class GardenaSmartSystemCard extends LitElement {
       remaining = Math.max(0, timer.durationSec - elapsed);
       total = timer.durationSec;
     }
+    // Fall back to schedule-based timer
+    if (isActive && remaining === 0) {
+      const scheduleTimer = this._getScheduleRemaining(entityId, state);
+      if (scheduleTimer) { remaining = scheduleTimer.remaining; total = scheduleTimer.total; }
+    }
     const pct = (isActive && total > 0 && remaining > 0)
       ? Math.round((remaining / total) * 100) : 0;
 
@@ -883,9 +1233,7 @@ export class GardenaSmartSystemCard extends LitElement {
             <div class="socket-status">
               ${isOffline && !isActive
                 ? this._t('state_offline')
-                : isActive && remaining > 0
-                  ? html`<span class="countdown-text">${this._formatTime(remaining)} ${this._t('socket_remaining')}</span>`
-                  : isActive ? this._t('socket_active') : this._t('socket_off')}
+                : this._getSocketStatusText(state, remaining)}
             </div>
           </div>
         </div>
@@ -903,23 +1251,20 @@ export class GardenaSmartSystemCard extends LitElement {
             </div>
           </div>
         ` : ''}
+        ${this._renderSocketSchedule(entityId)}
       </div>
     `;
   }
 
   async _toggleSocket(entityId, isOn) {
     const gardenaId = this._getGardenaDeviceId(entityId);
-    if (!gardenaId) return;
-    const patched = this._isPatchedIntegration;
 
     if (isOn) {
-      await this._hass.callService(DOMAIN, 'power_socket_off', { device_id: gardenaId });
+      await this._backend.turnOffSocket(this._hass, { entityId, gardenaDeviceId: gardenaId });
       delete this._valveTimers[entityId];
     } else {
       const durationSec = this._selectedDuration * 60;
-      const onData = { device_id: gardenaId };
-      if (patched) onData.duration = durationSec;
-      await this._hass.callService(DOMAIN, 'power_socket_on', onData);
+      await this._backend.turnOnSocket(this._hass, { entityId, gardenaDeviceId: gardenaId, durationSec, patched: this._isPatchedIntegration });
       this._valveTimers[entityId] = { startTime: new Date(), durationSec };
     }
     _saveTimers();
@@ -1156,6 +1501,12 @@ export class GardenaSmartSystemCard extends LitElement {
           default: true,
         },
         {
+          name: "show_schedules",
+          label: t(null, "config_show_schedules"),
+          selector: { boolean: {} },
+          default: true,
+        },
+        {
           name: "default_duration",
           label: t(null, "config_default_duration"),
           selector: {
@@ -1171,6 +1522,14 @@ export class GardenaSmartSystemCard extends LitElement {
               multiple: true,
             },
           },
+        },
+        {
+          name: "valve_columns",
+          label: t(null, "config_valve_columns"),
+          selector: {
+            number: { min: 1, max: 3, step: 1, mode: "slider" },
+          },
+          default: 3,
         },
         {
           name: "valve_entities",

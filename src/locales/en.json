@@ -1,12 +1,18 @@
 {
   "default_title": "Gardena Smart System",
 
+  "config_backend": "Backend Integration",
+  "config_backend_auto": "Auto-detect",
+  "config_backend_thecem": "hass-gardena-smart-system (thecem)",
+  "config_backend_kayloehmann": "ha-gardena-smart-system (kayloehmann)",
+
   "config_title": "Title (Optional)",
   "config_select_device": "Please select a Gardena Smart System device in the card configuration.",
   "config_no_device": "Please select a device.",
   "config_show_header": "Show header",
   "config_show_duration": "Show duration picker",
   "config_default_duration": "Default duration (minutes)",
+  "config_valve_columns": "Valve columns per row",
   "config_valve_entities": "Valve zones to display (leave empty for all)",
   "config_socket_entities": "Power sockets to display (leave empty for all)",
 
@@ -22,11 +28,15 @@
   "valve_zone": "Zone",
   "valve_ready": "Ready",
   "valve_watering": "Watering",
+  "valve_watering_scheduled": "Watering (schedule)",
+  "valve_watering_manual": "Watering (manual)",
   "valve_open": "Open",
   "valve_closed": "Closed",
 
   "socket_off": "Off",
   "socket_active": "Active",
+  "socket_active_scheduled": "Active (schedule)",
+  "socket_active_manual": "Active (always on)",
   "socket_remaining": "remaining",
 
   "section_mower": "Mower",
@@ -48,6 +58,14 @@
   "mower_searching_sat": "Searching for satellites",
   "mower_error": "Error",
   "mower_error_prefix": "Error",
+  "error_trapped": "Mower is stuck",
+  "error_lifted": "Mower was lifted",
+  "error_outside": "Outside working area",
+  "error_collision": "Collision detected",
+  "error_upside_down": "Mower is upside down",
+  "error_low_battery": "Battery too low",
+  "error_temp_stopped": "Temporarily stopped",
+  "error_cs_blocked": "Charging station blocked",
   "mower_mowing": "Mowing",
   "mower_docked": "Docked",
 
@@ -61,8 +79,8 @@
   "ws_connected": "Connected",
   "ws_disconnected": "Disconnected",
 
-  "version_required_title": "Integration v2.0+ required",
-  "version_required_message": "This card requires the Gardena Smart System integration v2.0 or later. Please update via HACS (enable pre-releases).",
+  "version_required_title": "No supported integration found",
+  "version_required_message": "This card requires a supported Gardena Smart System integration. Please install hass-gardena-smart-system (thecem) or ha-gardena-smart-system (kayloehmann) via HACS.",
 
   "patch_warning_title": "Patched integration required",
   "patch_warning_message": "Controls are disabled. Please install the patched integration from mtheli/hass-gardena-smart-system to enable device control.",
@@ -75,6 +93,22 @@
   "history_total_label": "Total",
 
   "chip_battery": "Battery",
+
+  "config_show_schedules": "Show schedules",
+
+  "schedule_tooltip": "Schedule from Gardena App",
+  "schedule_tooltip_paused": "Schedule paused",
+  "schedule_tooltip_active": "Schedule currently active",
+  "schedule_paused": "Paused",
+  "schedule_paused_until": "Paused until",
+
+  "schedule_day_mo": "Mo",
+  "schedule_day_tu": "Tu",
+  "schedule_day_we": "We",
+  "schedule_day_th": "Th",
+  "schedule_day_fr": "Fr",
+  "schedule_day_sa": "Sa",
+  "schedule_day_su": "Su",
 
   "sensor_temperature": "Temperature",
   "sensor_humidity": "Humidity",

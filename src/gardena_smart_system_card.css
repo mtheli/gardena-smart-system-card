@@ -263,6 +263,9 @@ ha-card {
 .valves-grid.count-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+.valves-grid:not(.count-1):not(.count-2) .valve {
+    padding: 8px;
+}
 .valve {
     background: var(--gs-surface);
     border-radius: var(--gs-radius-md);
@@ -272,6 +275,7 @@ ha-card {
     position: relative;
     overflow: hidden;
     animation: valveIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    container-type: inline-size;
 }
 .valve::before {
     content: '';
@@ -324,7 +328,7 @@ ha-card {
     min-height: 16px;
 }
 .valve.active .valve-status {
-    color: var(--gs-green-200);
+    color: var(--gs-green-400);
 }
 
 /* Valve Progress */
@@ -583,6 +587,15 @@ ha-card {
 .mower-battery-chip.low {
     background: color-mix(in srgb, #E53935 12%, var(--gs-card-bg));
     color: var(--gs-red);
+}
+.mower-battery-chip.replace {
+    background: color-mix(in srgb, #E53935 18%, var(--gs-card-bg));
+    color: var(--gs-red);
+    animation: battery-replace-pulse 2s ease-in-out infinite;
+}
+@keyframes battery-replace-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 .mower-battery-chip.charging {
     background: color-mix(in srgb, #1DBF7B 12%, var(--gs-card-bg));
@@ -984,6 +997,217 @@ ha-card {
     height: 8px;
     border-radius: 2px;
     flex-shrink: 0;
+}
+
+/* ── Schedule Strip (Mower) ── */
+.schedule-strip {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--gs-border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.schedule-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.schedule-time {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gs-text-dim);
+    min-width: 80px;
+    font-variant-numeric: tabular-nums;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.schedule-icon {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+    flex-shrink: 0;
+    opacity: 0.6;
+}
+.schedule-days {
+    display: flex;
+    gap: 3px;
+}
+.schedule-day {
+    width: 20px;
+    height: 18px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.schedule-day.active {
+    background: color-mix(in srgb, var(--gs-green-400) 20%, var(--gs-card-bg));
+    color: var(--gs-green-400);
+}
+.schedule-day.inactive {
+    background: var(--gs-surface);
+    color: var(--gs-text-dimmest);
+}
+.schedule-day.paused {
+    background: color-mix(in srgb, var(--gs-amber) 12%, var(--gs-card-bg));
+    color: var(--gs-amber);
+}
+/* Active schedule indicator */
+.schedule-row.now-active,
+.valve-schedule-row.now-active,
+.socket-schedule-mini.now-active {
+    background: color-mix(in srgb, var(--gs-green-400) 10%, transparent);
+    border-radius: var(--gs-radius-sm);
+    padding: 4px 6px;
+}
+.schedule-row.now-active .schedule-time,
+.valve-schedule-row.now-active .valve-schedule-time,
+.socket-schedule-mini.now-active .schedule-time {
+    color: var(--gs-green-400);
+}
+.schedule-row.now-active .schedule-icon,
+.valve-schedule-row.now-active .schedule-icon,
+.socket-schedule-mini.now-active .schedule-icon {
+    opacity: 1;
+}
+
+.schedule-icon-wrap {
+    display: inline-flex;
+    position: relative;
+    flex-shrink: 0;
+}
+.schedule-paused .schedule-icon {
+    color: var(--gs-amber);
+    opacity: 0.8;
+}
+.schedule-paused .schedule-icon-wrap::after {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(
+        to top right,
+        transparent calc(50% - 0.5px),
+        var(--gs-amber) calc(50% - 0.5px),
+        var(--gs-amber) calc(50% + 0.5px),
+        transparent calc(50% + 0.5px)
+    );
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.schedule-pause-badge {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--gs-amber);
+    background: color-mix(in srgb, var(--gs-amber) 10%, var(--gs-card-bg));
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+/* ── Schedule Mini (Valve / Socket) ── */
+.valve-schedule-mini {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--gs-border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.valve-schedule-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.valve-schedule-time {
+    font-size: 11px;
+    color: var(--gs-text-dim);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+.valve-schedule-mini .schedule-days {
+    justify-content: center;
+    gap: 3px;
+}
+.valve-schedule-mini .schedule-day {
+    width: 20px;
+    height: 18px;
+    font-size: 9px;
+    border-radius: 4px;
+}
+/* Narrow valve cards: tighter padding, smaller schedule */
+@container (max-width: 150px) {
+    .valve-header { margin-bottom: 6px; }
+    .valve-name { font-size: 12px; }
+    .valve-schedule-time { font-size: 10px; }
+    .valve-schedule-mini .schedule-days { gap: 2px; }
+    .valve-schedule-mini .schedule-day {
+        width: 16px;
+        height: 14px;
+        font-size: 8px;
+        border-radius: 3px;
+    }
+    .valve-schedule-row {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        gap: 3px;
+    }
+    .valve-schedule-time { white-space: nowrap; }
+    .valve-schedule-mini .schedule-days { gap: 1px; }
+    .valve-schedule-mini .schedule-day {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        font-size: 0;
+        overflow: hidden;
+        padding: 0;
+    }
+    .valve-schedule-mini .schedule-day.active {
+        background: var(--gs-green-400);
+    }
+    .valve-schedule-mini .schedule-day.inactive {
+        background: var(--gs-track);
+    }
+    .valve-schedule-mini .schedule-day.paused {
+        background: var(--gs-amber);
+    }
+}
+.valve.schedule-paused {
+    border-color: color-mix(in srgb, var(--gs-amber) 20%, transparent);
+}
+.socket-schedule-mini {
+    width: 100%;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--gs-border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.socket-schedule-mini .schedule-time {
+    min-width: auto;
+}
+.socket-schedule-mini .schedule-days {
+    flex-wrap: nowrap;
 }
 
 /* ── Animations ── */

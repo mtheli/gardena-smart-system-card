@@ -1,12 +1,18 @@
 {
   "default_title": "Gardena Smart System",
 
+  "config_backend": "Backend-Integration",
+  "config_backend_auto": "Automatisch erkennen",
+  "config_backend_thecem": "hass-gardena-smart-system (thecem)",
+  "config_backend_kayloehmann": "ha-gardena-smart-system (kayloehmann)",
+
   "config_title": "Titel (Optional)",
   "config_select_device": "Bitte wähle ein Gardena Smart System Gerät in der Kartenkonfiguration.",
   "config_no_device": "Bitte wähle ein Gerät.",
   "config_show_header": "Header anzeigen",
   "config_show_duration": "Zeitauswahl anzeigen",
   "config_default_duration": "Standard-Laufzeit (Minuten)",
+  "config_valve_columns": "Ventile pro Zeile",
   "config_valve_entities": "Anzuzeigende Ventilzonen (leer = alle)",
   "config_socket_entities": "Anzuzeigende Steckdosen (leer = alle)",
 
@@ -22,11 +28,15 @@
   "valve_zone": "Zone",
   "valve_ready": "Bereit",
   "valve_watering": "Bewässerung",
+  "valve_watering_scheduled": "Bewässerung (Zeitplan)",
+  "valve_watering_manual": "Bewässerung (manuell)",
   "valve_open": "Offen",
   "valve_closed": "Geschlossen",
 
   "socket_off": "Aus",
   "socket_active": "Aktiv",
+  "socket_active_scheduled": "Aktiv (Zeitplan)",
+  "socket_active_manual": "Aktiv (Dauerbetrieb)",
   "socket_remaining": "verbleibend",
 
   "section_mower": "Mäher",
@@ -48,6 +58,14 @@
   "mower_searching_sat": "Satellitensuche",
   "mower_error": "Fehler",
   "mower_error_prefix": "Fehler",
+  "error_trapped": "Mäher steckt fest",
+  "error_lifted": "Mäher wurde angehoben",
+  "error_outside": "Außerhalb des Arbeitsbereichs",
+  "error_collision": "Kollision erkannt",
+  "error_upside_down": "Mäher umgedreht",
+  "error_low_battery": "Akku zu schwach",
+  "error_temp_stopped": "Vorübergehend gestoppt",
+  "error_cs_blocked": "Ladestation blockiert",
   "mower_mowing": "Mäht",
   "mower_docked": "In Station",
 
@@ -61,8 +79,8 @@
   "ws_connected": "Verbunden",
   "ws_disconnected": "Getrennt",
 
-  "version_required_title": "Integration v2.0+ erforderlich",
-  "version_required_message": "Diese Karte benötigt die Gardena Smart System Integration v2.0 oder neuer. Bitte über HACS aktualisieren (Vorabversionen aktivieren).",
+  "version_required_title": "Keine unterstützte Integration gefunden",
+  "version_required_message": "Diese Karte benötigt eine unterstützte Gardena Smart System Integration. Bitte hass-gardena-smart-system (thecem) oder ha-gardena-smart-system (kayloehmann) über HACS installieren.",
 
   "patch_warning_title": "Gepatchte Integration erforderlich",
   "patch_warning_message": "Steuerung deaktiviert. Bitte die gepatchte Integration von mtheli/hass-gardena-smart-system installieren, um Geräte steuern zu können.",
@@ -75,6 +93,22 @@
   "history_total_label": "Gesamt",
 
   "chip_battery": "Akku",
+
+  "config_show_schedules": "Zeitpläne anzeigen",
+
+  "schedule_tooltip": "Zeitplan aus der Gardena App",
+  "schedule_tooltip_paused": "Zeitplan pausiert",
+  "schedule_tooltip_active": "Zeitplan gerade aktiv",
+  "schedule_paused": "Pausiert",
+  "schedule_paused_until": "Pausiert bis",
+
+  "schedule_day_mo": "Mo",
+  "schedule_day_tu": "Di",
+  "schedule_day_we": "Mi",
+  "schedule_day_th": "Do",
+  "schedule_day_fr": "Fr",
+  "schedule_day_sa": "Sa",
+  "schedule_day_su": "So",
 
   "sensor_temperature": "Temperatur",
   "sensor_humidity": "Feuchtigkeit",
