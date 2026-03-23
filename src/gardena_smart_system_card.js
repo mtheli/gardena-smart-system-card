@@ -434,8 +434,12 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   _renderSignalBars(level) {
-    const dim = 0.2;
-    return html`<svg viewBox="0 0 24 24"><path d="M3,21H6V18H3Z" fill="currentColor" opacity="${level >= 1 ? 1 : dim}"/><path d="M8,21H11V14H8Z" fill="currentColor" opacity="${level >= 25 ? 1 : dim}"/><path d="M13,21H16V9H13Z" fill="currentColor" opacity="${level >= 50 ? 1 : dim}"/><path d="M18,21H21V3H18V21Z" fill="currentColor" opacity="${level >= 75 ? 1 : dim}"/></svg>`;
+    let icon;
+    if (level >= 75) icon = 'mdi:signal-cellular-3';
+    else if (level >= 50) icon = 'mdi:signal-cellular-2';
+    else if (level >= 25) icon = 'mdi:signal-cellular-1';
+    else icon = 'mdi:signal-cellular-outline';
+    return html`<ha-icon .icon="${icon}"></ha-icon>`;
   }
 
   _getDeviceNameForEntities(entityIds) {
@@ -509,12 +513,14 @@ export class GardenaSmartSystemCard extends LitElement {
       `;
     }
 
-    const hasValves = this._getVisibleValves().length > 0;
-    const hasSockets = this._getVisibleSockets().length > 0;
-    const hasMowers = this._getVisibleMowers().length > 0;
+    const sections = this.config.sections || ['mower', 'valves', 'socket', 'history'];
+    const hasValves = sections.includes('valves') && this._getVisibleValves().length > 0;
+    const hasSockets = sections.includes('socket') && this._getVisibleSockets().length > 0;
+    const hasMowers = sections.includes('mower') && this._getVisibleMowers().length > 0;
+    const showHistory = sections.includes('history') && this.config.show_history !== false && (hasValves || hasSockets || this.config.sections?.includes('history'));
 
     return html`
-      <ha-card @click="${() => this._closePillPopups()}">
+      <ha-card class="${this.config.show_header === false ? 'no-header' : ''}${this.config.sections?.length === 1 ? ' single-section' : ''}" @click="${() => this._closePillPopups()}">
         ${this.config.show_header !== false ? this._renderHeader() : ''}
         <div class="content">
           ${this._isPatchedIntegration === false ? html`
@@ -527,7 +533,7 @@ export class GardenaSmartSystemCard extends LitElement {
           ${hasMowers ? this._renderMowerSection() : ''}
           ${hasValves ? this._renderValvesSection() : ''}
           ${hasSockets ? this._renderSocketSection() : ''}
-          ${this.config.show_history !== false && (hasValves || hasSockets) ? this._renderHistorySection() : ''}
+          ${showHistory ? this._renderHistorySection() : ''}
         </div>
       </ha-card>
     `;
@@ -580,20 +586,49 @@ export class GardenaSmartSystemCard extends LitElement {
     });
   }
 
+  _getSingleSectionEntities() {
+    const sections = this.config.sections;
+    if (!sections || sections.length !== 1) return null;
+    const s = sections[0];
+    if (s === 'mower') return this._getVisibleMowers();
+    if (s === 'valves') return this._getVisibleValves();
+    if (s === 'socket') return this._getVisibleSockets();
+    return null;
+  }
+
+  _getSingleSectionTitle() {
+    const sections = this.config.sections;
+    if (!sections || sections.length !== 1) return null;
+    const s = sections[0];
+    const entitiesMap = { mower: this._getVisibleMowers(), valves: this._getVisibleValves(), socket: this._getVisibleSockets() };
+    const entities = entitiesMap[s];
+    if (!entities?.length) return this._t(`section_${s === 'socket' ? 'socket' : s === 'mower' ? 'mower' : 'valves'}`);
+    const deviceName = this._getDeviceNameForEntities(entities);
+    const sectionLabel = this._t(s === 'mower' ? 'section_mower' : s === 'valves' ? 'section_valves' : 'section_socket');
+    return deviceName ? `${deviceName} – ${sectionLabel}` : sectionLabel;
+  }
+
   _renderHeader() {
-    const name = this.config.title || this._t("default_title");
+    const isSingle = this.config.sections?.length === 1;
+    const name = this.config.title || (isSingle ? this._getSingleSectionTitle() : null) || this._t("default_title");
     const wsOnline = this._isGlobalOnline();
+
+    // For single-section sub-cards, show signal strength instead of connection icon
+    const singleEntities = isSingle ? this._getSingleSectionEntities() : null;
+    const rfLink = singleEntities ? this._getMinRfLink(singleEntities) : null;
 
     return html`
       <div class="card-header">
         <div class="header-title">${name}</div>
         <div class="header-right">
-          <span class="ws-icon ${wsOnline ? 'online' : 'offline'}" title="${wsOnline ? this._t('ws_connected') : this._t('ws_disconnected')}"
-            @click="${() => this._fireMoreInfo(this._entities?.connection)}">
-            ${wsOnline
-              ? html`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M3,13V18L3,20H10V18H5V13H3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M14,15H20V19H14V15Z"/></svg>`
-              : html`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M3.88,13.46L2.46,14.88L4.59,17L2.46,19.12L3.88,20.54L6,18.41L8.12,20.54L9.54,19.12L7.41,17L9.54,14.88L8.12,13.46L6,15.59L3.88,13.46M14,15H20V19H14V15Z"/></svg>`}
-          </span>
+          ${rfLink != null
+            ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(singleEntities))}">${this._renderSignalBars(rfLink)}</span>`
+            : html`<span class="ws-icon ${wsOnline ? 'online' : 'offline'}" title="${wsOnline ? this._t('ws_connected') : this._t('ws_disconnected')}"
+                @click="${() => this._fireMoreInfo(this._entities?.connection)}">
+                ${wsOnline
+                  ? html`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M3,13V18L3,20H10V18H5V13H3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M14,15H20V19H14V15Z"/></svg>`
+                  : html`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M3.88,13.46L2.46,14.88L4.59,17L2.46,19.12L3.88,20.54L6,18.41L8.12,20.54L9.54,19.12L7.41,17L9.54,14.88L8.12,13.46L6,15.59L3.88,13.46M14,15H20V19H14V15Z"/></svg>`}
+              </span>`}
           <span class="header-menu" @click="${() => this._navigateToDevice()}">
             <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
           </span>
@@ -791,13 +826,14 @@ export class GardenaSmartSystemCard extends LitElement {
 
     const deviceName = this._getDeviceNameForEntities(valves);
 
+    const isSingle = this.config.sections?.length === 1;
     return html`
       <div class="valves-section">
-        <div class="section-label">
+        ${!isSingle ? html`<div class="section-label">
           ${deviceName ? `${deviceName} – ` : ''}${this._t('section_valves')}
           ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(valves))}">${this._renderSignalBars(rfLink)}</span>`
             : status ? this._renderConnectionIcon(status, valves) : ''}
-        </div>
+        </div>` : ''}
         <div class="valves-grid count-${Math.min(valves.length, this.config?.valve_columns || 3)}">
           ${valves.map((entityId, i) => this._renderValve(entityId, i, status === 'offline'))}
         </div>
@@ -953,13 +989,14 @@ export class GardenaSmartSystemCard extends LitElement {
     const status = this._getDeviceOnlineStatus(mowers);
     const rfLink = this._getMinRfLink(mowers);
 
+    const isSingle = this.config.sections?.length === 1;
     return html`
       <div class="mower-section">
-        <div class="section-label">
+        ${!isSingle ? html`<div class="section-label">
           ${this._t('section_mower')}
           ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(mowers))}">${this._renderSignalBars(rfLink)}</span>`
             : status ? this._renderConnectionIcon(status, mowers) : ''}
-        </div>
+        </div>` : ''}
         ${mowers.map(entityId => this._renderMower(entityId, status === 'offline'))}
       </div>
     `;
@@ -1321,13 +1358,14 @@ export class GardenaSmartSystemCard extends LitElement {
     const status = this._getDeviceOnlineStatus(sockets);
     const rfLink = this._getMinRfLink(sockets);
 
+    const isSingle = this.config.sections?.length === 1;
     return html`
       <div class="socket-section">
-        <div class="section-label">
+        ${!isSingle ? html`<div class="section-label">
           ${this._t('section_socket')}
           ${rfLink != null ? html`<span class="section-signal" @click="${() => this._fireMoreInfo(this._getConnectionEntityForDevices(sockets))}">${this._renderSignalBars(rfLink)}</span>`
             : status ? this._renderConnectionIcon(status, sockets) : ''}
-        </div>
+        </div>` : ''}
         ${sockets.map(entityId => this._renderSocket(entityId, status === 'offline'))}
       </div>
     `;
@@ -1541,9 +1579,10 @@ export class GardenaSmartSystemCard extends LitElement {
     const usedEntities = new Set();
     days.forEach(d => d.minutes.forEach((m, i) => { if (m > 0) usedEntities.add(i); }));
 
+    const isSingle = this.config.sections?.length === 1;
     return html`
       <div class="history-section">
-        <div class="section-label">${this._t('section_history')}</div>
+        ${!isSingle ? html`<div class="section-label">${this._t('section_history')}</div>` : ''}
         <div class="history-header">
           <div class="history-period">${periodStr}</div>
           <div class="history-total">${totalStr}</div>
@@ -1620,14 +1659,23 @@ export class GardenaSmartSystemCard extends LitElement {
           selector: { text: {} },
         },
         {
-          name: "show_header",
-          label: t(null, "config_show_header"),
-          selector: { boolean: {} },
-          default: true,
+          name: "sections",
+          label: t(null, "config_sections"),
+          selector: {
+            select: {
+              multiple: true,
+              options: [
+                { value: "mower", label: t(null, "section_mower") },
+                { value: "valves", label: t(null, "section_valves") },
+                { value: "socket", label: t(null, "section_socket") },
+                { value: "history", label: t(null, "section_history") },
+              ],
+            },
+          },
         },
         {
-          name: "show_duration",
-          label: t(null, "config_show_duration"),
+          name: "show_header",
+          label: t(null, "config_show_header"),
           selector: { boolean: {} },
           default: true,
         },

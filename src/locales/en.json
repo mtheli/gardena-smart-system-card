@@ -9,6 +9,7 @@
   "config_title": "Title (Optional)",
   "config_select_device": "Please select a Gardena Smart System device in the card configuration.",
   "config_no_device": "Please select a device.",
+  "config_sections": "Sections to display (leave empty for all)",
   "config_show_header": "Show header",
   "config_show_duration": "Show duration picker",
   "config_default_duration": "Default duration (minutes)",

@@ -1,4 +1,5 @@
 import { GardenaSmartSystemCard, CARD_VERSION } from "./gardena_smart_system_card.js";
+import { registerSubCards } from "./sub-cards.js";
 
 if (!customElements.get("gardena-smart-system-card")) {
   customElements.define("gardena-smart-system-card", GardenaSmartSystemCard);
@@ -11,6 +12,8 @@ window.customCards.push({
   description: "Custom card for the Gardena Smart System integration with mower, irrigation, and sensor support.",
   preview: true,
 });
+
+registerSubCards();
 
 console.info(
   `%c GARDENA-SMART-SYSTEM-CARD %c v${CARD_VERSION} `,

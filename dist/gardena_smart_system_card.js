@@ -11,18 +11,18 @@ function $parcel$interopDefault(a) {
  * @license
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */ const $06bdd16cbb4a41b3$var$t = globalThis, $06bdd16cbb4a41b3$export$b4d10f6001c083c2 = $06bdd16cbb4a41b3$var$t.ShadowRoot && (void 0 === $06bdd16cbb4a41b3$var$t.ShadyCSS || $06bdd16cbb4a41b3$var$t.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, $06bdd16cbb4a41b3$var$s = Symbol(), $06bdd16cbb4a41b3$var$o = new WeakMap;
-class $06bdd16cbb4a41b3$export$505d1e8739bad805 {
+ */ const $def2de46b9306e8a$var$t = globalThis, $def2de46b9306e8a$export$b4d10f6001c083c2 = $def2de46b9306e8a$var$t.ShadowRoot && (void 0 === $def2de46b9306e8a$var$t.ShadyCSS || $def2de46b9306e8a$var$t.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, $def2de46b9306e8a$var$s = Symbol(), $def2de46b9306e8a$var$o = new WeakMap;
+class $def2de46b9306e8a$export$505d1e8739bad805 {
     constructor(t, e, o){
-        if (this._$cssResult$ = !0, o !== $06bdd16cbb4a41b3$var$s) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
+        if (this._$cssResult$ = !0, o !== $def2de46b9306e8a$var$s) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
         this.cssText = t, this.t = e;
     }
     get styleSheet() {
         let t = this.o;
         const s = this.t;
-        if ($06bdd16cbb4a41b3$export$b4d10f6001c083c2 && void 0 === t) {
+        if ($def2de46b9306e8a$export$b4d10f6001c083c2 && void 0 === t) {
             const e = void 0 !== s && 1 === s.length;
-            e && (t = $06bdd16cbb4a41b3$var$o.get(s)), void 0 === t && ((this.o = t = new CSSStyleSheet).replaceSync(this.cssText), e && $06bdd16cbb4a41b3$var$o.set(s, t));
+            e && (t = $def2de46b9306e8a$var$o.get(s)), void 0 === t && ((this.o = t = new CSSStyleSheet).replaceSync(this.cssText), e && $def2de46b9306e8a$var$o.set(s, t));
         }
         return t;
     }
@@ -30,23 +30,23 @@ class $06bdd16cbb4a41b3$export$505d1e8739bad805 {
         return this.cssText;
     }
 }
-const $06bdd16cbb4a41b3$export$8d80f9cac07cdb3 = (t)=>new $06bdd16cbb4a41b3$export$505d1e8739bad805("string" == typeof t ? t : t + "", void 0, $06bdd16cbb4a41b3$var$s), $06bdd16cbb4a41b3$export$dbf350e5966cf602 = (t, ...e)=>{
+const $def2de46b9306e8a$export$8d80f9cac07cdb3 = (t)=>new $def2de46b9306e8a$export$505d1e8739bad805("string" == typeof t ? t : t + "", void 0, $def2de46b9306e8a$var$s), $def2de46b9306e8a$export$dbf350e5966cf602 = (t, ...e)=>{
     const o = 1 === t.length ? t[0] : e.reduce((e, s, o)=>e + ((t)=>{
             if (!0 === t._$cssResult$) return t.cssText;
             if ("number" == typeof t) return t;
             throw Error("Value passed to 'css' function must be a 'css' function result: " + t + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
         })(s) + t[o + 1], t[0]);
-    return new $06bdd16cbb4a41b3$export$505d1e8739bad805(o, t, $06bdd16cbb4a41b3$var$s);
-}, $06bdd16cbb4a41b3$export$2ca4a66ec4cecb90 = (s, o)=>{
-    if ($06bdd16cbb4a41b3$export$b4d10f6001c083c2) s.adoptedStyleSheets = o.map((t)=>t instanceof CSSStyleSheet ? t : t.styleSheet);
+    return new $def2de46b9306e8a$export$505d1e8739bad805(o, t, $def2de46b9306e8a$var$s);
+}, $def2de46b9306e8a$export$2ca4a66ec4cecb90 = (s, o)=>{
+    if ($def2de46b9306e8a$export$b4d10f6001c083c2) s.adoptedStyleSheets = o.map((t)=>t instanceof CSSStyleSheet ? t : t.styleSheet);
     else for (const e of o){
-        const o = document.createElement("style"), n = $06bdd16cbb4a41b3$var$t.litNonce;
+        const o = document.createElement("style"), n = $def2de46b9306e8a$var$t.litNonce;
         void 0 !== n && o.setAttribute("nonce", n), o.textContent = e.cssText, s.appendChild(o);
     }
-}, $06bdd16cbb4a41b3$export$ee69dfd951e24778 = $06bdd16cbb4a41b3$export$b4d10f6001c083c2 ? (t)=>t : (t)=>t instanceof CSSStyleSheet ? ((t)=>{
+}, $def2de46b9306e8a$export$ee69dfd951e24778 = $def2de46b9306e8a$export$b4d10f6001c083c2 ? (t)=>t : (t)=>t instanceof CSSStyleSheet ? ((t)=>{
         let e = "";
         for (const s of t.cssRules)e += s.cssText;
-        return $06bdd16cbb4a41b3$export$8d80f9cac07cdb3(e);
+        return $def2de46b9306e8a$export$8d80f9cac07cdb3(e);
     })(t) : t;
 
 
@@ -54,11 +54,11 @@ const $06bdd16cbb4a41b3$export$8d80f9cac07cdb3 = (t)=>new $06bdd16cbb4a41b3$expo
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */ const { is: $375b48187e686ca2$var$i, defineProperty: $375b48187e686ca2$var$e, getOwnPropertyDescriptor: $375b48187e686ca2$var$h, getOwnPropertyNames: $375b48187e686ca2$var$r, getOwnPropertySymbols: $375b48187e686ca2$var$o, getPrototypeOf: $375b48187e686ca2$var$n } = Object, $375b48187e686ca2$var$a = globalThis, $375b48187e686ca2$var$c = $375b48187e686ca2$var$a.trustedTypes, $375b48187e686ca2$var$l = $375b48187e686ca2$var$c ? $375b48187e686ca2$var$c.emptyScript : "", $375b48187e686ca2$var$p = $375b48187e686ca2$var$a.reactiveElementPolyfillSupport, $375b48187e686ca2$var$d = (t, s)=>t, $375b48187e686ca2$export$7312b35fbf521afb = {
+ */ const { is: $19fe8e3abedf4df0$var$i, defineProperty: $19fe8e3abedf4df0$var$e, getOwnPropertyDescriptor: $19fe8e3abedf4df0$var$h, getOwnPropertyNames: $19fe8e3abedf4df0$var$r, getOwnPropertySymbols: $19fe8e3abedf4df0$var$o, getPrototypeOf: $19fe8e3abedf4df0$var$n } = Object, $19fe8e3abedf4df0$var$a = globalThis, $19fe8e3abedf4df0$var$c = $19fe8e3abedf4df0$var$a.trustedTypes, $19fe8e3abedf4df0$var$l = $19fe8e3abedf4df0$var$c ? $19fe8e3abedf4df0$var$c.emptyScript : "", $19fe8e3abedf4df0$var$p = $19fe8e3abedf4df0$var$a.reactiveElementPolyfillSupport, $19fe8e3abedf4df0$var$d = (t, s)=>t, $19fe8e3abedf4df0$export$7312b35fbf521afb = {
     toAttribute (t, s) {
         switch(s){
             case Boolean:
-                t = t ? $375b48187e686ca2$var$l : null;
+                t = t ? $19fe8e3abedf4df0$var$l : null;
                 break;
             case Object:
             case Array:
@@ -85,16 +85,16 @@ const $06bdd16cbb4a41b3$export$8d80f9cac07cdb3 = (t)=>new $06bdd16cbb4a41b3$expo
         }
         return i;
     }
-}, $375b48187e686ca2$export$53a6892c50694894 = (t, s)=>!$375b48187e686ca2$var$i(t, s), $375b48187e686ca2$var$b = {
+}, $19fe8e3abedf4df0$export$53a6892c50694894 = (t, s)=>!$19fe8e3abedf4df0$var$i(t, s), $19fe8e3abedf4df0$var$b = {
     attribute: !0,
     type: String,
-    converter: $375b48187e686ca2$export$7312b35fbf521afb,
+    converter: $19fe8e3abedf4df0$export$7312b35fbf521afb,
     reflect: !1,
     useDefault: !1,
-    hasChanged: $375b48187e686ca2$export$53a6892c50694894
+    hasChanged: $19fe8e3abedf4df0$export$53a6892c50694894
 };
-Symbol.metadata ??= Symbol("metadata"), $375b48187e686ca2$var$a.litPropertyMetadata ??= new WeakMap;
-class $375b48187e686ca2$export$c7c07a37856565d extends HTMLElement {
+Symbol.metadata ??= Symbol("metadata"), $19fe8e3abedf4df0$var$a.litPropertyMetadata ??= new WeakMap;
+class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
     static addInitializer(t) {
         this._$Ei(), (this.l ??= []).push(t);
     }
@@ -103,14 +103,14 @@ class $375b48187e686ca2$export$c7c07a37856565d extends HTMLElement {
             ...this._$Eh.keys()
         ];
     }
-    static createProperty(t, s = $375b48187e686ca2$var$b) {
+    static createProperty(t, s = $19fe8e3abedf4df0$var$b) {
         if (s.state && (s.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(t) && ((s = Object.create(s)).wrapped = !0), this.elementProperties.set(t, s), !s.noAccessor) {
             const i = Symbol(), h = this.getPropertyDescriptor(t, i, s);
-            void 0 !== h && $375b48187e686ca2$var$e(this.prototype, t, h);
+            void 0 !== h && $19fe8e3abedf4df0$var$e(this.prototype, t, h);
         }
     }
     static getPropertyDescriptor(t, s, i) {
-        const { get: e, set: r } = $375b48187e686ca2$var$h(this.prototype, t) ?? {
+        const { get: e, set: r } = $19fe8e3abedf4df0$var$h(this.prototype, t) ?? {
             get () {
                 return this[s];
             },
@@ -129,21 +129,21 @@ class $375b48187e686ca2$export$c7c07a37856565d extends HTMLElement {
         };
     }
     static getPropertyOptions(t) {
-        return this.elementProperties.get(t) ?? $375b48187e686ca2$var$b;
+        return this.elementProperties.get(t) ?? $19fe8e3abedf4df0$var$b;
     }
     static _$Ei() {
-        if (this.hasOwnProperty($375b48187e686ca2$var$d("elementProperties"))) return;
-        const t = $375b48187e686ca2$var$n(this);
+        if (this.hasOwnProperty($19fe8e3abedf4df0$var$d("elementProperties"))) return;
+        const t = $19fe8e3abedf4df0$var$n(this);
         t.finalize(), void 0 !== t.l && (this.l = [
             ...t.l
         ]), this.elementProperties = new Map(t.elementProperties);
     }
     static finalize() {
-        if (this.hasOwnProperty($375b48187e686ca2$var$d("finalized"))) return;
-        if (this.finalized = !0, this._$Ei(), this.hasOwnProperty($375b48187e686ca2$var$d("properties"))) {
+        if (this.hasOwnProperty($19fe8e3abedf4df0$var$d("finalized"))) return;
+        if (this.finalized = !0, this._$Ei(), this.hasOwnProperty($19fe8e3abedf4df0$var$d("properties"))) {
             const t = this.properties, s = [
-                ...$375b48187e686ca2$var$r(t),
-                ...$375b48187e686ca2$var$o(t)
+                ...$19fe8e3abedf4df0$var$r(t),
+                ...$19fe8e3abedf4df0$var$o(t)
             ];
             for (const i of s)this.createProperty(i, t[i]);
         }
@@ -163,8 +163,8 @@ class $375b48187e686ca2$export$c7c07a37856565d extends HTMLElement {
         const i = [];
         if (Array.isArray(s)) {
             const e = new Set(s.flat(1 / 0).reverse());
-            for (const s of e)i.unshift((0, $06bdd16cbb4a41b3$export$ee69dfd951e24778)(s));
-        } else void 0 !== s && i.push((0, $06bdd16cbb4a41b3$export$ee69dfd951e24778)(s));
+            for (const s of e)i.unshift((0, $def2de46b9306e8a$export$ee69dfd951e24778)(s));
+        } else void 0 !== s && i.push((0, $def2de46b9306e8a$export$ee69dfd951e24778)(s));
         return i;
     }
     static _$Eu(t, s) {
@@ -190,7 +190,7 @@ class $375b48187e686ca2$export$c7c07a37856565d extends HTMLElement {
     }
     createRenderRoot() {
         const t = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions);
-        return (0, $06bdd16cbb4a41b3$export$2ca4a66ec4cecb90)(t, this.constructor.elementStyles), t;
+        return (0, $def2de46b9306e8a$export$2ca4a66ec4cecb90)(t, this.constructor.elementStyles), t;
     }
     connectedCallback() {
         this.renderRoot ??= this.createRenderRoot(), this.enableUpdating(!0), this._$EO?.forEach((t)=>t.hostConnected?.());
@@ -205,7 +205,7 @@ class $375b48187e686ca2$export$c7c07a37856565d extends HTMLElement {
     _$ET(t, s) {
         const i = this.constructor.elementProperties.get(t), e = this.constructor._$Eu(t, i);
         if (void 0 !== e && !0 === i.reflect) {
-            const h = (void 0 !== i.converter?.toAttribute ? i.converter : $375b48187e686ca2$export$7312b35fbf521afb).toAttribute(s, i.type);
+            const h = (void 0 !== i.converter?.toAttribute ? i.converter : $19fe8e3abedf4df0$export$7312b35fbf521afb).toAttribute(s, i.type);
             this._$Em = t, null == h ? this.removeAttribute(e) : this.setAttribute(e, h), this._$Em = null;
         }
     }
@@ -214,7 +214,7 @@ class $375b48187e686ca2$export$c7c07a37856565d extends HTMLElement {
         if (void 0 !== e && this._$Em !== e) {
             const t = i.getPropertyOptions(e), h = "function" == typeof t.converter ? {
                 fromAttribute: t.converter
-            } : void 0 !== t.converter?.fromAttribute ? t.converter : $375b48187e686ca2$export$7312b35fbf521afb;
+            } : void 0 !== t.converter?.fromAttribute ? t.converter : $19fe8e3abedf4df0$export$7312b35fbf521afb;
             this._$Em = e;
             const r = h.fromAttribute(s, t.type);
             this[e] = r ?? this._$Ej?.get(e) ?? r, this._$Em = null;
@@ -223,7 +223,7 @@ class $375b48187e686ca2$export$c7c07a37856565d extends HTMLElement {
     requestUpdate(t, s, i, e = !1, h) {
         if (void 0 !== t) {
             const r = this.constructor;
-            if (!1 === e && (h = this[t]), i ??= r.getPropertyOptions(t), !((i.hasChanged ?? $375b48187e686ca2$export$53a6892c50694894)(h, s) || i.useDefault && i.reflect && h === this._$Ej?.get(t) && !this.hasAttribute(r._$Eu(t, i)))) return;
+            if (!1 === e && (h = this[t]), i ??= r.getPropertyOptions(t), !((i.hasChanged ?? $19fe8e3abedf4df0$export$53a6892c50694894)(h, s) || i.useDefault && i.reflect && h === this._$Ej?.get(t) && !this.hasAttribute(r._$Eu(t, i)))) return;
             this.C(t, s, i);
         }
         !1 === this.isUpdatePending && (this._$ES = this._$EP());
@@ -288,107 +288,107 @@ class $375b48187e686ca2$export$c7c07a37856565d extends HTMLElement {
     updated(t) {}
     firstUpdated(t) {}
 }
-$375b48187e686ca2$export$c7c07a37856565d.elementStyles = [], $375b48187e686ca2$export$c7c07a37856565d.shadowRootOptions = {
+$19fe8e3abedf4df0$export$c7c07a37856565d.elementStyles = [], $19fe8e3abedf4df0$export$c7c07a37856565d.shadowRootOptions = {
     mode: "open"
-}, $375b48187e686ca2$export$c7c07a37856565d[$375b48187e686ca2$var$d("elementProperties")] = new Map, $375b48187e686ca2$export$c7c07a37856565d[$375b48187e686ca2$var$d("finalized")] = new Map, $375b48187e686ca2$var$p?.({
-    ReactiveElement: $375b48187e686ca2$export$c7c07a37856565d
-}), ($375b48187e686ca2$var$a.reactiveElementVersions ??= []).push("2.1.2");
+}, $19fe8e3abedf4df0$export$c7c07a37856565d[$19fe8e3abedf4df0$var$d("elementProperties")] = new Map, $19fe8e3abedf4df0$export$c7c07a37856565d[$19fe8e3abedf4df0$var$d("finalized")] = new Map, $19fe8e3abedf4df0$var$p?.({
+    ReactiveElement: $19fe8e3abedf4df0$export$c7c07a37856565d
+}), ($19fe8e3abedf4df0$var$a.reactiveElementVersions ??= []).push("2.1.2");
 
 
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */ const $d33ef1320595a3ac$var$t = globalThis, $d33ef1320595a3ac$var$i = (t)=>t, $d33ef1320595a3ac$var$s = $d33ef1320595a3ac$var$t.trustedTypes, $d33ef1320595a3ac$var$e = $d33ef1320595a3ac$var$s ? $d33ef1320595a3ac$var$s.createPolicy("lit-html", {
+ */ const $f58f44579a4747ac$var$t = globalThis, $f58f44579a4747ac$var$i = (t)=>t, $f58f44579a4747ac$var$s = $f58f44579a4747ac$var$t.trustedTypes, $f58f44579a4747ac$var$e = $f58f44579a4747ac$var$s ? $f58f44579a4747ac$var$s.createPolicy("lit-html", {
     createHTML: (t)=>t
-}) : void 0, $d33ef1320595a3ac$var$h = "$lit$", $d33ef1320595a3ac$var$o = `lit$${Math.random().toFixed(9).slice(2)}$`, $d33ef1320595a3ac$var$n = "?" + $d33ef1320595a3ac$var$o, $d33ef1320595a3ac$var$r = `<${$d33ef1320595a3ac$var$n}>`, $d33ef1320595a3ac$var$l = document, $d33ef1320595a3ac$var$c = ()=>$d33ef1320595a3ac$var$l.createComment(""), $d33ef1320595a3ac$var$a = (t)=>null === t || "object" != typeof t && "function" != typeof t, $d33ef1320595a3ac$var$u = Array.isArray, $d33ef1320595a3ac$var$d = (t)=>$d33ef1320595a3ac$var$u(t) || "function" == typeof t?.[Symbol.iterator], $d33ef1320595a3ac$var$f = "[ \t\n\f\r]", $d33ef1320595a3ac$var$v = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, $d33ef1320595a3ac$var$_ = /-->/g, $d33ef1320595a3ac$var$m = />/g, $d33ef1320595a3ac$var$p = RegExp(`>|${$d33ef1320595a3ac$var$f}(?:([^\\s"'>=/]+)(${$d33ef1320595a3ac$var$f}*=${$d33ef1320595a3ac$var$f}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), $d33ef1320595a3ac$var$g = /'/g, $d33ef1320595a3ac$var$$ = /"/g, $d33ef1320595a3ac$var$y = /^(?:script|style|textarea|title)$/i, $d33ef1320595a3ac$var$x = (t)=>(i, ...s)=>({
+}) : void 0, $f58f44579a4747ac$var$h = "$lit$", $f58f44579a4747ac$var$o = `lit$${Math.random().toFixed(9).slice(2)}$`, $f58f44579a4747ac$var$n = "?" + $f58f44579a4747ac$var$o, $f58f44579a4747ac$var$r = `<${$f58f44579a4747ac$var$n}>`, $f58f44579a4747ac$var$l = document, $f58f44579a4747ac$var$c = ()=>$f58f44579a4747ac$var$l.createComment(""), $f58f44579a4747ac$var$a = (t)=>null === t || "object" != typeof t && "function" != typeof t, $f58f44579a4747ac$var$u = Array.isArray, $f58f44579a4747ac$var$d = (t)=>$f58f44579a4747ac$var$u(t) || "function" == typeof t?.[Symbol.iterator], $f58f44579a4747ac$var$f = "[ \t\n\f\r]", $f58f44579a4747ac$var$v = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, $f58f44579a4747ac$var$_ = /-->/g, $f58f44579a4747ac$var$m = />/g, $f58f44579a4747ac$var$p = RegExp(`>|${$f58f44579a4747ac$var$f}(?:([^\\s"'>=/]+)(${$f58f44579a4747ac$var$f}*=${$f58f44579a4747ac$var$f}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), $f58f44579a4747ac$var$g = /'/g, $f58f44579a4747ac$var$$ = /"/g, $f58f44579a4747ac$var$y = /^(?:script|style|textarea|title)$/i, $f58f44579a4747ac$var$x = (t)=>(i, ...s)=>({
             _$litType$: t,
             strings: i,
             values: s
-        }), $d33ef1320595a3ac$export$c0bb0b647f701bb5 = $d33ef1320595a3ac$var$x(1), $d33ef1320595a3ac$export$7ed1367e7fa1ad68 = $d33ef1320595a3ac$var$x(2), $d33ef1320595a3ac$export$47d5b44d225be5b4 = $d33ef1320595a3ac$var$x(3), $d33ef1320595a3ac$export$9c068ae9cc5db4e8 = Symbol.for("lit-noChange"), $d33ef1320595a3ac$export$45b790e32b2810ee = Symbol.for("lit-nothing"), $d33ef1320595a3ac$var$C = new WeakMap, $d33ef1320595a3ac$var$P = $d33ef1320595a3ac$var$l.createTreeWalker($d33ef1320595a3ac$var$l, 129);
-function $d33ef1320595a3ac$var$V(t, i) {
-    if (!$d33ef1320595a3ac$var$u(t) || !t.hasOwnProperty("raw")) throw Error("invalid template strings array");
-    return void 0 !== $d33ef1320595a3ac$var$e ? $d33ef1320595a3ac$var$e.createHTML(i) : i;
+        }), $f58f44579a4747ac$export$c0bb0b647f701bb5 = $f58f44579a4747ac$var$x(1), $f58f44579a4747ac$export$7ed1367e7fa1ad68 = $f58f44579a4747ac$var$x(2), $f58f44579a4747ac$export$47d5b44d225be5b4 = $f58f44579a4747ac$var$x(3), $f58f44579a4747ac$export$9c068ae9cc5db4e8 = Symbol.for("lit-noChange"), $f58f44579a4747ac$export$45b790e32b2810ee = Symbol.for("lit-nothing"), $f58f44579a4747ac$var$C = new WeakMap, $f58f44579a4747ac$var$P = $f58f44579a4747ac$var$l.createTreeWalker($f58f44579a4747ac$var$l, 129);
+function $f58f44579a4747ac$var$V(t, i) {
+    if (!$f58f44579a4747ac$var$u(t) || !t.hasOwnProperty("raw")) throw Error("invalid template strings array");
+    return void 0 !== $f58f44579a4747ac$var$e ? $f58f44579a4747ac$var$e.createHTML(i) : i;
 }
-const $d33ef1320595a3ac$var$N = (t, i)=>{
+const $f58f44579a4747ac$var$N = (t, i)=>{
     const s = t.length - 1, e = [];
-    let n, l = 2 === i ? "<svg>" : 3 === i ? "<math>" : "", c = $d33ef1320595a3ac$var$v;
+    let n, l = 2 === i ? "<svg>" : 3 === i ? "<math>" : "", c = $f58f44579a4747ac$var$v;
     for(let i = 0; i < s; i++){
         const s = t[i];
         let a, u, d = -1, f = 0;
-        for(; f < s.length && (c.lastIndex = f, u = c.exec(s), null !== u);)f = c.lastIndex, c === $d33ef1320595a3ac$var$v ? "!--" === u[1] ? c = $d33ef1320595a3ac$var$_ : void 0 !== u[1] ? c = $d33ef1320595a3ac$var$m : void 0 !== u[2] ? ($d33ef1320595a3ac$var$y.test(u[2]) && (n = RegExp("</" + u[2], "g")), c = $d33ef1320595a3ac$var$p) : void 0 !== u[3] && (c = $d33ef1320595a3ac$var$p) : c === $d33ef1320595a3ac$var$p ? ">" === u[0] ? (c = n ?? $d33ef1320595a3ac$var$v, d = -1) : void 0 === u[1] ? d = -2 : (d = c.lastIndex - u[2].length, a = u[1], c = void 0 === u[3] ? $d33ef1320595a3ac$var$p : '"' === u[3] ? $d33ef1320595a3ac$var$$ : $d33ef1320595a3ac$var$g) : c === $d33ef1320595a3ac$var$$ || c === $d33ef1320595a3ac$var$g ? c = $d33ef1320595a3ac$var$p : c === $d33ef1320595a3ac$var$_ || c === $d33ef1320595a3ac$var$m ? c = $d33ef1320595a3ac$var$v : (c = $d33ef1320595a3ac$var$p, n = void 0);
-        const x = c === $d33ef1320595a3ac$var$p && t[i + 1].startsWith("/>") ? " " : "";
-        l += c === $d33ef1320595a3ac$var$v ? s + $d33ef1320595a3ac$var$r : d >= 0 ? (e.push(a), s.slice(0, d) + $d33ef1320595a3ac$var$h + s.slice(d) + $d33ef1320595a3ac$var$o + x) : s + $d33ef1320595a3ac$var$o + (-2 === d ? i : x);
+        for(; f < s.length && (c.lastIndex = f, u = c.exec(s), null !== u);)f = c.lastIndex, c === $f58f44579a4747ac$var$v ? "!--" === u[1] ? c = $f58f44579a4747ac$var$_ : void 0 !== u[1] ? c = $f58f44579a4747ac$var$m : void 0 !== u[2] ? ($f58f44579a4747ac$var$y.test(u[2]) && (n = RegExp("</" + u[2], "g")), c = $f58f44579a4747ac$var$p) : void 0 !== u[3] && (c = $f58f44579a4747ac$var$p) : c === $f58f44579a4747ac$var$p ? ">" === u[0] ? (c = n ?? $f58f44579a4747ac$var$v, d = -1) : void 0 === u[1] ? d = -2 : (d = c.lastIndex - u[2].length, a = u[1], c = void 0 === u[3] ? $f58f44579a4747ac$var$p : '"' === u[3] ? $f58f44579a4747ac$var$$ : $f58f44579a4747ac$var$g) : c === $f58f44579a4747ac$var$$ || c === $f58f44579a4747ac$var$g ? c = $f58f44579a4747ac$var$p : c === $f58f44579a4747ac$var$_ || c === $f58f44579a4747ac$var$m ? c = $f58f44579a4747ac$var$v : (c = $f58f44579a4747ac$var$p, n = void 0);
+        const x = c === $f58f44579a4747ac$var$p && t[i + 1].startsWith("/>") ? " " : "";
+        l += c === $f58f44579a4747ac$var$v ? s + $f58f44579a4747ac$var$r : d >= 0 ? (e.push(a), s.slice(0, d) + $f58f44579a4747ac$var$h + s.slice(d) + $f58f44579a4747ac$var$o + x) : s + $f58f44579a4747ac$var$o + (-2 === d ? i : x);
     }
     return [
-        $d33ef1320595a3ac$var$V(t, l + (t[s] || "<?>") + (2 === i ? "</svg>" : 3 === i ? "</math>" : "")),
+        $f58f44579a4747ac$var$V(t, l + (t[s] || "<?>") + (2 === i ? "</svg>" : 3 === i ? "</math>" : "")),
         e
     ];
 };
-class $d33ef1320595a3ac$var$S {
+class $f58f44579a4747ac$var$S {
     constructor({ strings: t, _$litType$: i }, e){
         let r;
         this.parts = [];
         let l = 0, a = 0;
-        const u = t.length - 1, d = this.parts, [f, v] = $d33ef1320595a3ac$var$N(t, i);
-        if (this.el = $d33ef1320595a3ac$var$S.createElement(f, e), $d33ef1320595a3ac$var$P.currentNode = this.el.content, 2 === i || 3 === i) {
+        const u = t.length - 1, d = this.parts, [f, v] = $f58f44579a4747ac$var$N(t, i);
+        if (this.el = $f58f44579a4747ac$var$S.createElement(f, e), $f58f44579a4747ac$var$P.currentNode = this.el.content, 2 === i || 3 === i) {
             const t = this.el.content.firstChild;
             t.replaceWith(...t.childNodes);
         }
-        for(; null !== (r = $d33ef1320595a3ac$var$P.nextNode()) && d.length < u;){
+        for(; null !== (r = $f58f44579a4747ac$var$P.nextNode()) && d.length < u;){
             if (1 === r.nodeType) {
-                if (r.hasAttributes()) for (const t of r.getAttributeNames())if (t.endsWith($d33ef1320595a3ac$var$h)) {
-                    const i = v[a++], s = r.getAttribute(t).split($d33ef1320595a3ac$var$o), e = /([.?@])?(.*)/.exec(i);
+                if (r.hasAttributes()) for (const t of r.getAttributeNames())if (t.endsWith($f58f44579a4747ac$var$h)) {
+                    const i = v[a++], s = r.getAttribute(t).split($f58f44579a4747ac$var$o), e = /([.?@])?(.*)/.exec(i);
                     d.push({
                         type: 1,
                         index: l,
                         name: e[2],
                         strings: s,
-                        ctor: "." === e[1] ? $d33ef1320595a3ac$var$I : "?" === e[1] ? $d33ef1320595a3ac$var$L : "@" === e[1] ? $d33ef1320595a3ac$var$z : $d33ef1320595a3ac$var$H
+                        ctor: "." === e[1] ? $f58f44579a4747ac$var$I : "?" === e[1] ? $f58f44579a4747ac$var$L : "@" === e[1] ? $f58f44579a4747ac$var$z : $f58f44579a4747ac$var$H
                     }), r.removeAttribute(t);
-                } else t.startsWith($d33ef1320595a3ac$var$o) && (d.push({
+                } else t.startsWith($f58f44579a4747ac$var$o) && (d.push({
                     type: 6,
                     index: l
                 }), r.removeAttribute(t));
-                if ($d33ef1320595a3ac$var$y.test(r.tagName)) {
-                    const t = r.textContent.split($d33ef1320595a3ac$var$o), i = t.length - 1;
+                if ($f58f44579a4747ac$var$y.test(r.tagName)) {
+                    const t = r.textContent.split($f58f44579a4747ac$var$o), i = t.length - 1;
                     if (i > 0) {
-                        r.textContent = $d33ef1320595a3ac$var$s ? $d33ef1320595a3ac$var$s.emptyScript : "";
-                        for(let s = 0; s < i; s++)r.append(t[s], $d33ef1320595a3ac$var$c()), $d33ef1320595a3ac$var$P.nextNode(), d.push({
+                        r.textContent = $f58f44579a4747ac$var$s ? $f58f44579a4747ac$var$s.emptyScript : "";
+                        for(let s = 0; s < i; s++)r.append(t[s], $f58f44579a4747ac$var$c()), $f58f44579a4747ac$var$P.nextNode(), d.push({
                             type: 2,
                             index: ++l
                         });
-                        r.append(t[i], $d33ef1320595a3ac$var$c());
+                        r.append(t[i], $f58f44579a4747ac$var$c());
                     }
                 }
             } else if (8 === r.nodeType) {
-                if (r.data === $d33ef1320595a3ac$var$n) d.push({
+                if (r.data === $f58f44579a4747ac$var$n) d.push({
                     type: 2,
                     index: l
                 });
                 else {
                     let t = -1;
-                    for(; -1 !== (t = r.data.indexOf($d33ef1320595a3ac$var$o, t + 1));)d.push({
+                    for(; -1 !== (t = r.data.indexOf($f58f44579a4747ac$var$o, t + 1));)d.push({
                         type: 7,
                         index: l
-                    }), t += $d33ef1320595a3ac$var$o.length - 1;
+                    }), t += $f58f44579a4747ac$var$o.length - 1;
                 }
             }
             l++;
         }
     }
     static createElement(t, i) {
-        const s = $d33ef1320595a3ac$var$l.createElement("template");
+        const s = $f58f44579a4747ac$var$l.createElement("template");
         return s.innerHTML = t, s;
     }
 }
-function $d33ef1320595a3ac$var$M(t, i, s = t, e) {
-    if (i === $d33ef1320595a3ac$export$9c068ae9cc5db4e8) return i;
+function $f58f44579a4747ac$var$M(t, i, s = t, e) {
+    if (i === $f58f44579a4747ac$export$9c068ae9cc5db4e8) return i;
     let h = void 0 !== e ? s._$Co?.[e] : s._$Cl;
-    const o = $d33ef1320595a3ac$var$a(i) ? void 0 : i._$litDirective$;
-    return h?.constructor !== o && (h?._$AO?.(!1), void 0 === o ? h = void 0 : (h = new o(t), h._$AT(t, s, e)), void 0 !== e ? (s._$Co ??= [])[e] = h : s._$Cl = h), void 0 !== h && (i = $d33ef1320595a3ac$var$M(t, h._$AS(t, i.values), h, e)), i;
+    const o = $f58f44579a4747ac$var$a(i) ? void 0 : i._$litDirective$;
+    return h?.constructor !== o && (h?._$AO?.(!1), void 0 === o ? h = void 0 : (h = new o(t), h._$AT(t, s, e)), void 0 !== e ? (s._$Co ??= [])[e] = h : s._$Cl = h), void 0 !== h && (i = $f58f44579a4747ac$var$M(t, h._$AS(t, i.values), h, e)), i;
 }
-class $d33ef1320595a3ac$var$R {
+class $f58f44579a4747ac$var$R {
     constructor(t, i){
         this._$AV = [], this._$AN = void 0, this._$AD = t, this._$AM = i;
     }
@@ -399,29 +399,29 @@ class $d33ef1320595a3ac$var$R {
         return this._$AM._$AU;
     }
     u(t) {
-        const { el: { content: i }, parts: s } = this._$AD, e = (t?.creationScope ?? $d33ef1320595a3ac$var$l).importNode(i, !0);
-        $d33ef1320595a3ac$var$P.currentNode = e;
-        let h = $d33ef1320595a3ac$var$P.nextNode(), o = 0, n = 0, r = s[0];
+        const { el: { content: i }, parts: s } = this._$AD, e = (t?.creationScope ?? $f58f44579a4747ac$var$l).importNode(i, !0);
+        $f58f44579a4747ac$var$P.currentNode = e;
+        let h = $f58f44579a4747ac$var$P.nextNode(), o = 0, n = 0, r = s[0];
         for(; void 0 !== r;){
             if (o === r.index) {
                 let i;
-                2 === r.type ? i = new $d33ef1320595a3ac$var$k(h, h.nextSibling, this, t) : 1 === r.type ? i = new r.ctor(h, r.name, r.strings, this, t) : 6 === r.type && (i = new $d33ef1320595a3ac$var$Z(h, this, t)), this._$AV.push(i), r = s[++n];
+                2 === r.type ? i = new $f58f44579a4747ac$var$k(h, h.nextSibling, this, t) : 1 === r.type ? i = new r.ctor(h, r.name, r.strings, this, t) : 6 === r.type && (i = new $f58f44579a4747ac$var$Z(h, this, t)), this._$AV.push(i), r = s[++n];
             }
-            o !== r?.index && (h = $d33ef1320595a3ac$var$P.nextNode(), o++);
+            o !== r?.index && (h = $f58f44579a4747ac$var$P.nextNode(), o++);
         }
-        return $d33ef1320595a3ac$var$P.currentNode = $d33ef1320595a3ac$var$l, e;
+        return $f58f44579a4747ac$var$P.currentNode = $f58f44579a4747ac$var$l, e;
     }
     p(t) {
         let i = 0;
         for (const s of this._$AV)void 0 !== s && (void 0 !== s.strings ? (s._$AI(t, s, i), i += s.strings.length - 2) : s._$AI(t[i])), i++;
     }
 }
-class $d33ef1320595a3ac$var$k {
+class $f58f44579a4747ac$var$k {
     get _$AU() {
         return this._$AM?._$AU ?? this._$Cv;
     }
     constructor(t, i, s, e){
-        this.type = 2, this._$AH = $d33ef1320595a3ac$export$45b790e32b2810ee, this._$AN = void 0, this._$AA = t, this._$AB = i, this._$AM = s, this.options = e, this._$Cv = e?.isConnected ?? !0;
+        this.type = 2, this._$AH = $f58f44579a4747ac$export$45b790e32b2810ee, this._$AN = void 0, this._$AA = t, this._$AB = i, this._$AM = s, this.options = e, this._$Cv = e?.isConnected ?? !0;
     }
     get parentNode() {
         let t = this._$AA.parentNode;
@@ -435,7 +435,7 @@ class $d33ef1320595a3ac$var$k {
         return this._$AB;
     }
     _$AI(t, i = this) {
-        t = $d33ef1320595a3ac$var$M(this, t, i), $d33ef1320595a3ac$var$a(t) ? t === $d33ef1320595a3ac$export$45b790e32b2810ee || null == t || "" === t ? (this._$AH !== $d33ef1320595a3ac$export$45b790e32b2810ee && this._$AR(), this._$AH = $d33ef1320595a3ac$export$45b790e32b2810ee) : t !== this._$AH && t !== $d33ef1320595a3ac$export$9c068ae9cc5db4e8 && this._(t) : void 0 !== t._$litType$ ? this.$(t) : void 0 !== t.nodeType ? this.T(t) : $d33ef1320595a3ac$var$d(t) ? this.k(t) : this._(t);
+        t = $f58f44579a4747ac$var$M(this, t, i), $f58f44579a4747ac$var$a(t) ? t === $f58f44579a4747ac$export$45b790e32b2810ee || null == t || "" === t ? (this._$AH !== $f58f44579a4747ac$export$45b790e32b2810ee && this._$AR(), this._$AH = $f58f44579a4747ac$export$45b790e32b2810ee) : t !== this._$AH && t !== $f58f44579a4747ac$export$9c068ae9cc5db4e8 && this._(t) : void 0 !== t._$litType$ ? this.$(t) : void 0 !== t.nodeType ? this.T(t) : $f58f44579a4747ac$var$d(t) ? this.k(t) : this._(t);
     }
     O(t) {
         return this._$AA.parentNode.insertBefore(t, this._$AB);
@@ -444,38 +444,38 @@ class $d33ef1320595a3ac$var$k {
         this._$AH !== t && (this._$AR(), this._$AH = this.O(t));
     }
     _(t) {
-        this._$AH !== $d33ef1320595a3ac$export$45b790e32b2810ee && $d33ef1320595a3ac$var$a(this._$AH) ? this._$AA.nextSibling.data = t : this.T($d33ef1320595a3ac$var$l.createTextNode(t)), this._$AH = t;
+        this._$AH !== $f58f44579a4747ac$export$45b790e32b2810ee && $f58f44579a4747ac$var$a(this._$AH) ? this._$AA.nextSibling.data = t : this.T($f58f44579a4747ac$var$l.createTextNode(t)), this._$AH = t;
     }
     $(t) {
-        const { values: i, _$litType$: s } = t, e = "number" == typeof s ? this._$AC(t) : (void 0 === s.el && (s.el = $d33ef1320595a3ac$var$S.createElement($d33ef1320595a3ac$var$V(s.h, s.h[0]), this.options)), s);
+        const { values: i, _$litType$: s } = t, e = "number" == typeof s ? this._$AC(t) : (void 0 === s.el && (s.el = $f58f44579a4747ac$var$S.createElement($f58f44579a4747ac$var$V(s.h, s.h[0]), this.options)), s);
         if (this._$AH?._$AD === e) this._$AH.p(i);
         else {
-            const t = new $d33ef1320595a3ac$var$R(e, this), s = t.u(this.options);
+            const t = new $f58f44579a4747ac$var$R(e, this), s = t.u(this.options);
             t.p(i), this.T(s), this._$AH = t;
         }
     }
     _$AC(t) {
-        let i = $d33ef1320595a3ac$var$C.get(t.strings);
-        return void 0 === i && $d33ef1320595a3ac$var$C.set(t.strings, i = new $d33ef1320595a3ac$var$S(t)), i;
+        let i = $f58f44579a4747ac$var$C.get(t.strings);
+        return void 0 === i && $f58f44579a4747ac$var$C.set(t.strings, i = new $f58f44579a4747ac$var$S(t)), i;
     }
     k(t) {
-        $d33ef1320595a3ac$var$u(this._$AH) || (this._$AH = [], this._$AR());
+        $f58f44579a4747ac$var$u(this._$AH) || (this._$AH = [], this._$AR());
         const i = this._$AH;
         let s, e = 0;
-        for (const h of t)e === i.length ? i.push(s = new $d33ef1320595a3ac$var$k(this.O($d33ef1320595a3ac$var$c()), this.O($d33ef1320595a3ac$var$c()), this, this.options)) : s = i[e], s._$AI(h), e++;
+        for (const h of t)e === i.length ? i.push(s = new $f58f44579a4747ac$var$k(this.O($f58f44579a4747ac$var$c()), this.O($f58f44579a4747ac$var$c()), this, this.options)) : s = i[e], s._$AI(h), e++;
         e < i.length && (this._$AR(s && s._$AB.nextSibling, e), i.length = e);
     }
     _$AR(t = this._$AA.nextSibling, s) {
         for(this._$AP?.(!1, !0, s); t !== this._$AB;){
-            const s = $d33ef1320595a3ac$var$i(t).nextSibling;
-            $d33ef1320595a3ac$var$i(t).remove(), t = s;
+            const s = $f58f44579a4747ac$var$i(t).nextSibling;
+            $f58f44579a4747ac$var$i(t).remove(), t = s;
         }
     }
     setConnected(t) {
         void 0 === this._$AM && (this._$Cv = t, this._$AP?.(t));
     }
 }
-class $d33ef1320595a3ac$var$H {
+class $f58f44579a4747ac$var$H {
     get tagName() {
         return this.element.tagName;
     }
@@ -483,53 +483,53 @@ class $d33ef1320595a3ac$var$H {
         return this._$AM._$AU;
     }
     constructor(t, i, s, e, h){
-        this.type = 1, this._$AH = $d33ef1320595a3ac$export$45b790e32b2810ee, this._$AN = void 0, this.element = t, this.name = i, this._$AM = e, this.options = h, s.length > 2 || "" !== s[0] || "" !== s[1] ? (this._$AH = Array(s.length - 1).fill(new String), this.strings = s) : this._$AH = $d33ef1320595a3ac$export$45b790e32b2810ee;
+        this.type = 1, this._$AH = $f58f44579a4747ac$export$45b790e32b2810ee, this._$AN = void 0, this.element = t, this.name = i, this._$AM = e, this.options = h, s.length > 2 || "" !== s[0] || "" !== s[1] ? (this._$AH = Array(s.length - 1).fill(new String), this.strings = s) : this._$AH = $f58f44579a4747ac$export$45b790e32b2810ee;
     }
     _$AI(t, i = this, s, e) {
         const h = this.strings;
         let o = !1;
-        if (void 0 === h) t = $d33ef1320595a3ac$var$M(this, t, i, 0), o = !$d33ef1320595a3ac$var$a(t) || t !== this._$AH && t !== $d33ef1320595a3ac$export$9c068ae9cc5db4e8, o && (this._$AH = t);
+        if (void 0 === h) t = $f58f44579a4747ac$var$M(this, t, i, 0), o = !$f58f44579a4747ac$var$a(t) || t !== this._$AH && t !== $f58f44579a4747ac$export$9c068ae9cc5db4e8, o && (this._$AH = t);
         else {
             const e = t;
             let n, r;
-            for(t = h[0], n = 0; n < h.length - 1; n++)r = $d33ef1320595a3ac$var$M(this, e[s + n], i, n), r === $d33ef1320595a3ac$export$9c068ae9cc5db4e8 && (r = this._$AH[n]), o ||= !$d33ef1320595a3ac$var$a(r) || r !== this._$AH[n], r === $d33ef1320595a3ac$export$45b790e32b2810ee ? t = $d33ef1320595a3ac$export$45b790e32b2810ee : t !== $d33ef1320595a3ac$export$45b790e32b2810ee && (t += (r ?? "") + h[n + 1]), this._$AH[n] = r;
+            for(t = h[0], n = 0; n < h.length - 1; n++)r = $f58f44579a4747ac$var$M(this, e[s + n], i, n), r === $f58f44579a4747ac$export$9c068ae9cc5db4e8 && (r = this._$AH[n]), o ||= !$f58f44579a4747ac$var$a(r) || r !== this._$AH[n], r === $f58f44579a4747ac$export$45b790e32b2810ee ? t = $f58f44579a4747ac$export$45b790e32b2810ee : t !== $f58f44579a4747ac$export$45b790e32b2810ee && (t += (r ?? "") + h[n + 1]), this._$AH[n] = r;
         }
         o && !e && this.j(t);
     }
     j(t) {
-        t === $d33ef1320595a3ac$export$45b790e32b2810ee ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, t ?? "");
+        t === $f58f44579a4747ac$export$45b790e32b2810ee ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, t ?? "");
     }
 }
-class $d33ef1320595a3ac$var$I extends $d33ef1320595a3ac$var$H {
+class $f58f44579a4747ac$var$I extends $f58f44579a4747ac$var$H {
     constructor(){
         super(...arguments), this.type = 3;
     }
     j(t) {
-        this.element[this.name] = t === $d33ef1320595a3ac$export$45b790e32b2810ee ? void 0 : t;
+        this.element[this.name] = t === $f58f44579a4747ac$export$45b790e32b2810ee ? void 0 : t;
     }
 }
-class $d33ef1320595a3ac$var$L extends $d33ef1320595a3ac$var$H {
+class $f58f44579a4747ac$var$L extends $f58f44579a4747ac$var$H {
     constructor(){
         super(...arguments), this.type = 4;
     }
     j(t) {
-        this.element.toggleAttribute(this.name, !!t && t !== $d33ef1320595a3ac$export$45b790e32b2810ee);
+        this.element.toggleAttribute(this.name, !!t && t !== $f58f44579a4747ac$export$45b790e32b2810ee);
     }
 }
-class $d33ef1320595a3ac$var$z extends $d33ef1320595a3ac$var$H {
+class $f58f44579a4747ac$var$z extends $f58f44579a4747ac$var$H {
     constructor(t, i, s, e, h){
         super(t, i, s, e, h), this.type = 5;
     }
     _$AI(t, i = this) {
-        if ((t = $d33ef1320595a3ac$var$M(this, t, i, 0) ?? $d33ef1320595a3ac$export$45b790e32b2810ee) === $d33ef1320595a3ac$export$9c068ae9cc5db4e8) return;
-        const s = this._$AH, e = t === $d33ef1320595a3ac$export$45b790e32b2810ee && s !== $d33ef1320595a3ac$export$45b790e32b2810ee || t.capture !== s.capture || t.once !== s.once || t.passive !== s.passive, h = t !== $d33ef1320595a3ac$export$45b790e32b2810ee && (s === $d33ef1320595a3ac$export$45b790e32b2810ee || e);
+        if ((t = $f58f44579a4747ac$var$M(this, t, i, 0) ?? $f58f44579a4747ac$export$45b790e32b2810ee) === $f58f44579a4747ac$export$9c068ae9cc5db4e8) return;
+        const s = this._$AH, e = t === $f58f44579a4747ac$export$45b790e32b2810ee && s !== $f58f44579a4747ac$export$45b790e32b2810ee || t.capture !== s.capture || t.once !== s.once || t.passive !== s.passive, h = t !== $f58f44579a4747ac$export$45b790e32b2810ee && (s === $f58f44579a4747ac$export$45b790e32b2810ee || e);
         e && this.element.removeEventListener(this.name, this, s), h && this.element.addEventListener(this.name, this, t), this._$AH = t;
     }
     handleEvent(t) {
         "function" == typeof this._$AH ? this._$AH.call(this.options?.host ?? this.element, t) : this._$AH.handleEvent(t);
     }
 }
-class $d33ef1320595a3ac$var$Z {
+class $f58f44579a4747ac$var$Z {
     constructor(t, i, s){
         this.element = t, this.type = 6, this._$AN = void 0, this._$AM = i, this.options = s;
     }
@@ -537,32 +537,32 @@ class $d33ef1320595a3ac$var$Z {
         return this._$AM._$AU;
     }
     _$AI(t) {
-        $d33ef1320595a3ac$var$M(this, t);
+        $f58f44579a4747ac$var$M(this, t);
     }
 }
-const $d33ef1320595a3ac$export$8613d1ca9052b22e = {
-    M: $d33ef1320595a3ac$var$h,
-    P: $d33ef1320595a3ac$var$o,
-    A: $d33ef1320595a3ac$var$n,
+const $f58f44579a4747ac$export$8613d1ca9052b22e = {
+    M: $f58f44579a4747ac$var$h,
+    P: $f58f44579a4747ac$var$o,
+    A: $f58f44579a4747ac$var$n,
     C: 1,
-    L: $d33ef1320595a3ac$var$N,
-    R: $d33ef1320595a3ac$var$R,
-    D: $d33ef1320595a3ac$var$d,
-    V: $d33ef1320595a3ac$var$M,
-    I: $d33ef1320595a3ac$var$k,
-    H: $d33ef1320595a3ac$var$H,
-    N: $d33ef1320595a3ac$var$L,
-    U: $d33ef1320595a3ac$var$z,
-    B: $d33ef1320595a3ac$var$I,
-    F: $d33ef1320595a3ac$var$Z
-}, $d33ef1320595a3ac$var$B = $d33ef1320595a3ac$var$t.litHtmlPolyfillSupport;
-$d33ef1320595a3ac$var$B?.($d33ef1320595a3ac$var$S, $d33ef1320595a3ac$var$k), ($d33ef1320595a3ac$var$t.litHtmlVersions ??= []).push("3.3.2");
-const $d33ef1320595a3ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
+    L: $f58f44579a4747ac$var$N,
+    R: $f58f44579a4747ac$var$R,
+    D: $f58f44579a4747ac$var$d,
+    V: $f58f44579a4747ac$var$M,
+    I: $f58f44579a4747ac$var$k,
+    H: $f58f44579a4747ac$var$H,
+    N: $f58f44579a4747ac$var$L,
+    U: $f58f44579a4747ac$var$z,
+    B: $f58f44579a4747ac$var$I,
+    F: $f58f44579a4747ac$var$Z
+}, $f58f44579a4747ac$var$B = $f58f44579a4747ac$var$t.litHtmlPolyfillSupport;
+$f58f44579a4747ac$var$B?.($f58f44579a4747ac$var$S, $f58f44579a4747ac$var$k), ($f58f44579a4747ac$var$t.litHtmlVersions ??= []).push("3.3.2");
+const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
     const e = s?.renderBefore ?? i;
     let h = e._$litPart$;
     if (void 0 === h) {
         const t = s?.renderBefore ?? null;
-        e._$litPart$ = h = new $d33ef1320595a3ac$var$k(i.insertBefore($d33ef1320595a3ac$var$c(), t), t, void 0, s ?? {});
+        e._$litPart$ = h = new $f58f44579a4747ac$var$k(i.insertBefore($f58f44579a4747ac$var$c(), t), t, void 0, s ?? {});
     }
     return h._$AI(t), h;
 };
@@ -574,8 +574,8 @@ const $d33ef1320595a3ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */ const $528e4332d1e3099e$var$s = globalThis;
-class $528e4332d1e3099e$export$3f2f9f5909897157 extends (0, $375b48187e686ca2$export$c7c07a37856565d) {
+ */ const $ab210b2da7b39b9d$var$s = globalThis;
+class $ab210b2da7b39b9d$export$3f2f9f5909897157 extends (0, $19fe8e3abedf4df0$export$c7c07a37856565d) {
     constructor(){
         super(...arguments), this.renderOptions = {
             host: this
@@ -587,7 +587,7 @@ class $528e4332d1e3099e$export$3f2f9f5909897157 extends (0, $375b48187e686ca2$ex
     }
     update(t) {
         const r = this.render();
-        this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(t), this._$Do = (0, $d33ef1320595a3ac$export$b3890eb0ae9dca99)(r, this.renderRoot, this.renderOptions);
+        this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(t), this._$Do = (0, $f58f44579a4747ac$export$b3890eb0ae9dca99)(r, this.renderRoot, this.renderOptions);
     }
     connectedCallback() {
         super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -596,54 +596,54 @@ class $528e4332d1e3099e$export$3f2f9f5909897157 extends (0, $375b48187e686ca2$ex
         super.disconnectedCallback(), this._$Do?.setConnected(!1);
     }
     render() {
-        return 0, $d33ef1320595a3ac$export$9c068ae9cc5db4e8;
+        return 0, $f58f44579a4747ac$export$9c068ae9cc5db4e8;
     }
 }
-$528e4332d1e3099e$export$3f2f9f5909897157._$litElement$ = !0, $528e4332d1e3099e$export$3f2f9f5909897157["finalized"] = !0, $528e4332d1e3099e$var$s.litElementHydrateSupport?.({
-    LitElement: $528e4332d1e3099e$export$3f2f9f5909897157
+$ab210b2da7b39b9d$export$3f2f9f5909897157._$litElement$ = !0, $ab210b2da7b39b9d$export$3f2f9f5909897157["finalized"] = !0, $ab210b2da7b39b9d$var$s.litElementHydrateSupport?.({
+    LitElement: $ab210b2da7b39b9d$export$3f2f9f5909897157
 });
-const $528e4332d1e3099e$var$o = $528e4332d1e3099e$var$s.litElementPolyfillSupport;
-$528e4332d1e3099e$var$o?.({
-    LitElement: $528e4332d1e3099e$export$3f2f9f5909897157
+const $ab210b2da7b39b9d$var$o = $ab210b2da7b39b9d$var$s.litElementPolyfillSupport;
+$ab210b2da7b39b9d$var$o?.({
+    LitElement: $ab210b2da7b39b9d$export$3f2f9f5909897157
 });
-const $528e4332d1e3099e$export$f5c524615a7708d6 = {
+const $ab210b2da7b39b9d$export$f5c524615a7708d6 = {
     _$AK: (t, e, r)=>{
         t._$AK(e, r);
     },
     _$AL: (t)=>t._$AL
 };
-($528e4332d1e3099e$var$s.litElementVersions ??= []).push("4.2.2");
+($ab210b2da7b39b9d$var$s.litElementVersions ??= []).push("4.2.2");
 
 
 /**
  * @license
  * Copyright 2022 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */ const $56239b0c931b817c$export$6acf61af03e62db = !1;
+ */ const $a00bca1a101a9088$export$6acf61af03e62db = !1;
 
 
 
 
-var $4cf6573eae743e82$exports = {};
-$4cf6573eae743e82$exports = "ha-card {\n  font-family: var(--paper-font-body1_-_font-family, var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif));\n  color: var(--primary-text-color, #fff);\n  overflow: visible;\n  container-type: inline-size;\n}\n\n:host {\n  --gs-text-dim: var(--secondary-text-color, #ffffff80);\n  --gs-text-dimmer: var(--disabled-text-color, #ffffff59);\n  --gs-text-dimmest: var(--disabled-text-color, #ffffff40);\n  --gs-border: var(--divider-color, #ffffff0a);\n  --gs-track: var(--divider-color, #ffffff0f);\n  --gs-card-bg: var(--ha-card-background, var(--card-background-color, #1c1c1c));\n  --gs-elevated: color-mix(in srgb, var(--primary-text-color, #fff) 6%, var(--gs-card-bg));\n  --gs-green-500: #00a86b;\n  --gs-green-400: #1dbf7b;\n  --gs-green-300: #5dcaa5;\n  --gs-green-200: #9fe1cb;\n  --gs-green-100: color-mix(in srgb, #1dbf7b 10%, var(--gs-card-bg));\n  --gs-green-600: #008756;\n  --gs-green-700: #006b44;\n  --gs-amber: #ef9f27;\n  --gs-amber-bg: color-mix(in srgb, #ef9f27 8%, var(--gs-card-bg));\n  --gs-red: #e53935;\n  --gs-red-bg: color-mix(in srgb, #e53935 8%, var(--gs-card-bg));\n  --gs-surface: color-mix(in srgb, var(--primary-text-color, #fff) 4%, var(--gs-card-bg));\n  --gs-surface-hover: color-mix(in srgb, var(--primary-text-color, #fff) 8%, var(--gs-card-bg));\n  --gs-radius-sm: 6px;\n  --gs-radius-md: 10px;\n  --gs-radius-lg: 14px;\n  --gs-radius-xl: 20px;\n}\n\n.card-header {\n  border-bottom: 1px solid var(--gs-border);\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 1.5rem;\n  display: flex;\n}\n\n.header-title {\n  color: var(--primary-text-color);\n  font-size: 16px;\n  font-weight: 600;\n  line-height: 1.2;\n}\n\n.header-right {\n  flex-shrink: 0;\n  align-items: center;\n  gap: 0;\n  margin-right: -8px;\n  display: flex;\n}\n\n.ws-icon, .header-menu {\n  cursor: pointer;\n  border-radius: 50%;\n  justify-content: center;\n  align-items: center;\n  width: 28px;\n  height: 28px;\n  transition: background .2s, opacity .2s;\n  display: inline-flex;\n}\n\n.ws-icon:hover, .header-menu:hover {\n  background: var(--gs-surface-hover);\n}\n\n.ws-icon svg, .header-menu svg {\n  width: 18px;\n  height: 18px;\n}\n\n.ws-icon.online svg {\n  fill: var(--gs-green-400);\n}\n\n.ws-icon.offline svg {\n  fill: var(--gs-text-dimmer);\n}\n\n.header-menu svg {\n  fill: var(--gs-text-dim);\n}\n\n.content {\n  padding: 0;\n}\n\n.knob-section {\n  justify-content: center;\n  align-items: center;\n  gap: 2rem;\n  padding: 1.5rem 1.5rem 1rem;\n  display: flex;\n}\n\n.knob-container {\n  cursor: pointer;\n  flex-shrink: 0;\n  width: 140px;\n  height: 140px;\n  position: relative;\n}\n\n.knob-track {\n  position: absolute;\n  inset: 0;\n}\n\n.knob-track svg {\n  width: 100%;\n  height: 100%;\n}\n\n.knob-arc-bg {\n  fill: none;\n  stroke: var(--gs-surface);\n  stroke-width: 8px;\n  stroke-linecap: round;\n}\n\n.knob-arc-fill {\n  fill: none;\n  stroke: var(--gs-green-400);\n  stroke-width: 8px;\n  stroke-linecap: round;\n  filter: drop-shadow(0 0 6px #1dbf7b40);\n  transition: stroke-dashoffset .15s ease-out;\n}\n\n.knob-handle {\n  background: var(--gs-card-bg);\n  border: 2px solid var(--gs-green-400);\n  cursor: grab;\n  z-index: 2;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  transition: box-shadow .2s;\n  position: absolute;\n  transform: translate(-50%, -50%);\n  box-shadow: 0 2px 8px #0000001f, 0 1px 2px #00000014;\n}\n\n.knob-handle:active {\n  cursor: grabbing;\n  box-shadow: 0 0 0 6px #1dbf7b26, 0 2px 8px #0000001f;\n}\n\n.knob-handle:after {\n  content: \"\";\n  background: var(--gs-green-400);\n  border-radius: 50%;\n  width: 8px;\n  height: 8px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.knob-center {\n  text-align: center;\n  pointer-events: none;\n  z-index: 1;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.knob-value {\n  color: var(--primary-text-color);\n  font-size: 28px;\n  font-weight: 500;\n  line-height: 1;\n}\n\n.knob-unit {\n  color: var(--gs-text-dim);\n  letter-spacing: .5px;\n  margin-top: 2px;\n  font-size: 12px;\n}\n\n.knob-info {\n  flex-direction: column;\n  gap: 6px;\n  display: flex;\n}\n\n.knob-preset {\n  border-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-border);\n  background: var(--gs-card-bg);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  gap: 8px;\n  padding: 7px 14px;\n  font-family: inherit;\n  font-size: 13px;\n  font-weight: 400;\n  transition: all .2s;\n  display: flex;\n}\n\n.knob-preset:hover {\n  background: var(--gs-surface);\n  color: var(--primary-text-color);\n  border-color: var(--gs-surface-hover);\n}\n\n.knob-preset.active {\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  border-color: var(--gs-green-300);\n}\n\n.knob-preset-dot {\n  background: var(--gs-text-dimmest);\n  border-radius: 50%;\n  flex-shrink: 0;\n  width: 5px;\n  height: 5px;\n  transition: background .2s;\n}\n\n.knob-preset.active .knob-preset-dot {\n  background: var(--gs-green-500);\n}\n\n.section-label {\n  color: var(--gs-text-dimmest);\n  text-transform: uppercase;\n  letter-spacing: .8px;\n  align-items: center;\n  gap: 8px;\n  margin-bottom: 10px;\n  font-size: 11px;\n  font-weight: 500;\n  display: flex;\n}\n\n.section-status {\n  color: var(--gs-green-400);\n  cursor: pointer;\n  align-items: center;\n  margin-left: auto;\n  display: inline-flex;\n}\n\n.section-status svg {\n  fill: currentColor;\n  width: 14px;\n  height: 14px;\n}\n\n.section-status.offline {\n  color: var(--gs-text-dimmer);\n}\n\n.valves-section {\n  padding: 0 1.5rem 1.5rem;\n}\n\n.valves-grid {\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 8px;\n  display: grid;\n}\n\n.valves-grid.count-1 {\n  grid-template-columns: 1fr;\n}\n\n.valves-grid.count-2 {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n\n.valves-grid:not(.count-1):not(.count-2) .valve {\n  padding: 8px;\n}\n\n.valve {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  padding: 12px;\n  transition: all .3s cubic-bezier(.16, 1, .3, 1);\n  animation: .4s cubic-bezier(.16, 1, .3, 1) both valveIn;\n  position: relative;\n  overflow: visible;\n  container-type: inline-size;\n}\n\n.valve:before {\n  content: \"\";\n  pointer-events: none;\n  border-radius: inherit;\n  background: linear-gradient(to top, #1dbf7b14, #0000);\n  height: 0%;\n  transition: height .6s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n}\n\n.valve.active {\n  background: var(--gs-green-100);\n  border-color: var(--gs-green-300);\n}\n\n.valve.active:before {\n  height: 100%;\n}\n\n.valve-header {\n  align-items: center;\n  gap: 6px;\n  margin-bottom: 8px;\n  display: flex;\n}\n\n.valve-zone-label {\n  color: var(--gs-text-dimmest);\n  letter-spacing: .6px;\n  text-transform: uppercase;\n  white-space: nowrap;\n  font-size: 10px;\n  font-weight: 600;\n}\n\n.valve.active .valve-zone-label {\n  color: var(--gs-green-300);\n}\n\n.valve-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  margin-bottom: 4px;\n  font-size: 13px;\n  font-weight: 500;\n  line-height: 1.3;\n}\n\n.valve-status {\n  color: var(--gs-text-dimmest);\n  align-items: center;\n  gap: 4px;\n  min-height: 16px;\n  font-size: 11px;\n  display: flex;\n}\n\n.valve.active .valve-status {\n  color: var(--gs-green-400);\n}\n\n.valve-progress {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 6%, transparent);\n  border-radius: 2px;\n  height: 3px;\n  margin-top: 8px;\n  display: none;\n  overflow: hidden;\n}\n\n.valve.active .valve-progress {\n  display: block;\n}\n\n.valve-progress-fill {\n  background: var(--gs-green-400);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.toggle {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));\n  cursor: pointer;\n  appearance: none;\n  border: none;\n  border-radius: 10px;\n  outline: none;\n  flex-shrink: 0;\n  width: 36px;\n  height: 20px;\n  padding: 0;\n  transition: background .25s;\n  position: relative;\n}\n\n.toggle:after {\n  content: \"\";\n  background: #fff;\n  border-radius: 50%;\n  width: 16px;\n  height: 16px;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  top: 2px;\n  left: 2px;\n  box-shadow: 0 1px 3px #00000026;\n}\n\n.toggle.on {\n  background: var(--gs-green-400);\n}\n\n.toggle.on:after {\n  transform: translateX(16px);\n}\n\n.toggle.socket-toggle-on {\n  background: var(--gs-amber);\n}\n\n.toggle.disabled, .toggle:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.pill {\n  background: var(--gs-card-bg);\n  border: 1px solid color-mix(in srgb, var(--primary-text-color, #fff) 15%, transparent);\n  border-radius: 22px;\n  flex-shrink: 0;\n  align-items: center;\n  margin-left: auto;\n  padding: 3px;\n  transition: all .35s;\n  display: inline-flex;\n}\n\n.valve.active .pill {\n  background: color-mix(in srgb, #1dbf7b 6%, var(--gs-card-bg));\n  border-color: #1dbf7b33;\n}\n\n.pill-dur-wrap {\n  position: relative;\n}\n\n.pill-dur {\n  height: 22px;\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  font-size: 11px;\n  font-weight: 500;\n  font-family: var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif);\n  background: none;\n  border: none;\n  border-radius: 11px;\n  align-items: center;\n  gap: 1px;\n  padding: 0 4px 0 8px;\n  transition: all .2s;\n  display: flex;\n}\n\n.pill-dur:hover {\n  background: var(--gs-surface);\n}\n\n.pill-dur.locked {\n  cursor: default;\n  opacity: .5;\n}\n\n.pill-dur.locked:hover {\n  background: none;\n}\n\n.valve.active .pill-dur {\n  color: var(--gs-green-700);\n}\n\n.pill-dur svg {\n  fill: currentColor;\n  opacity: .4;\n  width: 12px;\n  height: 12px;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n}\n\n.pill-dur.open svg {\n  opacity: .7;\n  transform: rotate(180deg);\n}\n\n.pill-tog {\n  cursor: pointer;\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));\n  border-radius: 11px;\n  flex-shrink: 0;\n  width: 38px;\n  height: 22px;\n  transition: background .3s cubic-bezier(.16, 1, .3, 1);\n  position: relative;\n}\n\n.pill-tog.on {\n  background: var(--gs-green-400);\n}\n\n.pill-tog.amber {\n  background: var(--gs-amber);\n}\n\n.pill-tog:after {\n  content: \"\";\n  background: #fff;\n  border-radius: 50%;\n  width: 16px;\n  height: 16px;\n  transition: transform .3s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  top: 3px;\n  left: 3px;\n  box-shadow: 0 1px 3px #00000026;\n}\n\n.pill-tog.on:after {\n  transform: translateX(16px);\n}\n\n.pill-tog.disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.pill-pop {\n  background: var(--gs-card-bg);\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 12%, transparent);\n  z-index: 100;\n  border-radius: 12px;\n  flex-wrap: wrap;\n  gap: 4px;\n  width: max-content;\n  max-width: 210px;\n  padding: 6px;\n  display: none;\n  position: absolute;\n  top: calc(100% + 6px);\n  right: 0;\n  box-shadow: 0 4px 12px #0000001f;\n}\n\n.pill-pop.show {\n  display: flex;\n}\n\n.valve.pill-open, .mower-card.pill-open, .socket-card.pill-open {\n  z-index: 50;\n}\n\n.pop-chip {\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  background: none;\n  border-radius: 10px;\n  padding: 5px 8px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 500;\n  line-height: 1;\n  transition: all .15s;\n}\n\n.pop-chip:hover {\n  background: var(--gs-surface);\n  border-color: color-mix(in srgb, var(--primary-text-color, #fff) 14%, transparent);\n}\n\n.pop-chip.sel {\n  background: var(--gs-green-100);\n  color: var(--gs-green-600);\n  border-color: var(--gs-green-300);\n}\n\n.pop-custom {\n  border-top: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  align-items: center;\n  gap: 4px;\n  width: 100%;\n  margin-top: 2px;\n  padding-top: 6px;\n  display: flex;\n}\n\n.pop-input {\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  min-width: 0;\n  height: 26px;\n  color: var(--primary-text-color);\n  background: var(--gs-card-bg);\n  -moz-appearance: textfield;\n  border-radius: 8px;\n  outline: none;\n  flex: 1;\n  padding: 0 8px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 500;\n  line-height: 1;\n}\n\n.pop-input::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\n\n.pop-input::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\n\n.pop-input::placeholder {\n  color: var(--gs-text-dim);\n}\n\n.pop-input:focus {\n  border-color: var(--gs-green-300);\n}\n\n.pop-input-unit {\n  color: var(--gs-text-dim);\n  flex-shrink: 0;\n  margin-left: -2px;\n  font-family: inherit;\n  font-size: 9px;\n}\n\n.pop-ok {\n  background: var(--gs-green-400);\n  color: #fff;\n  cursor: pointer;\n  letter-spacing: .3px;\n  border: none;\n  border-radius: 8px;\n  flex-shrink: 0;\n  height: 26px;\n  padding: 0 10px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 600;\n  transition: all .15s;\n}\n\n.pop-ok:hover {\n  background: var(--gs-green-500);\n}\n\n.pop-ok:active {\n  transform: scale(.95);\n}\n\n.valve.offline, .socket-card.offline {\n  opacity: .5;\n}\n\n.water-icon {\n  width: 8px;\n  height: 10px;\n  display: inline-block;\n  position: relative;\n}\n\n.water-icon:before {\n  content: \"\";\n  background: var(--gs-green-400);\n  border-radius: 50% 50% 50% 0;\n  width: 8px;\n  height: 8px;\n  animation: 1.5s ease-in-out infinite dropPulse;\n  position: absolute;\n  bottom: 0;\n  transform: rotate(-45deg);\n}\n\n.countdown-text {\n  animation: 2s ease-in-out infinite countPulse;\n}\n\n.mower-section {\n  margin-top: .25rem;\n  padding: 0 1.5rem 1rem;\n}\n\n.mower-card {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  padding: 14px;\n  transition: all .3s cubic-bezier(.16, 1, .3, 1);\n  animation: .4s cubic-bezier(.16, 1, .3, 1) both valveIn;\n  position: relative;\n}\n\n.mower-card.active {\n  background: var(--gs-green-100);\n  border-color: var(--gs-green-300);\n}\n\n.mower-card.paused {\n  background: var(--gs-amber-bg);\n  border-color: #ef9f274d;\n}\n\n.mower-card.error {\n  background: var(--gs-red-bg);\n  border-color: #e539354d;\n}\n\n.mower-card.offline {\n  opacity: .5;\n}\n\n.mower-header {\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 12px;\n  display: flex;\n}\n\n.mower-icon {\n  border-radius: var(--gs-radius-sm);\n  background: var(--gs-surface-hover);\n  width: 36px;\n  height: 36px;\n  color: var(--gs-text-dimmest);\n  flex-shrink: 0;\n  justify-content: center;\n  align-items: center;\n  transition: all .3s;\n  display: flex;\n  position: relative;\n  overflow: hidden;\n}\n\n.mower-card.active .mower-icon {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.mower-card.paused .mower-icon {\n  background: color-mix(in srgb, #ef9f27 15%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.mower-card.error .mower-icon {\n  background: color-mix(in srgb, #e53935 15%, var(--gs-card-bg));\n  color: var(--gs-red);\n}\n\n.mower-drive {\n  z-index: 1;\n  align-items: center;\n  display: inline-flex;\n  position: relative;\n}\n\n.mower-icon svg {\n  fill: currentColor;\n  width: 20px;\n  height: 20px;\n}\n\n.mower-icon.mowing .mower-drive {\n  animation: 3s linear infinite mowerDrive;\n}\n\n.grass-particles {\n  pointer-events: none;\n  width: 4px;\n  height: 4px;\n  position: absolute;\n  bottom: 2px;\n  left: -2px;\n}\n\n.grass-particles:before, .grass-particles:after {\n  content: \"\";\n  border-radius: 50%;\n  position: absolute;\n}\n\n.grass-particles:before {\n  background: #66bb6a;\n  width: 3px;\n  height: 3px;\n  animation: .8s ease-out infinite particleA;\n}\n\n.grass-particles:after {\n  background: #43a047;\n  width: 2px;\n  height: 2px;\n  animation: .8s ease-out .2s infinite particleB;\n}\n\n.mower-info {\n  flex: 1;\n  min-width: 0;\n}\n\n.mower-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.mower-activity {\n  color: var(--gs-text-dimmest);\n  align-items: center;\n  gap: 6px;\n  margin-top: 1px;\n  font-size: 11px;\n  transition: color .3s;\n  display: flex;\n}\n\n.mower-card.active .mower-activity {\n  color: var(--gs-green-200);\n}\n\n.mower-card.paused .mower-activity {\n  color: var(--gs-amber);\n}\n\n.mower-card.error .mower-activity {\n  color: var(--gs-red);\n}\n\n.mow-dot {\n  background: var(--gs-green-400);\n  border-radius: 50%;\n  width: 6px;\n  height: 6px;\n  animation: 1s ease-in-out infinite mowPulse;\n  display: inline-block;\n}\n\n.mower-battery-chip {\n  background: var(--gs-surface-hover);\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n  border-radius: 12px;\n  flex-shrink: 0;\n  align-items: center;\n  gap: 4px;\n  padding: 3px 8px;\n  font-size: 11px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.mower-battery-chip.low {\n  background: color-mix(in srgb, #e53935 12%, var(--gs-card-bg));\n  color: var(--gs-red);\n}\n\n.mower-battery-chip.replace {\n  background: color-mix(in srgb, #e53935 18%, var(--gs-card-bg));\n  color: var(--gs-red);\n  animation: 2s ease-in-out infinite battery-replace-pulse;\n}\n\n@keyframes battery-replace-pulse {\n  0%, 100% {\n    opacity: 1;\n  }\n\n  50% {\n    opacity: .5;\n  }\n}\n\n.mower-battery-chip.charging {\n  background: color-mix(in srgb, #1dbf7b 12%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.mower-battery-chip svg {\n  flex-shrink: 0;\n}\n\n.section-signal {\n  color: var(--gs-green-400);\n  cursor: pointer;\n  align-items: center;\n  margin-left: auto;\n  display: inline-flex;\n}\n\n.section-signal svg {\n  width: 14px;\n  height: 14px;\n}\n\n.mower-progress {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  border-radius: 2px;\n  height: 4px;\n  margin-bottom: 12px;\n  overflow: hidden;\n}\n\n.mower-progress-fill {\n  background: var(--gs-green-400);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.mower-remaining {\n  font-variant-numeric: tabular-nums;\n  opacity: .8;\n}\n\n.mower-error-banner {\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-red);\n  background: #e539351f;\n  margin-bottom: 12px;\n  padding: 8px 10px;\n  font-size: 11px;\n  line-height: 1.4;\n}\n\n.mower-actions {\n  flex-wrap: wrap;\n  gap: 6px;\n  display: flex;\n}\n\n.mower-btn {\n  border-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-border);\n  background: var(--gs-card-bg);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  padding: 7px 14px;\n  font-family: inherit;\n  font-size: 12px;\n  font-weight: 500;\n  transition: all .2s;\n  display: inline-flex;\n}\n\n.mower-btn:hover {\n  background: var(--gs-surface);\n  color: var(--primary-text-color);\n  border-color: var(--gs-surface-hover);\n}\n\n.mower-btn.primary {\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  border-color: var(--gs-green-300);\n}\n\n.mower-btn.primary:hover {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n}\n\n.mower-btn:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.mower-btn-wrap {\n  align-items: stretch;\n  display: inline-flex;\n  position: relative;\n}\n\n.mower-btn-wrap .mower-btn {\n  border-right: none;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.mower-dur-wrap {\n  position: relative;\n}\n\n.mower-dur-btn {\n  border-top-right-radius: var(--gs-radius-md);\n  border-bottom-right-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-green-300);\n  border-left: .5px solid color-mix(in srgb, var(--gs-green-300) 40%, transparent);\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  gap: 2px;\n  padding: 7px 8px;\n  font-family: inherit;\n  font-size: 11px;\n  font-weight: 500;\n  transition: all .2s;\n  display: inline-flex;\n}\n\n.mower-dur-btn:hover {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n}\n\n.mower-dur-btn:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.mower-dur-btn svg {\n  opacity: .5;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n}\n\n.mower-dur-btn.open svg {\n  opacity: .8;\n  transform: rotate(180deg);\n}\n\n.socket-section {\n  margin-top: .25rem;\n  padding: 0 1.5rem 1rem;\n}\n\n.socket-card {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  flex-wrap: wrap;\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 14px;\n  transition: all .3s;\n  display: flex;\n}\n\n.socket-card.active {\n  background: var(--gs-amber-bg);\n  border-color: #ef9f274d;\n}\n\n.socket-left {\n  align-items: center;\n  gap: 12px;\n  min-width: 0;\n  display: flex;\n}\n\n.socket-icon {\n  border-radius: var(--gs-radius-sm);\n  background: var(--gs-surface-hover);\n  width: 36px;\n  height: 36px;\n  color: var(--gs-text-dimmest);\n  flex-shrink: 0;\n  justify-content: center;\n  align-items: center;\n  transition: all .3s;\n  display: flex;\n}\n\n.socket-card.active .socket-icon {\n  background: color-mix(in srgb, #ef9f27 15%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.socket-info {\n  min-width: 0;\n}\n\n.socket-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.socket-status {\n  color: var(--gs-text-dimmest);\n  margin-top: 1px;\n  font-size: 11px;\n  transition: color .3s;\n}\n\n.socket-card.active .socket-status {\n  color: var(--gs-amber);\n}\n\n.socket-right {\n  flex-shrink: 0;\n  align-items: center;\n  gap: 12px;\n  display: flex;\n}\n\n.socket-timer {\n  font-size: 12px;\n  font-family: var(--gs-font-mono, \"SF Mono\", \"Cascadia Code\", \"Consolas\", monospace);\n  color: var(--gs-text-dimmest);\n  text-align: right;\n  white-space: nowrap;\n}\n\n.socket-progress-wrap {\n  width: 100%;\n  margin-top: 8px;\n  padding: 0;\n}\n\n.socket-progress-track {\n  background: color-mix(in srgb, var(--primary-text-color, #000) 6%, transparent);\n  border-radius: 2px;\n  height: 3px;\n  overflow: hidden;\n}\n\n.socket-progress-fill {\n  background: var(--gs-amber);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.unavailable {\n  text-align: center;\n  color: var(--gs-text-dim);\n  padding: 20px;\n  font-size: 14px;\n}\n\n.version-warning {\n  background: color-mix(in srgb, #ef9f27 10%, var(--gs-card-bg));\n  border-radius: var(--gs-radius-md);\n  text-align: left;\n  color: var(--primary-text-color);\n  border: .5px solid #ef9f274d;\n  padding: 16px;\n  font-size: 13px;\n  line-height: 1.5;\n}\n\n.patch-warning {\n  background: color-mix(in srgb, #ef9f27 8%, var(--gs-card-bg));\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-text-dim);\n  border: .5px solid #ef9f2740;\n  margin: 0 1.5rem 8px;\n  padding: 10px 14px;\n  font-size: 12px;\n  line-height: 1.4;\n}\n\n.patch-warning strong {\n  color: var(--gs-amber);\n  margin-bottom: 2px;\n  font-size: 12px;\n  display: block;\n}\n\n.schedule-missing {\n  background: color-mix(in srgb, var(--info-color, #039be5) 8%, var(--gs-card-bg));\n  border: .5px solid color-mix(in srgb, var(--info-color, #039be5) 25%, transparent);\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-text-dim);\n  margin: 0 1.5rem 8px;\n  padding: 10px 14px;\n  font-size: 12px;\n  line-height: 1.4;\n}\n\n.schedule-missing strong {\n  color: var(--info-color, #039be5);\n  margin-bottom: 2px;\n  font-size: 12px;\n  display: block;\n}\n\n.history-section {\n  border-top: .5px solid var(--gs-border);\n  margin-top: 12px;\n  padding: 4px 1.5rem 1rem;\n}\n\n.history-header {\n  justify-content: space-between;\n  align-items: baseline;\n  margin-bottom: 14px;\n  display: flex;\n}\n\n.history-period {\n  color: var(--gs-text-dim);\n  font-size: 12px;\n}\n\n.history-total {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  font-size: 12px;\n}\n\n.chart-container {\n  gap: 0;\n  display: flex;\n}\n\n.chart-y-axis {\n  flex-shrink: 0;\n  height: 124px;\n  margin-bottom: 26px;\n  padding-right: 10px;\n  position: relative;\n}\n\n.chart-y-label {\n  color: var(--gs-text-dimmest);\n  font-variant-numeric: tabular-nums;\n  font-size: 10px;\n  line-height: 1;\n  position: absolute;\n  left: 0;\n  transform: translateY(-50%);\n}\n\n.chart-main {\n  flex: 1;\n  min-width: 0;\n  height: 124px;\n  margin-bottom: 26px;\n  position: relative;\n}\n\n.chart-gridlines {\n  pointer-events: none;\n  flex-direction: column;\n  justify-content: space-between;\n  display: flex;\n  position: absolute;\n  inset: 0;\n}\n\n.chart-gridline {\n  border-top: .5px solid var(--gs-border);\n  height: 0;\n}\n\n.chart-gridline:last-child {\n  border-top: .5px solid color-mix(in srgb, var(--primary-text-color, #000) 14%, transparent);\n}\n\n.chart-bars {\n  justify-content: space-around;\n  align-items: stretch;\n  padding: 0 4px;\n  display: flex;\n  position: absolute;\n  inset: 0;\n}\n\n.chart-bar-group {\n  flex-direction: column;\n  flex: 1;\n  justify-content: flex-end;\n  align-items: center;\n  max-width: 64px;\n  padding: 0 6px;\n  display: flex;\n  position: relative;\n}\n\n.chart-stack {\n  border-radius: 3px 3px 0 0;\n  flex-direction: column-reverse;\n  width: 100%;\n  display: flex;\n  overflow: hidden;\n}\n\n.chart-segment {\n  width: 100%;\n  min-height: 0;\n}\n\n.chart-segment + .chart-segment {\n  border-bottom: .5px solid #ffffff4d;\n}\n\n.chart-day-label {\n  color: var(--gs-text-dim);\n  white-space: nowrap;\n  margin-top: 4px;\n  font-size: 11px;\n  position: absolute;\n  top: 100%;\n}\n\n.chart-bar-group.today .chart-day-label {\n  color: var(--primary-text-color);\n  font-weight: 500;\n}\n\n.chart-bar-group:hover .chart-stack {\n  filter: brightness(1.08);\n}\n\n.chart-tooltip {\n  background: var(--gs-card-bg, var(--card-background-color, #fff));\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #000) 14%, transparent);\n  border-radius: var(--gs-radius-md);\n  color: var(--primary-text-color);\n  white-space: nowrap;\n  z-index: 10;\n  pointer-events: none;\n  padding: 8px 12px;\n  font-size: 11px;\n  display: none;\n  position: absolute;\n  bottom: calc(100% + 8px);\n  left: 50%;\n  transform: translateX(-50%);\n  box-shadow: 0 4px 16px #0000001f;\n}\n\n.chart-bar-group:hover .chart-tooltip {\n  display: block;\n}\n\n.tooltip-title {\n  border-bottom: .5px solid var(--gs-border);\n  margin-bottom: 4px;\n  padding-bottom: 4px;\n  font-size: 12px;\n  font-weight: 500;\n}\n\n.tooltip-line {\n  align-items: center;\n  gap: 6px;\n  padding: 2px 0;\n  display: flex;\n}\n\n.tooltip-dot {\n  border-radius: 2px;\n  flex-shrink: 0;\n  width: 6px;\n  height: 6px;\n}\n\n.tooltip-mins {\n  font-variant-numeric: tabular-nums;\n  margin-left: auto;\n  padding-left: 12px;\n  font-weight: 500;\n}\n\n.tooltip-total {\n  border-top: .5px solid var(--gs-border);\n  justify-content: space-between;\n  margin-top: 4px;\n  padding-top: 4px;\n  font-weight: 500;\n  display: flex;\n}\n\n.chart-legend {\n  flex-wrap: wrap;\n  gap: 4px 14px;\n  margin-top: 12px;\n  display: flex;\n}\n\n.legend-item {\n  color: var(--gs-text-dim);\n  align-items: center;\n  gap: 5px;\n  font-size: 11px;\n  display: flex;\n}\n\n.legend-dot {\n  border-radius: 2px;\n  flex-shrink: 0;\n  width: 8px;\n  height: 8px;\n}\n\n.schedule-strip {\n  border-top: 1px solid var(--gs-border);\n  flex-direction: column;\n  gap: 6px;\n  margin-top: 10px;\n  padding-top: 10px;\n  display: flex;\n}\n\n.schedule-row {\n  align-items: center;\n  gap: 8px;\n  display: flex;\n}\n\n.schedule-time {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  align-items: center;\n  gap: 4px;\n  min-width: 80px;\n  font-size: 11px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.schedule-icon {\n  fill: currentColor;\n  opacity: .6;\n  flex-shrink: 0;\n  width: 12px;\n  height: 12px;\n}\n\n.schedule-days {\n  gap: 3px;\n  display: flex;\n}\n\n.schedule-day {\n  text-transform: uppercase;\n  letter-spacing: .3px;\n  border-radius: 4px;\n  justify-content: center;\n  align-items: center;\n  width: 20px;\n  height: 18px;\n  font-size: 9px;\n  font-weight: 600;\n  display: flex;\n}\n\n.schedule-day.active {\n  background: color-mix(in srgb, var(--gs-green-400) 20%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.schedule-day.inactive {\n  background: var(--gs-surface);\n  color: var(--gs-text-dimmest);\n}\n\n.schedule-day.paused {\n  background: color-mix(in srgb, var(--gs-amber) 12%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.schedule-row.now-active, .valve-schedule-row.now-active, .socket-schedule-mini.now-active {\n  background: color-mix(in srgb, var(--gs-green-400) 10%, transparent);\n  border-radius: var(--gs-radius-sm);\n  padding: 4px 6px;\n}\n\n.schedule-row.now-active .schedule-time, .valve-schedule-row.now-active .valve-schedule-time, .socket-schedule-mini.now-active .schedule-time {\n  color: var(--gs-green-400);\n}\n\n.schedule-row.now-active .schedule-icon, .valve-schedule-row.now-active .schedule-icon, .socket-schedule-mini.now-active .schedule-icon {\n  opacity: 1;\n}\n\n.schedule-icon-wrap {\n  flex-shrink: 0;\n  display: inline-flex;\n  position: relative;\n}\n\n.schedule-paused .schedule-icon {\n  color: var(--gs-amber);\n  opacity: .8;\n}\n\n.schedule-paused .schedule-icon-wrap:after {\n  content: \"\";\n  background: linear-gradient(to top right,\n        transparent calc(50% - .5px),\n        var(--gs-amber) calc(50% - .5px),\n        var(--gs-amber) calc(50% + .5px),\n        transparent calc(50% + .5px));\n  opacity: .7;\n  pointer-events: none;\n  width: 14px;\n  height: 14px;\n  position: absolute;\n  top: -1px;\n  left: -1px;\n}\n\n.schedule-pause-badge {\n  color: var(--gs-amber);\n  background: color-mix(in srgb, var(--gs-amber) 10%, var(--gs-card-bg));\n  white-space: nowrap;\n  border-radius: 4px;\n  align-items: center;\n  gap: 3px;\n  margin-left: auto;\n  padding: 2px 7px;\n  font-size: 10px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.valve-schedule-mini {\n  border-top: 1px solid var(--gs-border);\n  flex-direction: column;\n  gap: 4px;\n  margin-top: 8px;\n  padding-top: 8px;\n  display: flex;\n}\n\n.valve-schedule-row {\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 6px;\n  display: flex;\n}\n\n.valve-schedule-time {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  text-align: center;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  font-size: 11px;\n  display: inline-flex;\n}\n\n.valve-schedule-mini .schedule-days {\n  justify-content: center;\n  gap: 3px;\n}\n\n.valve-schedule-mini .schedule-day {\n  border-radius: 4px;\n  width: 20px;\n  height: 18px;\n  font-size: 9px;\n}\n\n@container (width <= 150px) {\n  .valve-header {\n    margin-bottom: 6px;\n  }\n\n  .valve-name {\n    font-size: 12px;\n  }\n\n  .valve-schedule-time {\n    font-size: 10px;\n  }\n\n  .valve-schedule-mini .schedule-day {\n    border-radius: 3px;\n    width: 16px;\n    height: 14px;\n    font-size: 8px;\n  }\n\n  .valve-schedule-row {\n    flex-flow: row;\n    justify-content: center;\n    gap: 3px;\n  }\n\n  .valve-schedule-time {\n    white-space: nowrap;\n  }\n\n  .valve-schedule-mini .schedule-days {\n    gap: 1px;\n  }\n\n  .valve-schedule-mini .schedule-day {\n    border-radius: 50%;\n    width: 5px;\n    height: 5px;\n    padding: 0;\n    font-size: 0;\n    overflow: hidden;\n  }\n\n  .valve-schedule-mini .schedule-day.active {\n    background: var(--gs-green-400);\n  }\n\n  .valve-schedule-mini .schedule-day.inactive {\n    background: var(--gs-track);\n  }\n\n  .valve-schedule-mini .schedule-day.paused {\n    background: var(--gs-amber);\n  }\n}\n\n.valve.schedule-paused {\n  border-color: color-mix(in srgb, var(--gs-amber) 20%, transparent);\n}\n\n.socket-schedule-mini {\n  border-top: 1px solid var(--gs-border);\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  margin-top: 8px;\n  padding-top: 8px;\n  display: flex;\n}\n\n.socket-schedule-mini .schedule-time {\n  min-width: auto;\n}\n\n.socket-schedule-mini .schedule-days {\n  flex-wrap: nowrap;\n}\n\n@keyframes valveIn {\n  from {\n    opacity: 0;\n    transform: translateY(8px);\n  }\n\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n\n@keyframes dropPulse {\n  0%, 100% {\n    opacity: .6;\n    transform: rotate(-45deg) scale(1);\n  }\n\n  50% {\n    opacity: 1;\n    transform: rotate(-45deg) scale(1.15);\n  }\n}\n\n@keyframes countPulse {\n  0%, 100% {\n    opacity: 1;\n  }\n\n  50% {\n    opacity: .55;\n  }\n}\n\n@keyframes mowerDrive {\n  0% {\n    transform: translateX(-130%);\n  }\n\n  100% {\n    transform: translateX(130%);\n  }\n}\n\n@keyframes particleA {\n  0% {\n    opacity: .9;\n    transform: translate(0) scale(1);\n  }\n\n  100% {\n    opacity: 0;\n    transform: translate(-8px, -10px) scale(.3);\n  }\n}\n\n@keyframes particleB {\n  0% {\n    opacity: .8;\n    transform: translate(0) scale(1);\n  }\n\n  100% {\n    opacity: 0;\n    transform: translate(-5px, -12px) scale(.2);\n  }\n}\n\n@keyframes mowPulse {\n  0%, 100% {\n    opacity: 1;\n    transform: scale(1);\n  }\n\n  50% {\n    opacity: .5;\n    transform: scale(1.3);\n  }\n}\n\n@container (width <= 400px) {\n  .valves-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  .valves-grid.count-1 {\n    grid-template-columns: 1fr;\n  }\n\n  .knob-section {\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .knob-info {\n    flex-flow: wrap;\n    justify-content: center;\n  }\n\n  .mower-actions {\n    flex-direction: column;\n  }\n\n  .mower-btn {\n    justify-content: center;\n  }\n}\n\n@container (width <= 300px) {\n  .mower-section, .valve-section, .socket-section {\n    padding-left: 1rem;\n    padding-right: 1rem;\n  }\n\n  .card-header {\n    padding: 12px 1rem;\n  }\n\n  .valves-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .mower-header {\n    gap: 8px;\n  }\n\n  .mower-name {\n    font-size: 12px;\n  }\n\n  .mower-activity {\n    flex-wrap: wrap;\n    font-size: 10px;\n  }\n\n  .mower-battery-chip {\n    padding: 2px 6px;\n    font-size: 10px;\n  }\n\n  .mower-btn {\n    padding: 6px 10px;\n    font-size: 11px;\n  }\n\n  .schedule-row {\n    flex-wrap: wrap;\n    gap: 4px;\n  }\n\n  .schedule-time {\n    min-width: unset;\n    font-size: 10px;\n  }\n\n  .schedule-day {\n    width: 16px;\n    height: 14px;\n    font-size: 8px;\n  }\n\n  .schedule-days {\n    gap: 2px;\n  }\n\n  .socket-schedule-mini {\n    flex-wrap: wrap;\n    gap: 4px;\n  }\n}\n";
+var $4828e467d1847026$exports = {};
+$4828e467d1847026$exports = "ha-card {\n  font-family: var(--paper-font-body1_-_font-family, var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif));\n  color: var(--primary-text-color, #fff);\n  display: block;\n  overflow: visible;\n  container-type: inline-size;\n}\n\n:host {\n  --gs-text-dim: var(--secondary-text-color, #ffffff80);\n  --gs-text-dimmer: var(--disabled-text-color, #ffffff59);\n  --gs-text-dimmest: var(--disabled-text-color, #ffffff40);\n  --gs-border: var(--divider-color, #ffffff0a);\n  --gs-track: var(--divider-color, #ffffff0f);\n  --gs-card-bg: var(--ha-card-background, var(--card-background-color, #1c1c1c));\n  --gs-elevated: color-mix(in srgb, var(--primary-text-color, #fff) 6%, var(--gs-card-bg));\n  --gs-green-500: #00a86b;\n  --gs-green-400: #1dbf7b;\n  --gs-green-300: #5dcaa5;\n  --gs-green-200: #9fe1cb;\n  --gs-green-100: color-mix(in srgb, #1dbf7b 10%, var(--gs-card-bg));\n  --gs-green-600: #008756;\n  --gs-green-700: #006b44;\n  --gs-amber: #ef9f27;\n  --gs-amber-bg: color-mix(in srgb, #ef9f27 8%, var(--gs-card-bg));\n  --gs-red: #e53935;\n  --gs-red-bg: color-mix(in srgb, #e53935 8%, var(--gs-card-bg));\n  --gs-surface: color-mix(in srgb, var(--primary-text-color, #fff) 4%, var(--gs-card-bg));\n  --gs-surface-hover: color-mix(in srgb, var(--primary-text-color, #fff) 8%, var(--gs-card-bg));\n  --gs-radius-sm: 6px;\n  --gs-radius-md: 10px;\n  --gs-radius-lg: 14px;\n  --gs-radius-xl: 20px;\n}\n\n.card-header {\n  border-bottom: 1px solid var(--gs-border);\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 1.5rem;\n  display: flex;\n}\n\n.header-title {\n  color: var(--primary-text-color);\n  font-size: 16px;\n  font-weight: 600;\n  line-height: 1.2;\n}\n\n.header-right {\n  flex-shrink: 0;\n  align-items: center;\n  gap: 0;\n  margin-right: -8px;\n  display: flex;\n}\n\n.ws-icon, .header-menu {\n  cursor: pointer;\n  border-radius: 50%;\n  justify-content: center;\n  align-items: center;\n  width: 28px;\n  height: 28px;\n  transition: background .2s, opacity .2s;\n  display: inline-flex;\n}\n\n.ws-icon:hover, .header-menu:hover {\n  background: var(--gs-surface-hover);\n}\n\n.ws-icon svg, .header-menu svg {\n  width: 18px;\n  height: 18px;\n}\n\n.ws-icon.online svg {\n  fill: var(--gs-green-400);\n}\n\n.ws-icon.offline svg {\n  fill: var(--gs-text-dimmer);\n}\n\n.header-menu svg {\n  fill: var(--gs-text-dim);\n}\n\n.content {\n  padding: 0;\n}\n\nha-card.single-section .mower-section, ha-card.single-section .valves-section, ha-card.single-section .socket-section {\n  margin: 0;\n  padding: 0;\n}\n\nha-card.single-section .mower-card, ha-card.single-section .valve, ha-card.single-section .socket-card {\n  border-radius: 0 0 var(--ha-card-border-radius, 12px) var(--ha-card-border-radius, 12px);\n  border: none;\n}\n\nha-card.single-section .valve:before {\n  border-radius: 0 0 var(--ha-card-border-radius, 12px) var(--ha-card-border-radius, 12px);\n}\n\nha-card.single-section.no-header .mower-card, ha-card.single-section.no-header .valve, ha-card.single-section.no-header .socket-card {\n  border-radius: var(--ha-card-border-radius, 12px);\n}\n\nha-card.single-section .valves-grid {\n  gap: 0;\n}\n\n.knob-section {\n  justify-content: center;\n  align-items: center;\n  gap: 2rem;\n  padding: 1.5rem 1.5rem 1rem;\n  display: flex;\n}\n\n.knob-container {\n  cursor: pointer;\n  flex-shrink: 0;\n  width: 140px;\n  height: 140px;\n  position: relative;\n}\n\n.knob-track {\n  position: absolute;\n  inset: 0;\n}\n\n.knob-track svg {\n  width: 100%;\n  height: 100%;\n}\n\n.knob-arc-bg {\n  fill: none;\n  stroke: var(--gs-surface);\n  stroke-width: 8px;\n  stroke-linecap: round;\n}\n\n.knob-arc-fill {\n  fill: none;\n  stroke: var(--gs-green-400);\n  stroke-width: 8px;\n  stroke-linecap: round;\n  filter: drop-shadow(0 0 6px #1dbf7b40);\n  transition: stroke-dashoffset .15s ease-out;\n}\n\n.knob-handle {\n  background: var(--gs-card-bg);\n  border: 2px solid var(--gs-green-400);\n  cursor: grab;\n  z-index: 2;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  transition: box-shadow .2s;\n  position: absolute;\n  transform: translate(-50%, -50%);\n  box-shadow: 0 2px 8px #0000001f, 0 1px 2px #00000014;\n}\n\n.knob-handle:active {\n  cursor: grabbing;\n  box-shadow: 0 0 0 6px #1dbf7b26, 0 2px 8px #0000001f;\n}\n\n.knob-handle:after {\n  content: \"\";\n  background: var(--gs-green-400);\n  border-radius: 50%;\n  width: 8px;\n  height: 8px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.knob-center {\n  text-align: center;\n  pointer-events: none;\n  z-index: 1;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.knob-value {\n  color: var(--primary-text-color);\n  font-size: 28px;\n  font-weight: 500;\n  line-height: 1;\n}\n\n.knob-unit {\n  color: var(--gs-text-dim);\n  letter-spacing: .5px;\n  margin-top: 2px;\n  font-size: 12px;\n}\n\n.knob-info {\n  flex-direction: column;\n  gap: 6px;\n  display: flex;\n}\n\n.knob-preset {\n  border-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-border);\n  background: var(--gs-card-bg);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  gap: 8px;\n  padding: 7px 14px;\n  font-family: inherit;\n  font-size: 13px;\n  font-weight: 400;\n  transition: all .2s;\n  display: flex;\n}\n\n.knob-preset:hover {\n  background: var(--gs-surface);\n  color: var(--primary-text-color);\n  border-color: var(--gs-surface-hover);\n}\n\n.knob-preset.active {\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  border-color: var(--gs-green-300);\n}\n\n.knob-preset-dot {\n  background: var(--gs-text-dimmest);\n  border-radius: 50%;\n  flex-shrink: 0;\n  width: 5px;\n  height: 5px;\n  transition: background .2s;\n}\n\n.knob-preset.active .knob-preset-dot {\n  background: var(--gs-green-500);\n}\n\n.section-label {\n  color: var(--gs-text-dimmest);\n  text-transform: uppercase;\n  letter-spacing: .8px;\n  align-items: center;\n  gap: 8px;\n  margin-bottom: 10px;\n  font-size: 11px;\n  font-weight: 500;\n  display: flex;\n}\n\n.section-status {\n  color: var(--gs-green-400);\n  cursor: pointer;\n  align-items: center;\n  margin-left: auto;\n  display: inline-flex;\n}\n\n.section-status svg {\n  fill: currentColor;\n  width: 14px;\n  height: 14px;\n}\n\n.section-status.offline {\n  color: var(--gs-text-dimmer);\n}\n\n.valves-section {\n  padding: 0 1.5rem 1.5rem;\n}\n\n.valves-grid {\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 8px;\n  display: grid;\n}\n\n.valves-grid.count-1 {\n  grid-template-columns: 1fr;\n}\n\n.valves-grid.count-2 {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n\n.valves-grid:not(.count-1):not(.count-2) .valve {\n  padding: 8px;\n}\n\n.valve {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  padding: 12px;\n  transition: all .3s cubic-bezier(.16, 1, .3, 1);\n  animation: .4s cubic-bezier(.16, 1, .3, 1) both valveIn;\n  position: relative;\n  overflow: visible;\n  container-type: inline-size;\n}\n\n.valve:before {\n  content: \"\";\n  pointer-events: none;\n  border-radius: inherit;\n  background: linear-gradient(to top, #1dbf7b14, #0000);\n  height: 0%;\n  transition: height .6s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n}\n\n.valve.active {\n  background: var(--gs-green-100);\n  border-color: var(--gs-green-300);\n}\n\n.valve.active:before {\n  height: 100%;\n}\n\n.valve-header {\n  align-items: center;\n  gap: 6px;\n  margin-bottom: 8px;\n  display: flex;\n}\n\n.valve-zone-label {\n  color: var(--gs-text-dimmest);\n  letter-spacing: .6px;\n  text-transform: uppercase;\n  white-space: nowrap;\n  font-size: 10px;\n  font-weight: 600;\n}\n\n.valve.active .valve-zone-label {\n  color: var(--gs-green-300);\n}\n\n.valve-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  margin-bottom: 4px;\n  font-size: 13px;\n  font-weight: 500;\n  line-height: 1.3;\n}\n\n.valve-status {\n  color: var(--gs-text-dimmest);\n  align-items: center;\n  gap: 4px;\n  min-height: 16px;\n  font-size: 11px;\n  display: flex;\n}\n\n.valve.active .valve-status {\n  color: var(--gs-green-400);\n}\n\n.valve-progress {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 6%, transparent);\n  border-radius: 2px;\n  height: 3px;\n  margin-top: 8px;\n  display: none;\n  overflow: hidden;\n}\n\n.valve.active .valve-progress {\n  display: block;\n}\n\n.valve-progress-fill {\n  background: var(--gs-green-400);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.toggle {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));\n  cursor: pointer;\n  appearance: none;\n  border: none;\n  border-radius: 10px;\n  outline: none;\n  flex-shrink: 0;\n  width: 36px;\n  height: 20px;\n  padding: 0;\n  transition: background .25s;\n  position: relative;\n}\n\n.toggle:after {\n  content: \"\";\n  background: #fff;\n  border-radius: 50%;\n  width: 16px;\n  height: 16px;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  top: 2px;\n  left: 2px;\n  box-shadow: 0 1px 3px #00000026;\n}\n\n.toggle.on {\n  background: var(--gs-green-400);\n}\n\n.toggle.on:after {\n  transform: translateX(16px);\n}\n\n.toggle.socket-toggle-on {\n  background: var(--gs-amber);\n}\n\n.toggle.disabled, .toggle:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.pill {\n  background: var(--gs-card-bg);\n  border: 1px solid color-mix(in srgb, var(--primary-text-color, #fff) 15%, transparent);\n  border-radius: 22px;\n  flex-shrink: 0;\n  align-items: center;\n  margin-left: auto;\n  padding: 3px;\n  transition: all .35s;\n  display: inline-flex;\n}\n\n.valve.active .pill {\n  background: color-mix(in srgb, #1dbf7b 6%, var(--gs-card-bg));\n  border-color: #1dbf7b33;\n}\n\n.pill-dur-wrap {\n  position: relative;\n}\n\n.pill-dur {\n  height: 22px;\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  font-size: 11px;\n  font-weight: 500;\n  font-family: var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif);\n  background: none;\n  border: none;\n  border-radius: 11px;\n  align-items: center;\n  gap: 1px;\n  padding: 0 4px 0 8px;\n  transition: all .2s;\n  display: flex;\n}\n\n.pill-dur:hover {\n  background: var(--gs-surface);\n}\n\n.pill-dur.locked {\n  cursor: default;\n  opacity: .5;\n}\n\n.pill-dur.locked:hover {\n  background: none;\n}\n\n.valve.active .pill-dur {\n  color: var(--gs-green-700);\n}\n\n.pill-dur svg {\n  fill: currentColor;\n  opacity: .4;\n  width: 12px;\n  height: 12px;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n}\n\n.pill-dur.open svg {\n  opacity: .7;\n  transform: rotate(180deg);\n}\n\n.pill-tog {\n  cursor: pointer;\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));\n  border-radius: 11px;\n  flex-shrink: 0;\n  width: 38px;\n  height: 22px;\n  transition: background .3s cubic-bezier(.16, 1, .3, 1);\n  position: relative;\n}\n\n.pill-tog.on {\n  background: var(--gs-green-400);\n}\n\n.pill-tog.amber {\n  background: var(--gs-amber);\n}\n\n.pill-tog:after {\n  content: \"\";\n  background: #fff;\n  border-radius: 50%;\n  width: 16px;\n  height: 16px;\n  transition: transform .3s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  top: 3px;\n  left: 3px;\n  box-shadow: 0 1px 3px #00000026;\n}\n\n.pill-tog.on:after {\n  transform: translateX(16px);\n}\n\n.pill-tog.disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.pill-pop {\n  background: var(--gs-card-bg);\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 12%, transparent);\n  z-index: 100;\n  border-radius: 12px;\n  flex-wrap: wrap;\n  gap: 4px;\n  width: max-content;\n  max-width: 210px;\n  padding: 6px;\n  display: none;\n  position: absolute;\n  top: calc(100% + 6px);\n  right: 0;\n  box-shadow: 0 4px 12px #0000001f;\n}\n\n.pill-pop.show {\n  display: flex;\n}\n\n.valve.pill-open, .mower-card.pill-open, .socket-card.pill-open {\n  z-index: 50;\n}\n\n.pop-chip {\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  background: none;\n  border-radius: 10px;\n  padding: 5px 8px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 500;\n  line-height: 1;\n  transition: all .15s;\n}\n\n.pop-chip:hover {\n  background: var(--gs-surface);\n  border-color: color-mix(in srgb, var(--primary-text-color, #fff) 14%, transparent);\n}\n\n.pop-chip.sel {\n  background: var(--gs-green-100);\n  color: var(--gs-green-600);\n  border-color: var(--gs-green-300);\n}\n\n.pop-custom {\n  border-top: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  align-items: center;\n  gap: 4px;\n  width: 100%;\n  margin-top: 2px;\n  padding-top: 6px;\n  display: flex;\n}\n\n.pop-input {\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  min-width: 0;\n  height: 26px;\n  color: var(--primary-text-color);\n  background: var(--gs-card-bg);\n  -moz-appearance: textfield;\n  border-radius: 8px;\n  outline: none;\n  flex: 1;\n  padding: 0 8px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 500;\n  line-height: 1;\n}\n\n.pop-input::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\n\n.pop-input::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\n\n.pop-input::placeholder {\n  color: var(--gs-text-dim);\n}\n\n.pop-input:focus {\n  border-color: var(--gs-green-300);\n}\n\n.pop-input-unit {\n  color: var(--gs-text-dim);\n  flex-shrink: 0;\n  margin-left: -2px;\n  font-family: inherit;\n  font-size: 9px;\n}\n\n.pop-ok {\n  background: var(--gs-green-400);\n  color: #fff;\n  cursor: pointer;\n  letter-spacing: .3px;\n  border: none;\n  border-radius: 8px;\n  flex-shrink: 0;\n  height: 26px;\n  padding: 0 10px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 600;\n  transition: all .15s;\n}\n\n.pop-ok:hover {\n  background: var(--gs-green-500);\n}\n\n.pop-ok:active {\n  transform: scale(.95);\n}\n\n.valve.offline, .socket-card.offline {\n  opacity: .5;\n}\n\n.water-icon {\n  width: 8px;\n  height: 10px;\n  display: inline-block;\n  position: relative;\n}\n\n.water-icon:before {\n  content: \"\";\n  background: var(--gs-green-400);\n  border-radius: 50% 50% 50% 0;\n  width: 8px;\n  height: 8px;\n  animation: 1.5s ease-in-out infinite dropPulse;\n  position: absolute;\n  bottom: 0;\n  transform: rotate(-45deg);\n}\n\n.countdown-text {\n  animation: 2s ease-in-out infinite countPulse;\n}\n\n.mower-section {\n  margin-top: .25rem;\n  padding: 0 1.5rem 1rem;\n}\n\n.mower-card {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  padding: 14px;\n  transition: all .3s cubic-bezier(.16, 1, .3, 1);\n  animation: .4s cubic-bezier(.16, 1, .3, 1) both valveIn;\n  position: relative;\n}\n\n.mower-card.active {\n  background: var(--gs-green-100);\n  border-color: var(--gs-green-300);\n}\n\n.mower-card.paused {\n  background: var(--gs-amber-bg);\n  border-color: #ef9f274d;\n}\n\n.mower-card.error {\n  background: var(--gs-red-bg);\n  border-color: #e539354d;\n}\n\n.mower-card.offline {\n  opacity: .5;\n}\n\n.mower-header {\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 12px;\n  display: flex;\n}\n\n.mower-icon {\n  border-radius: var(--gs-radius-sm);\n  background: var(--gs-surface-hover);\n  width: 36px;\n  height: 36px;\n  color: var(--gs-text-dimmest);\n  flex-shrink: 0;\n  justify-content: center;\n  align-items: center;\n  transition: all .3s;\n  display: flex;\n  position: relative;\n  overflow: hidden;\n}\n\n.mower-card.active .mower-icon {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.mower-card.paused .mower-icon {\n  background: color-mix(in srgb, #ef9f27 15%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.mower-card.error .mower-icon {\n  background: color-mix(in srgb, #e53935 15%, var(--gs-card-bg));\n  color: var(--gs-red);\n}\n\n.mower-drive {\n  z-index: 1;\n  align-items: center;\n  display: inline-flex;\n  position: relative;\n}\n\n.mower-icon svg {\n  fill: currentColor;\n  width: 20px;\n  height: 20px;\n}\n\n.mower-icon.mowing .mower-drive {\n  animation: 3s linear infinite mowerDrive;\n}\n\n.grass-particles {\n  pointer-events: none;\n  width: 4px;\n  height: 4px;\n  position: absolute;\n  bottom: 2px;\n  left: -2px;\n}\n\n.grass-particles:before, .grass-particles:after {\n  content: \"\";\n  border-radius: 50%;\n  position: absolute;\n}\n\n.grass-particles:before {\n  background: #66bb6a;\n  width: 3px;\n  height: 3px;\n  animation: .8s ease-out infinite particleA;\n}\n\n.grass-particles:after {\n  background: #43a047;\n  width: 2px;\n  height: 2px;\n  animation: .8s ease-out .2s infinite particleB;\n}\n\n.mower-info {\n  flex: 1;\n  min-width: 0;\n}\n\n.mower-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.mower-activity {\n  color: var(--gs-text-dimmest);\n  align-items: center;\n  gap: 6px;\n  margin-top: 1px;\n  font-size: 11px;\n  transition: color .3s;\n  display: flex;\n}\n\n.mower-card.active .mower-activity {\n  color: var(--gs-green-200);\n}\n\n.mower-card.paused .mower-activity {\n  color: var(--gs-amber);\n}\n\n.mower-card.error .mower-activity {\n  color: var(--gs-red);\n}\n\n.mow-dot {\n  background: var(--gs-green-400);\n  border-radius: 50%;\n  width: 6px;\n  height: 6px;\n  animation: 1s ease-in-out infinite mowPulse;\n  display: inline-block;\n}\n\n.mower-battery-chip {\n  background: var(--gs-surface-hover);\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n  border-radius: 12px;\n  flex-shrink: 0;\n  align-items: center;\n  gap: 4px;\n  padding: 3px 8px;\n  font-size: 11px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.mower-battery-chip.low {\n  background: color-mix(in srgb, #e53935 12%, var(--gs-card-bg));\n  color: var(--gs-red);\n}\n\n.mower-battery-chip.replace {\n  background: color-mix(in srgb, #e53935 18%, var(--gs-card-bg));\n  color: var(--gs-red);\n  animation: 2s ease-in-out infinite battery-replace-pulse;\n}\n\n@keyframes battery-replace-pulse {\n  0%, 100% {\n    opacity: 1;\n  }\n\n  50% {\n    opacity: .5;\n  }\n}\n\n.mower-battery-chip.charging {\n  background: color-mix(in srgb, #1dbf7b 12%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.mower-battery-chip svg {\n  flex-shrink: 0;\n}\n\n.section-signal {\n  color: var(--gs-green-400);\n  cursor: pointer;\n  align-items: center;\n  margin-left: auto;\n  display: inline-flex;\n}\n\n.section-signal ha-icon {\n  --mdc-icon-size: 18px;\n  line-height: 0;\n}\n\n.card-header .section-signal ha-icon {\n  --mdc-icon-size: 16px;\n}\n\n.mower-progress {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  border-radius: 2px;\n  height: 4px;\n  margin-bottom: 12px;\n  overflow: hidden;\n}\n\n.mower-progress-fill {\n  background: var(--gs-green-400);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.mower-remaining {\n  font-variant-numeric: tabular-nums;\n  opacity: .8;\n}\n\n.mower-error-banner {\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-red);\n  background: #e539351f;\n  margin-bottom: 12px;\n  padding: 8px 10px;\n  font-size: 11px;\n  line-height: 1.4;\n}\n\n.mower-actions {\n  flex-wrap: wrap;\n  gap: 6px;\n  display: flex;\n}\n\n.mower-btn {\n  border-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-border);\n  background: var(--gs-card-bg);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  padding: 7px 14px;\n  font-family: inherit;\n  font-size: 12px;\n  font-weight: 500;\n  transition: all .2s;\n  display: inline-flex;\n}\n\n.mower-btn:hover {\n  background: var(--gs-surface);\n  color: var(--primary-text-color);\n  border-color: var(--gs-surface-hover);\n}\n\n.mower-btn.primary {\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  border-color: var(--gs-green-300);\n}\n\n.mower-btn.primary:hover {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n}\n\n.mower-btn:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.mower-btn-wrap {\n  align-items: stretch;\n  display: inline-flex;\n  position: relative;\n}\n\n.mower-btn-wrap .mower-btn {\n  border-right: none;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.mower-dur-wrap {\n  position: relative;\n}\n\n.mower-dur-btn {\n  border-top-right-radius: var(--gs-radius-md);\n  border-bottom-right-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-green-300);\n  border-left: .5px solid color-mix(in srgb, var(--gs-green-300) 40%, transparent);\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  gap: 2px;\n  padding: 7px 8px;\n  font-family: inherit;\n  font-size: 11px;\n  font-weight: 500;\n  transition: all .2s;\n  display: inline-flex;\n}\n\n.mower-dur-btn:hover {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n}\n\n.mower-dur-btn:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.mower-dur-btn svg {\n  opacity: .5;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n}\n\n.mower-dur-btn.open svg {\n  opacity: .8;\n  transform: rotate(180deg);\n}\n\n.socket-section {\n  margin-top: .25rem;\n  padding: 0 1.5rem 1rem;\n}\n\n.socket-card {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  flex-wrap: wrap;\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 14px;\n  transition: all .3s;\n  display: flex;\n}\n\n.socket-card.active {\n  background: var(--gs-amber-bg);\n  border-color: #ef9f274d;\n}\n\n.socket-left {\n  align-items: center;\n  gap: 12px;\n  min-width: 0;\n  display: flex;\n}\n\n.socket-icon {\n  border-radius: var(--gs-radius-sm);\n  background: var(--gs-surface-hover);\n  width: 36px;\n  height: 36px;\n  color: var(--gs-text-dimmest);\n  flex-shrink: 0;\n  justify-content: center;\n  align-items: center;\n  transition: all .3s;\n  display: flex;\n}\n\n.socket-card.active .socket-icon {\n  background: color-mix(in srgb, #ef9f27 15%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.socket-info {\n  min-width: 0;\n}\n\n.socket-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.socket-status {\n  color: var(--gs-text-dimmest);\n  margin-top: 1px;\n  font-size: 11px;\n  transition: color .3s;\n}\n\n.socket-card.active .socket-status {\n  color: var(--gs-amber);\n}\n\n.socket-right {\n  flex-shrink: 0;\n  align-items: center;\n  gap: 12px;\n  display: flex;\n}\n\n.socket-timer {\n  font-size: 12px;\n  font-family: var(--gs-font-mono, \"SF Mono\", \"Cascadia Code\", \"Consolas\", monospace);\n  color: var(--gs-text-dimmest);\n  text-align: right;\n  white-space: nowrap;\n}\n\n.socket-progress-wrap {\n  width: 100%;\n  margin-top: 8px;\n  padding: 0;\n}\n\n.socket-progress-track {\n  background: color-mix(in srgb, var(--primary-text-color, #000) 6%, transparent);\n  border-radius: 2px;\n  height: 3px;\n  overflow: hidden;\n}\n\n.socket-progress-fill {\n  background: var(--gs-amber);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.unavailable {\n  text-align: center;\n  color: var(--gs-text-dim);\n  padding: 20px;\n  font-size: 14px;\n}\n\n.version-warning {\n  background: color-mix(in srgb, #ef9f27 10%, var(--gs-card-bg));\n  border-radius: var(--gs-radius-md);\n  text-align: left;\n  color: var(--primary-text-color);\n  border: .5px solid #ef9f274d;\n  padding: 16px;\n  font-size: 13px;\n  line-height: 1.5;\n}\n\n.patch-warning {\n  background: color-mix(in srgb, #ef9f27 8%, var(--gs-card-bg));\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-text-dim);\n  border: .5px solid #ef9f2740;\n  margin: 0 1.5rem 8px;\n  padding: 10px 14px;\n  font-size: 12px;\n  line-height: 1.4;\n}\n\n.patch-warning strong {\n  color: var(--gs-amber);\n  margin-bottom: 2px;\n  font-size: 12px;\n  display: block;\n}\n\n.schedule-missing {\n  background: color-mix(in srgb, var(--info-color, #039be5) 8%, var(--gs-card-bg));\n  border: .5px solid color-mix(in srgb, var(--info-color, #039be5) 25%, transparent);\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-text-dim);\n  margin: 0 1.5rem 8px;\n  padding: 10px 14px;\n  font-size: 12px;\n  line-height: 1.4;\n}\n\n.schedule-missing strong {\n  color: var(--info-color, #039be5);\n  margin-bottom: 2px;\n  font-size: 12px;\n  display: block;\n}\n\n.history-section {\n  border-top: .5px solid var(--gs-border);\n  margin-top: 12px;\n  padding: 4px 1.5rem 1rem;\n}\n\n.history-header {\n  justify-content: space-between;\n  align-items: baseline;\n  margin-bottom: 14px;\n  display: flex;\n}\n\n.history-period {\n  color: var(--gs-text-dim);\n  font-size: 12px;\n}\n\n.history-total {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  font-size: 12px;\n}\n\n.chart-container {\n  gap: 0;\n  display: flex;\n}\n\n.chart-y-axis {\n  flex-shrink: 0;\n  height: 124px;\n  margin-bottom: 26px;\n  padding-right: 10px;\n  position: relative;\n}\n\n.chart-y-label {\n  color: var(--gs-text-dimmest);\n  font-variant-numeric: tabular-nums;\n  font-size: 10px;\n  line-height: 1;\n  position: absolute;\n  left: 0;\n  transform: translateY(-50%);\n}\n\n.chart-main {\n  flex: 1;\n  min-width: 0;\n  height: 124px;\n  margin-bottom: 26px;\n  position: relative;\n}\n\n.chart-gridlines {\n  pointer-events: none;\n  flex-direction: column;\n  justify-content: space-between;\n  display: flex;\n  position: absolute;\n  inset: 0;\n}\n\n.chart-gridline {\n  border-top: .5px solid var(--gs-border);\n  height: 0;\n}\n\n.chart-gridline:last-child {\n  border-top: .5px solid color-mix(in srgb, var(--primary-text-color, #000) 14%, transparent);\n}\n\n.chart-bars {\n  justify-content: space-around;\n  align-items: stretch;\n  padding: 0 4px;\n  display: flex;\n  position: absolute;\n  inset: 0;\n}\n\n.chart-bar-group {\n  flex-direction: column;\n  flex: 1;\n  justify-content: flex-end;\n  align-items: center;\n  max-width: 64px;\n  padding: 0 6px;\n  display: flex;\n  position: relative;\n}\n\n.chart-stack {\n  border-radius: 3px 3px 0 0;\n  flex-direction: column-reverse;\n  width: 100%;\n  display: flex;\n  overflow: hidden;\n}\n\n.chart-segment {\n  width: 100%;\n  min-height: 0;\n}\n\n.chart-segment + .chart-segment {\n  border-bottom: .5px solid #ffffff4d;\n}\n\n.chart-day-label {\n  color: var(--gs-text-dim);\n  white-space: nowrap;\n  margin-top: 4px;\n  font-size: 11px;\n  position: absolute;\n  top: 100%;\n}\n\n.chart-bar-group.today .chart-day-label {\n  color: var(--primary-text-color);\n  font-weight: 500;\n}\n\n.chart-bar-group:hover .chart-stack {\n  filter: brightness(1.08);\n}\n\n.chart-tooltip {\n  background: var(--gs-card-bg, var(--card-background-color, #fff));\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #000) 14%, transparent);\n  border-radius: var(--gs-radius-md);\n  color: var(--primary-text-color);\n  white-space: nowrap;\n  z-index: 10;\n  pointer-events: none;\n  padding: 8px 12px;\n  font-size: 11px;\n  display: none;\n  position: absolute;\n  bottom: calc(100% + 8px);\n  left: 50%;\n  transform: translateX(-50%);\n  box-shadow: 0 4px 16px #0000001f;\n}\n\n.chart-bar-group:hover .chart-tooltip {\n  display: block;\n}\n\n.tooltip-title {\n  border-bottom: .5px solid var(--gs-border);\n  margin-bottom: 4px;\n  padding-bottom: 4px;\n  font-size: 12px;\n  font-weight: 500;\n}\n\n.tooltip-line {\n  align-items: center;\n  gap: 6px;\n  padding: 2px 0;\n  display: flex;\n}\n\n.tooltip-dot {\n  border-radius: 2px;\n  flex-shrink: 0;\n  width: 6px;\n  height: 6px;\n}\n\n.tooltip-mins {\n  font-variant-numeric: tabular-nums;\n  margin-left: auto;\n  padding-left: 12px;\n  font-weight: 500;\n}\n\n.tooltip-total {\n  border-top: .5px solid var(--gs-border);\n  justify-content: space-between;\n  margin-top: 4px;\n  padding-top: 4px;\n  font-weight: 500;\n  display: flex;\n}\n\n.chart-legend {\n  flex-wrap: wrap;\n  gap: 4px 14px;\n  margin-top: 12px;\n  display: flex;\n}\n\n.legend-item {\n  color: var(--gs-text-dim);\n  align-items: center;\n  gap: 5px;\n  font-size: 11px;\n  display: flex;\n}\n\n.legend-dot {\n  border-radius: 2px;\n  flex-shrink: 0;\n  width: 8px;\n  height: 8px;\n}\n\n.schedule-strip {\n  border-top: 1px solid var(--gs-border);\n  flex-direction: column;\n  gap: 6px;\n  margin-top: 10px;\n  padding-top: 10px;\n  display: flex;\n}\n\n.schedule-row {\n  align-items: center;\n  gap: 8px;\n  display: flex;\n}\n\n.schedule-time {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  align-items: center;\n  gap: 4px;\n  min-width: 80px;\n  font-size: 11px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.schedule-icon {\n  fill: currentColor;\n  opacity: .6;\n  flex-shrink: 0;\n  width: 12px;\n  height: 12px;\n}\n\n.schedule-days {\n  gap: 3px;\n  display: flex;\n}\n\n.schedule-day {\n  text-transform: uppercase;\n  letter-spacing: .3px;\n  border-radius: 4px;\n  justify-content: center;\n  align-items: center;\n  width: 20px;\n  height: 18px;\n  font-size: 9px;\n  font-weight: 600;\n  display: flex;\n}\n\n.schedule-day.active {\n  background: color-mix(in srgb, var(--gs-green-400) 20%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.schedule-day.inactive {\n  background: var(--gs-surface);\n  color: var(--gs-text-dimmest);\n}\n\n.schedule-day.paused {\n  background: color-mix(in srgb, var(--gs-amber) 12%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.schedule-row.now-active, .valve-schedule-row.now-active, .socket-schedule-mini.now-active {\n  background: color-mix(in srgb, var(--gs-green-400) 10%, transparent);\n  border-radius: var(--gs-radius-sm);\n  padding: 4px 6px;\n}\n\n.schedule-row.now-active .schedule-time, .valve-schedule-row.now-active .valve-schedule-time, .socket-schedule-mini.now-active .schedule-time {\n  color: var(--gs-green-400);\n}\n\n.schedule-row.now-active .schedule-icon, .valve-schedule-row.now-active .schedule-icon, .socket-schedule-mini.now-active .schedule-icon {\n  opacity: 1;\n}\n\n.schedule-icon-wrap {\n  flex-shrink: 0;\n  display: inline-flex;\n  position: relative;\n}\n\n.schedule-paused .schedule-icon {\n  color: var(--gs-amber);\n  opacity: .8;\n}\n\n.schedule-paused .schedule-icon-wrap:after {\n  content: \"\";\n  background: linear-gradient(to top right,\n        transparent calc(50% - .5px),\n        var(--gs-amber) calc(50% - .5px),\n        var(--gs-amber) calc(50% + .5px),\n        transparent calc(50% + .5px));\n  opacity: .7;\n  pointer-events: none;\n  width: 14px;\n  height: 14px;\n  position: absolute;\n  top: -1px;\n  left: -1px;\n}\n\n.schedule-pause-badge {\n  color: var(--gs-amber);\n  background: color-mix(in srgb, var(--gs-amber) 10%, var(--gs-card-bg));\n  white-space: nowrap;\n  border-radius: 4px;\n  align-items: center;\n  gap: 3px;\n  margin-left: auto;\n  padding: 2px 7px;\n  font-size: 10px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.valve-schedule-mini {\n  border-top: 1px solid var(--gs-border);\n  flex-direction: column;\n  gap: 4px;\n  margin-top: 8px;\n  padding-top: 8px;\n  display: flex;\n}\n\n.valve-schedule-row {\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 6px;\n  display: flex;\n}\n\n.valve-schedule-time {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  text-align: center;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  font-size: 11px;\n  display: inline-flex;\n}\n\n.valve-schedule-mini .schedule-days {\n  justify-content: center;\n  gap: 3px;\n}\n\n.valve-schedule-mini .schedule-day {\n  border-radius: 4px;\n  width: 20px;\n  height: 18px;\n  font-size: 9px;\n}\n\n@container (width <= 120px) {\n  .valve-header {\n    flex-wrap: wrap;\n  }\n\n  .pill {\n    border-radius: 14px;\n    flex-direction: column;\n    gap: 3px;\n    padding: 3px;\n  }\n}\n\n@container (width <= 150px) {\n  .valve-header {\n    margin-bottom: 6px;\n  }\n\n  .valve-name {\n    font-size: 12px;\n  }\n\n  .valve-schedule-time {\n    font-size: 10px;\n  }\n\n  .valve-schedule-mini .schedule-day {\n    border-radius: 3px;\n    width: 16px;\n    height: 14px;\n    font-size: 8px;\n  }\n\n  .valve-schedule-row {\n    flex-flow: row;\n    justify-content: center;\n    gap: 3px;\n  }\n\n  .valve-schedule-time {\n    white-space: nowrap;\n  }\n\n  .valve-schedule-mini .schedule-days {\n    gap: 1px;\n  }\n\n  .valve-schedule-mini .schedule-day {\n    border-radius: 50%;\n    width: 5px;\n    height: 5px;\n    padding: 0;\n    font-size: 0;\n    overflow: hidden;\n  }\n\n  .valve-schedule-mini .schedule-day.active {\n    background: var(--gs-green-400);\n  }\n\n  .valve-schedule-mini .schedule-day.inactive {\n    background: var(--gs-track);\n  }\n\n  .valve-schedule-mini .schedule-day.paused {\n    background: var(--gs-amber);\n  }\n}\n\n.valve.schedule-paused {\n  border-color: color-mix(in srgb, var(--gs-amber) 20%, transparent);\n}\n\n.socket-schedule-mini {\n  border-top: 1px solid var(--gs-border);\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  margin-top: 8px;\n  padding-top: 8px;\n  display: flex;\n}\n\n.socket-schedule-mini .schedule-time {\n  min-width: auto;\n}\n\n.socket-schedule-mini .schedule-days {\n  flex-wrap: nowrap;\n}\n\n@keyframes valveIn {\n  from {\n    opacity: 0;\n    transform: translateY(8px);\n  }\n\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n\n@keyframes dropPulse {\n  0%, 100% {\n    opacity: .6;\n    transform: rotate(-45deg) scale(1);\n  }\n\n  50% {\n    opacity: 1;\n    transform: rotate(-45deg) scale(1.15);\n  }\n}\n\n@keyframes countPulse {\n  0%, 100% {\n    opacity: 1;\n  }\n\n  50% {\n    opacity: .55;\n  }\n}\n\n@keyframes mowerDrive {\n  0% {\n    transform: translateX(-130%);\n  }\n\n  100% {\n    transform: translateX(130%);\n  }\n}\n\n@keyframes particleA {\n  0% {\n    opacity: .9;\n    transform: translate(0) scale(1);\n  }\n\n  100% {\n    opacity: 0;\n    transform: translate(-8px, -10px) scale(.3);\n  }\n}\n\n@keyframes particleB {\n  0% {\n    opacity: .8;\n    transform: translate(0) scale(1);\n  }\n\n  100% {\n    opacity: 0;\n    transform: translate(-5px, -12px) scale(.2);\n  }\n}\n\n@keyframes mowPulse {\n  0%, 100% {\n    opacity: 1;\n    transform: scale(1);\n  }\n\n  50% {\n    opacity: .5;\n    transform: scale(1.3);\n  }\n}\n\n@container (width <= 400px) {\n  .valves-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  .valves-grid.count-1 {\n    grid-template-columns: 1fr;\n  }\n\n  .knob-section {\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .knob-info {\n    flex-flow: wrap;\n    justify-content: center;\n  }\n\n  .mower-actions {\n    flex-direction: column;\n  }\n\n  .mower-btn {\n    justify-content: center;\n  }\n}\n\n@container (width <= 300px) {\n  .mower-section, .valve-section, .socket-section {\n    padding-left: 1rem;\n    padding-right: 1rem;\n  }\n\n  .card-header {\n    padding: 12px 1rem;\n  }\n\n  .valves-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .mower-header {\n    gap: 8px;\n  }\n\n  .mower-name {\n    font-size: 12px;\n  }\n\n  .mower-activity {\n    flex-wrap: wrap;\n    font-size: 10px;\n  }\n\n  .mower-battery-chip {\n    padding: 2px 6px;\n    font-size: 10px;\n  }\n\n  .mower-btn {\n    padding: 6px 10px;\n    font-size: 11px;\n  }\n\n  .schedule-row {\n    flex-wrap: wrap;\n    gap: 4px;\n  }\n\n  .schedule-time {\n    min-width: unset;\n    font-size: 10px;\n  }\n\n  .schedule-day {\n    width: 16px;\n    height: 14px;\n    font-size: 8px;\n  }\n\n  .schedule-days {\n    gap: 2px;\n  }\n\n  .socket-schedule-mini {\n    flex-wrap: wrap;\n    gap: 4px;\n  }\n}\n";
 
 
-var $76eee68ef692a3c3$exports = {};
-$76eee68ef692a3c3$exports = JSON.parse("{\"default_title\":\"Gardena Smart System\",\"config_backend\":\"Backend Integration\",\"config_backend_auto\":\"Auto-detect\",\"config_backend_thecem\":\"hass-gardena-smart-system (thecem)\",\"config_backend_kayloehmann\":\"ha-gardena-smart-system (kayloehmann)\",\"config_title\":\"Title (Optional)\",\"config_select_device\":\"Please select a Gardena Smart System device in the card configuration.\",\"config_no_device\":\"Please select a device.\",\"config_show_header\":\"Show header\",\"config_show_duration\":\"Show duration picker\",\"config_default_duration\":\"Default duration (minutes)\",\"config_valve_columns\":\"Valve columns per row\",\"config_valve_entities\":\"Valve zones to display (leave empty for all)\",\"config_socket_entities\":\"Power sockets to display (leave empty for all)\",\"state_online\":\"Online\",\"state_offline\":\"Offline\",\"state_unavailable\":\"Unavailable\",\"section_valves\":\"Valve Zones\",\"section_socket\":\"Power Socket\",\"knob_unit_minutes\":\"Minutes\",\"valve_zone\":\"Zone\",\"valve_ready\":\"Ready\",\"valve_watering\":\"Watering\",\"valve_watering_scheduled\":\"Watering (schedule)\",\"valve_watering_manual\":\"Watering (manual)\",\"valve_open\":\"Open\",\"valve_closed\":\"Closed\",\"socket_off\":\"Off\",\"socket_active\":\"Active\",\"socket_active_scheduled\":\"Active (schedule)\",\"socket_active_manual\":\"Active (always on)\",\"socket_active_timed\":\"Active (manual)\",\"section_mower\":\"Mower\",\"config_mower_entities\":\"Mowers to display (leave empty for all)\",\"mower_cutting\":\"Mowing\",\"mower_cutting_manual\":\"Mowing (manual)\",\"mower_searching\":\"Returning to dock\",\"mower_leaving\":\"Leaving dock\",\"mower_next_action\":\"Starting next action\",\"mower_paused\":\"Paused\",\"mower_paused_cs\":\"Paused (in dock)\",\"mower_charging\":\"Charging\",\"mower_parked_timer\":\"Parked (schedule)\",\"mower_parked_manual\":\"Parked (manual)\",\"mower_parked_auto\":\"Parked (auto timer)\",\"mower_parked_frost\":\"Parked (frost)\",\"mower_stopped_garden\":\"Stopped in garden\",\"mower_searching_sat\":\"Searching for satellites\",\"mower_error\":\"Error\",\"mower_error_prefix\":\"Error\",\"error_trapped\":\"Mower is stuck\",\"error_lifted\":\"Mower was lifted\",\"error_outside\":\"Outside working area\",\"error_collision\":\"Collision detected\",\"error_upside_down\":\"Mower is upside down\",\"error_low_battery\":\"Battery too low\",\"error_temp_stopped\":\"Temporarily stopped\",\"error_cs_blocked\":\"Charging station blocked\",\"mower_mowing\":\"Mowing\",\"mower_docked\":\"Docked\",\"mower_start\":\"Start\",\"mower_resume_schedule\":\"Resume schedule\",\"mower_pause\":\"Pause\",\"mower_resume\":\"Resume\",\"mower_park_next\":\"Park until next\",\"mower_park\":\"Park\",\"ws_connected\":\"Connected\",\"ws_disconnected\":\"Disconnected\",\"version_required_title\":\"No supported integration found\",\"version_required_message\":\"This card requires a supported Gardena Smart System integration. Please install hass-gardena-smart-system (thecem) or ha-gardena-smart-system (kayloehmann) via HACS.\",\"patch_warning_title\":\"Patched integration required\",\"patch_warning_message\":\"Controls are disabled. Please install the patched integration from mtheli/hass-gardena-smart-system to enable device control.\",\"section_history\":\"History\",\"config_show_history\":\"Show history chart\",\"day_today\":\"Today\",\"day_sun\":\"Sun\",\"day_mon\":\"Mon\",\"day_tue\":\"Tue\",\"day_wed\":\"Wed\",\"day_thu\":\"Thu\",\"day_fri\":\"Fri\",\"day_sat\":\"Sat\",\"history_total_label\":\"Total\",\"chip_battery\":\"Battery\",\"config_show_schedules\":\"Show schedules\",\"schedule_tooltip\":\"Schedule from Gardena App\",\"schedule_tooltip_paused\":\"Schedule paused\",\"schedule_tooltip_active\":\"Schedule currently active\",\"schedule_paused\":\"Paused\",\"schedule_paused_until\":\"Paused until\",\"schedule_day_mo\":\"Mo\",\"schedule_day_tu\":\"Tu\",\"schedule_day_we\":\"We\",\"schedule_day_th\":\"Th\",\"schedule_day_fr\":\"Fr\",\"schedule_day_sa\":\"Sa\",\"schedule_day_su\":\"Su\",\"schedule_missing_title\":\"Schedule integration not installed\",\"schedule_missing_message\":\"Install Gardena Smart Schedule via HACS to display schedules from the Gardena App.\",\"sensor_temperature\":\"Temperature\",\"sensor_humidity\":\"Humidity\",\"sensor_light\":\"Light\",\"sensor_soil_temperature\":\"Soil Temp\",\"sensor_soil_humidity\":\"Soil Humidity\"}");
+var $1dfb787b5a538269$exports = {};
+$1dfb787b5a538269$exports = JSON.parse("{\"default_title\":\"Gardena Smart System\",\"config_backend\":\"Backend Integration\",\"config_backend_auto\":\"Auto-detect\",\"config_backend_thecem\":\"hass-gardena-smart-system (thecem)\",\"config_backend_kayloehmann\":\"ha-gardena-smart-system (kayloehmann)\",\"config_title\":\"Title (Optional)\",\"config_select_device\":\"Please select a Gardena Smart System device in the card configuration.\",\"config_no_device\":\"Please select a device.\",\"config_sections\":\"Sections to display (leave empty for all)\",\"config_show_header\":\"Show header\",\"config_show_duration\":\"Show duration picker\",\"config_default_duration\":\"Default duration (minutes)\",\"config_valve_columns\":\"Valve columns per row\",\"config_valve_entities\":\"Valve zones to display (leave empty for all)\",\"config_socket_entities\":\"Power sockets to display (leave empty for all)\",\"state_online\":\"Online\",\"state_offline\":\"Offline\",\"state_unavailable\":\"Unavailable\",\"section_valves\":\"Valve Zones\",\"section_socket\":\"Power Socket\",\"knob_unit_minutes\":\"Minutes\",\"valve_zone\":\"Zone\",\"valve_ready\":\"Ready\",\"valve_watering\":\"Watering\",\"valve_watering_scheduled\":\"Watering (schedule)\",\"valve_watering_manual\":\"Watering (manual)\",\"valve_open\":\"Open\",\"valve_closed\":\"Closed\",\"socket_off\":\"Off\",\"socket_active\":\"Active\",\"socket_active_scheduled\":\"Active (schedule)\",\"socket_active_manual\":\"Active (always on)\",\"socket_active_timed\":\"Active (manual)\",\"section_mower\":\"Mower\",\"config_mower_entities\":\"Mowers to display (leave empty for all)\",\"mower_cutting\":\"Mowing\",\"mower_cutting_manual\":\"Mowing (manual)\",\"mower_searching\":\"Returning to dock\",\"mower_leaving\":\"Leaving dock\",\"mower_next_action\":\"Starting next action\",\"mower_paused\":\"Paused\",\"mower_paused_cs\":\"Paused (in dock)\",\"mower_charging\":\"Charging\",\"mower_parked_timer\":\"Parked (schedule)\",\"mower_parked_manual\":\"Parked (manual)\",\"mower_parked_auto\":\"Parked (auto timer)\",\"mower_parked_frost\":\"Parked (frost)\",\"mower_stopped_garden\":\"Stopped in garden\",\"mower_searching_sat\":\"Searching for satellites\",\"mower_error\":\"Error\",\"mower_error_prefix\":\"Error\",\"error_trapped\":\"Mower is stuck\",\"error_lifted\":\"Mower was lifted\",\"error_outside\":\"Outside working area\",\"error_collision\":\"Collision detected\",\"error_upside_down\":\"Mower is upside down\",\"error_low_battery\":\"Battery too low\",\"error_temp_stopped\":\"Temporarily stopped\",\"error_cs_blocked\":\"Charging station blocked\",\"mower_mowing\":\"Mowing\",\"mower_docked\":\"Docked\",\"mower_start\":\"Start\",\"mower_resume_schedule\":\"Resume schedule\",\"mower_pause\":\"Pause\",\"mower_resume\":\"Resume\",\"mower_park_next\":\"Park until next\",\"mower_park\":\"Park\",\"ws_connected\":\"Connected\",\"ws_disconnected\":\"Disconnected\",\"version_required_title\":\"No supported integration found\",\"version_required_message\":\"This card requires a supported Gardena Smart System integration. Please install hass-gardena-smart-system (thecem) or ha-gardena-smart-system (kayloehmann) via HACS.\",\"patch_warning_title\":\"Patched integration required\",\"patch_warning_message\":\"Controls are disabled. Please install the patched integration from mtheli/hass-gardena-smart-system to enable device control.\",\"section_history\":\"History\",\"config_show_history\":\"Show history chart\",\"day_today\":\"Today\",\"day_sun\":\"Sun\",\"day_mon\":\"Mon\",\"day_tue\":\"Tue\",\"day_wed\":\"Wed\",\"day_thu\":\"Thu\",\"day_fri\":\"Fri\",\"day_sat\":\"Sat\",\"history_total_label\":\"Total\",\"chip_battery\":\"Battery\",\"config_show_schedules\":\"Show schedules\",\"schedule_tooltip\":\"Schedule from Gardena App\",\"schedule_tooltip_paused\":\"Schedule paused\",\"schedule_tooltip_active\":\"Schedule currently active\",\"schedule_paused\":\"Paused\",\"schedule_paused_until\":\"Paused until\",\"schedule_day_mo\":\"Mo\",\"schedule_day_tu\":\"Tu\",\"schedule_day_we\":\"We\",\"schedule_day_th\":\"Th\",\"schedule_day_fr\":\"Fr\",\"schedule_day_sa\":\"Sa\",\"schedule_day_su\":\"Su\",\"schedule_missing_title\":\"Schedule integration not installed\",\"schedule_missing_message\":\"Install Gardena Smart Schedule via HACS to display schedules from the Gardena App.\",\"sensor_temperature\":\"Temperature\",\"sensor_humidity\":\"Humidity\",\"sensor_light\":\"Light\",\"sensor_soil_temperature\":\"Soil Temp\",\"sensor_soil_humidity\":\"Soil Humidity\"}");
 
 
-var $238d401f28c1db46$exports = {};
-$238d401f28c1db46$exports = JSON.parse('{"default_title":"Gardena Smart System","config_backend":"Backend-Integration","config_backend_auto":"Automatisch erkennen","config_backend_thecem":"hass-gardena-smart-system (thecem)","config_backend_kayloehmann":"ha-gardena-smart-system (kayloehmann)","config_title":"Titel (Optional)","config_select_device":"Bitte w\xe4hle ein Gardena Smart System Ger\xe4t in der Kartenkonfiguration.","config_no_device":"Bitte w\xe4hle ein Ger\xe4t.","config_show_header":"Header anzeigen","config_show_duration":"Zeitauswahl anzeigen","config_default_duration":"Standard-Laufzeit (Minuten)","config_valve_columns":"Ventile pro Zeile","config_valve_entities":"Anzuzeigende Ventilzonen (leer = alle)","config_socket_entities":"Anzuzeigende Steckdosen (leer = alle)","state_online":"Online","state_offline":"Offline","state_unavailable":"Nicht verf\xfcgbar","section_valves":"Ventilzonen","section_socket":"Steckdose","knob_unit_minutes":"Minuten","valve_zone":"Zone","valve_ready":"Bereit","valve_watering":"Bew\xe4sserung","valve_watering_scheduled":"Bew\xe4sserung (Zeitplan)","valve_watering_manual":"Bew\xe4sserung (manuell)","valve_open":"Offen","valve_closed":"Geschlossen","socket_off":"Aus","socket_active":"Aktiv","socket_active_scheduled":"Aktiv (Zeitplan)","socket_active_manual":"Aktiv (Dauerbetrieb)","socket_active_timed":"Aktiv (manuell)","section_mower":"M\xe4her","config_mower_entities":"Anzuzeigende M\xe4her (leer = alle)","mower_cutting":"M\xe4ht","mower_cutting_manual":"M\xe4ht (manuell)","mower_searching":"R\xfcckkehr zur Station","mower_leaving":"Verl\xe4sst Station","mower_next_action":"N\xe4chste Aktion","mower_paused":"Pausiert","mower_paused_cs":"Pausiert (in Station)","mower_charging":"L\xe4dt","mower_parked_timer":"Geparkt (Zeitplan)","mower_parked_manual":"Geparkt (manuell)","mower_parked_auto":"Geparkt (Autotimer)","mower_parked_frost":"Geparkt (Frost)","mower_stopped_garden":"Gestoppt im Garten","mower_searching_sat":"Satellitensuche","mower_error":"Fehler","mower_error_prefix":"Fehler","error_trapped":"M\xe4her steckt fest","error_lifted":"M\xe4her wurde angehoben","error_outside":"Au\xdferhalb des Arbeitsbereichs","error_collision":"Kollision erkannt","error_upside_down":"M\xe4her umgedreht","error_low_battery":"Akku zu schwach","error_temp_stopped":"Vor\xfcbergehend gestoppt","error_cs_blocked":"Ladestation blockiert","mower_mowing":"M\xe4ht","mower_docked":"In Station","mower_start":"Starten","mower_resume_schedule":"Zeitplan fortsetzen","mower_pause":"Pause","mower_resume":"Fortsetzen","mower_park_next":"Parken bis n\xe4chster","mower_park":"Parken","ws_connected":"Verbunden","ws_disconnected":"Getrennt","version_required_title":"Keine unterst\xfctzte Integration gefunden","version_required_message":"Diese Karte ben\xf6tigt eine unterst\xfctzte Gardena Smart System Integration. Bitte hass-gardena-smart-system (thecem) oder ha-gardena-smart-system (kayloehmann) \xfcber HACS installieren.","patch_warning_title":"Gepatchte Integration erforderlich","patch_warning_message":"Steuerung deaktiviert. Bitte die gepatchte Integration von mtheli/hass-gardena-smart-system installieren, um Ger\xe4te steuern zu k\xf6nnen.","section_history":"Historie","config_show_history":"Verlaufsdiagramm anzeigen","day_today":"Heute","day_sun":"So","day_mon":"Mo","day_tue":"Di","day_wed":"Mi","day_thu":"Do","day_fri":"Fr","day_sat":"Sa","history_total_label":"Gesamt","chip_battery":"Akku","config_show_schedules":"Zeitpl\xe4ne anzeigen","schedule_tooltip":"Zeitplan aus der Gardena App","schedule_tooltip_paused":"Zeitplan pausiert","schedule_tooltip_active":"Zeitplan gerade aktiv","schedule_paused":"Pausiert","schedule_paused_until":"Pausiert bis","schedule_day_mo":"Mo","schedule_day_tu":"Di","schedule_day_we":"Mi","schedule_day_th":"Do","schedule_day_fr":"Fr","schedule_day_sa":"Sa","schedule_day_su":"So","schedule_missing_title":"Schedule-Integration nicht installiert","schedule_missing_message":"Installiere Gardena Smart Schedule \xfcber HACS, um Zeitpl\xe4ne aus der Gardena App anzuzeigen.","sensor_temperature":"Temperatur","sensor_humidity":"Feuchtigkeit","sensor_light":"Licht","sensor_soil_temperature":"Bodentemp.","sensor_soil_humidity":"Bodenfeuchtigkeit"}');
+var $e236ed736515ddf8$exports = {};
+$e236ed736515ddf8$exports = JSON.parse('{"default_title":"Gardena Smart System","config_backend":"Backend-Integration","config_backend_auto":"Automatisch erkennen","config_backend_thecem":"hass-gardena-smart-system (thecem)","config_backend_kayloehmann":"ha-gardena-smart-system (kayloehmann)","config_title":"Titel (Optional)","config_select_device":"Bitte w\xe4hle ein Gardena Smart System Ger\xe4t in der Kartenkonfiguration.","config_no_device":"Bitte w\xe4hle ein Ger\xe4t.","config_sections":"Anzuzeigende Bereiche (leer = alle)","config_show_header":"Header anzeigen","config_show_duration":"Zeitauswahl anzeigen","config_default_duration":"Standard-Laufzeit (Minuten)","config_valve_columns":"Ventile pro Zeile","config_valve_entities":"Anzuzeigende Ventilzonen (leer = alle)","config_socket_entities":"Anzuzeigende Steckdosen (leer = alle)","state_online":"Online","state_offline":"Offline","state_unavailable":"Nicht verf\xfcgbar","section_valves":"Ventilzonen","section_socket":"Steckdose","knob_unit_minutes":"Minuten","valve_zone":"Zone","valve_ready":"Bereit","valve_watering":"Bew\xe4sserung","valve_watering_scheduled":"Bew\xe4sserung (Zeitplan)","valve_watering_manual":"Bew\xe4sserung (manuell)","valve_open":"Offen","valve_closed":"Geschlossen","socket_off":"Aus","socket_active":"Aktiv","socket_active_scheduled":"Aktiv (Zeitplan)","socket_active_manual":"Aktiv (Dauerbetrieb)","socket_active_timed":"Aktiv (manuell)","section_mower":"M\xe4her","config_mower_entities":"Anzuzeigende M\xe4her (leer = alle)","mower_cutting":"M\xe4ht","mower_cutting_manual":"M\xe4ht (manuell)","mower_searching":"R\xfcckkehr zur Station","mower_leaving":"Verl\xe4sst Station","mower_next_action":"N\xe4chste Aktion","mower_paused":"Pausiert","mower_paused_cs":"Pausiert (in Station)","mower_charging":"L\xe4dt","mower_parked_timer":"Geparkt (Zeitplan)","mower_parked_manual":"Geparkt (manuell)","mower_parked_auto":"Geparkt (Autotimer)","mower_parked_frost":"Geparkt (Frost)","mower_stopped_garden":"Gestoppt im Garten","mower_searching_sat":"Satellitensuche","mower_error":"Fehler","mower_error_prefix":"Fehler","error_trapped":"M\xe4her steckt fest","error_lifted":"M\xe4her wurde angehoben","error_outside":"Au\xdferhalb des Arbeitsbereichs","error_collision":"Kollision erkannt","error_upside_down":"M\xe4her umgedreht","error_low_battery":"Akku zu schwach","error_temp_stopped":"Vor\xfcbergehend gestoppt","error_cs_blocked":"Ladestation blockiert","mower_mowing":"M\xe4ht","mower_docked":"In Station","mower_start":"Starten","mower_resume_schedule":"Zeitplan fortsetzen","mower_pause":"Pause","mower_resume":"Fortsetzen","mower_park_next":"Parken bis n\xe4chster","mower_park":"Parken","ws_connected":"Verbunden","ws_disconnected":"Getrennt","version_required_title":"Keine unterst\xfctzte Integration gefunden","version_required_message":"Diese Karte ben\xf6tigt eine unterst\xfctzte Gardena Smart System Integration. Bitte hass-gardena-smart-system (thecem) oder ha-gardena-smart-system (kayloehmann) \xfcber HACS installieren.","patch_warning_title":"Gepatchte Integration erforderlich","patch_warning_message":"Steuerung deaktiviert. Bitte die gepatchte Integration von mtheli/hass-gardena-smart-system installieren, um Ger\xe4te steuern zu k\xf6nnen.","section_history":"Historie","config_show_history":"Verlaufsdiagramm anzeigen","day_today":"Heute","day_sun":"So","day_mon":"Mo","day_tue":"Di","day_wed":"Mi","day_thu":"Do","day_fri":"Fr","day_sat":"Sa","history_total_label":"Gesamt","chip_battery":"Akku","config_show_schedules":"Zeitpl\xe4ne anzeigen","schedule_tooltip":"Zeitplan aus der Gardena App","schedule_tooltip_paused":"Zeitplan pausiert","schedule_tooltip_active":"Zeitplan gerade aktiv","schedule_paused":"Pausiert","schedule_paused_until":"Pausiert bis","schedule_day_mo":"Mo","schedule_day_tu":"Di","schedule_day_we":"Mi","schedule_day_th":"Do","schedule_day_fr":"Fr","schedule_day_sa":"Sa","schedule_day_su":"So","schedule_missing_title":"Schedule-Integration nicht installiert","schedule_missing_message":"Installiere Gardena Smart Schedule \xfcber HACS, um Zeitpl\xe4ne aus der Gardena App anzuzeigen.","sensor_temperature":"Temperatur","sensor_humidity":"Feuchtigkeit","sensor_light":"Licht","sensor_soil_temperature":"Bodentemp.","sensor_soil_humidity":"Bodenfeuchtigkeit"}');
 
 
-const $d8078e452c66bdbe$var$LOCALES = {
-    en: (/*@__PURE__*/$parcel$interopDefault($76eee68ef692a3c3$exports)),
-    de: (/*@__PURE__*/$parcel$interopDefault($238d401f28c1db46$exports))
+const $bfc33d6b165ebf37$var$LOCALES = {
+    en: (/*@__PURE__*/$parcel$interopDefault($1dfb787b5a538269$exports)),
+    de: (/*@__PURE__*/$parcel$interopDefault($e236ed736515ddf8$exports))
 };
-function $d8078e452c66bdbe$export$625550452a3fa3ec(hass, key) {
+function $bfc33d6b165ebf37$export$625550452a3fa3ec(hass, key) {
     const lang = hass?.language || 'en';
-    const locale = $d8078e452c66bdbe$var$LOCALES[lang] || $d8078e452c66bdbe$var$LOCALES.en;
-    return locale[key] || $d8078e452c66bdbe$var$LOCALES.en[key] || key;
+    const locale = $bfc33d6b165ebf37$var$LOCALES[lang] || $bfc33d6b165ebf37$var$LOCALES.en;
+    return locale[key] || $bfc33d6b165ebf37$var$LOCALES.en[key] || key;
 }
 
 
@@ -653,8 +653,8 @@ function $d8078e452c66bdbe$export$625550452a3fa3ec(hass, key) {
  *
  * Uses custom domain-level services (gardena_smart_system.*) with device_id parameter.
  * Duration parameters are in seconds.
- */ const $f88a84c408bb0ce9$var$DOMAIN = 'gardena_smart_system';
-class $f88a84c408bb0ce9$export$40967b6313899a18 {
+ */ const $745bb0daa83c0e2b$var$DOMAIN = 'gardena_smart_system';
+class $745bb0daa83c0e2b$export$40967b6313899a18 {
     get id() {
         return 'thecem';
     }
@@ -667,36 +667,36 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
             data.service_id = serviceId;
             data.duration = durationSec;
         }
-        await hass.callService($f88a84c408bb0ce9$var$DOMAIN, 'valve_open', data);
+        await hass.callService($745bb0daa83c0e2b$var$DOMAIN, 'valve_open', data);
     }
     async closeValve(hass, { entityId: entityId, gardenaDeviceId: gardenaDeviceId, serviceId: serviceId }) {
         const data = {
             device_id: gardenaDeviceId
         };
         if (serviceId != null) data.service_id = serviceId;
-        await hass.callService($f88a84c408bb0ce9$var$DOMAIN, 'valve_close', data);
+        await hass.callService($745bb0daa83c0e2b$var$DOMAIN, 'valve_close', data);
     }
     // -- Mower --
     async callMowerAction(hass, entityId, action, durationSec) {
         switch(action){
             case 'start_override':
-                await hass.callService($f88a84c408bb0ce9$var$DOMAIN, 'start_override', {
+                await hass.callService($745bb0daa83c0e2b$var$DOMAIN, 'start_override', {
                     entity_id: entityId,
                     duration: durationSec
                 });
                 return true; // started timer
             case 'start_automatic':
-                await hass.callService($f88a84c408bb0ce9$var$DOMAIN, 'start_automatic', {
+                await hass.callService($745bb0daa83c0e2b$var$DOMAIN, 'start_automatic', {
                     entity_id: entityId
                 });
                 return false;
             case 'park_until_next_task':
-                await hass.callService($f88a84c408bb0ce9$var$DOMAIN, 'park_until_next_task', {
+                await hass.callService($745bb0daa83c0e2b$var$DOMAIN, 'park_until_next_task', {
                     entity_id: entityId
                 });
                 return false;
             case 'park_until_further_notice':
-                await hass.callService($f88a84c408bb0ce9$var$DOMAIN, 'park_until_further_notice', {
+                await hass.callService($745bb0daa83c0e2b$var$DOMAIN, 'park_until_further_notice', {
                     entity_id: entityId
                 });
                 return false;
@@ -792,10 +792,10 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
             device_id: gardenaDeviceId
         };
         if (patched) data.duration = durationSec;
-        await hass.callService($f88a84c408bb0ce9$var$DOMAIN, 'power_socket_on', data);
+        await hass.callService($745bb0daa83c0e2b$var$DOMAIN, 'power_socket_on', data);
     }
     async turnOffSocket(hass, { entityId: entityId, gardenaDeviceId: gardenaDeviceId }) {
-        await hass.callService($f88a84c408bb0ce9$var$DOMAIN, 'power_socket_off', {
+        await hass.callService($745bb0daa83c0e2b$var$DOMAIN, 'power_socket_off', {
             device_id: gardenaDeviceId
         });
     }
@@ -814,7 +814,7 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
         const device = (hass.devices || {})[entity.device_id];
         if (!device?.identifiers) return null;
         for (const [domain, id] of device.identifiers){
-            if (domain === $f88a84c408bb0ce9$var$DOMAIN) return id;
+            if (domain === $745bb0daa83c0e2b$var$DOMAIN) return id;
         }
         return null;
     }
@@ -828,8 +828,8 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
  * Uses standard HA services (valve.open_valve, lawn_mower.start_mowing, switch.turn_on)
  * plus entity-services for timed operations (duration in minutes).
  * Device identifiers use serial number: (DOMAIN, device.serial).
- */ const $e9db53adf75333c7$var$DOMAIN = 'gardena_smart_system';
-class $e9db53adf75333c7$export$15679f44c07c43cc {
+ */ const $846aa683367f4d83$var$DOMAIN = 'gardena_smart_system';
+class $846aa683367f4d83$export$15679f44c07c43cc {
     get id() {
         return 'kayloehmann';
     }
@@ -837,7 +837,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
     async openValve(hass, { entityId: entityId, durationSec: durationSec }) {
         // Use entity-service start_watering with duration in minutes
         const durationMin = Math.round(durationSec / 60);
-        await hass.callService($e9db53adf75333c7$var$DOMAIN, 'start_watering', {
+        await hass.callService($846aa683367f4d83$var$DOMAIN, 'start_watering', {
             entity_id: entityId,
             duration: durationMin
         });
@@ -854,7 +854,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
                 {
                     // Entity-service override_schedule with duration in minutes
                     const durationMin = Math.round(durationSec / 60);
-                    await hass.callService($e9db53adf75333c7$var$DOMAIN, 'override_schedule', {
+                    await hass.callService($846aa683367f4d83$var$DOMAIN, 'override_schedule', {
                         entity_id: entityId,
                         duration: durationMin
                     });
@@ -979,7 +979,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
     async turnOnSocket(hass, { entityId: entityId, durationSec: durationSec }) {
         // Entity-service turn_on_for with duration in minutes
         const durationMin = Math.round(durationSec / 60);
-        await hass.callService($e9db53adf75333c7$var$DOMAIN, 'turn_on_for', {
+        await hass.callService($846aa683367f4d83$var$DOMAIN, 'turn_on_for', {
             entity_id: entityId,
             duration: durationMin
         });
@@ -1006,34 +1006,34 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
         const device = (hass.devices || {})[entity.device_id];
         if (!device?.identifiers) return null;
         for (const [domain, id] of device.identifiers){
-            if (domain === $e9db53adf75333c7$var$DOMAIN) return id;
+            if (domain === $846aa683367f4d83$var$DOMAIN) return id;
         }
         return null;
     }
 }
 
 
-const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.3.0";
+const $c181edec8277de1e$export$d5e7ce6d07daf10f = "0.3.0";
 // ---------- Knob constants ----------
-const $ce06635095588d37$var$KNOB_MIN = 5;
-const $ce06635095588d37$var$KNOB_MAX = 120;
-const $ce06635095588d37$var$KNOB_ARC_START = 135;
-const $ce06635095588d37$var$KNOB_ARC_SWEEP = 270;
-const $ce06635095588d37$var$KNOB_RADIUS = 58;
-const $ce06635095588d37$var$KNOB_CX = 70;
-const $ce06635095588d37$var$KNOB_CY = 70;
-const $ce06635095588d37$var$KNOB_CIRCUMFERENCE = 2 * Math.PI * $ce06635095588d37$var$KNOB_RADIUS;
-const $ce06635095588d37$var$KNOB_ARC_LENGTH = $ce06635095588d37$var$KNOB_ARC_SWEEP / 360 * $ce06635095588d37$var$KNOB_CIRCUMFERENCE;
-const $ce06635095588d37$var$KNOB_PRESETS = [
+const $c181edec8277de1e$var$KNOB_MIN = 5;
+const $c181edec8277de1e$var$KNOB_MAX = 120;
+const $c181edec8277de1e$var$KNOB_ARC_START = 135;
+const $c181edec8277de1e$var$KNOB_ARC_SWEEP = 270;
+const $c181edec8277de1e$var$KNOB_RADIUS = 58;
+const $c181edec8277de1e$var$KNOB_CX = 70;
+const $c181edec8277de1e$var$KNOB_CY = 70;
+const $c181edec8277de1e$var$KNOB_CIRCUMFERENCE = 2 * Math.PI * $c181edec8277de1e$var$KNOB_RADIUS;
+const $c181edec8277de1e$var$KNOB_ARC_LENGTH = $c181edec8277de1e$var$KNOB_ARC_SWEEP / 360 * $c181edec8277de1e$var$KNOB_CIRCUMFERENCE;
+const $c181edec8277de1e$var$KNOB_PRESETS = [
     10,
     30,
     60,
     120
 ];
 // Integration domain for custom services (v2+)
-const $ce06635095588d37$var$DOMAIN = 'gardena_smart_system';
+const $c181edec8277de1e$var$DOMAIN = 'gardena_smart_system';
 // ---------- Mower activity mapping ----------
-const $ce06635095588d37$var$MOWER_ACTIVITY_MAP = {
+const $c181edec8277de1e$var$MOWER_ACTIVITY_MAP = {
     'OK_CUTTING': 'mower_cutting',
     'OK_CUTTING_TIMER_OVERRIDDEN': 'mower_cutting_manual',
     'OK_SEARCHING': 'mower_searching',
@@ -1050,7 +1050,7 @@ const $ce06635095588d37$var$MOWER_ACTIVITY_MAP = {
     'SEARCHING_FOR_SATELLITES': 'mower_searching_sat',
     'NONE': 'mower_error'
 };
-const $ce06635095588d37$var$MOWER_ERROR_MAP = {
+const $c181edec8277de1e$var$MOWER_ERROR_MAP = {
     'TRAPPED': 'error_trapped',
     'LIFTED': 'error_lifted',
     'OUTSIDE_WORKING_AREA': 'error_outside',
@@ -1061,11 +1061,11 @@ const $ce06635095588d37$var$MOWER_ERROR_MAP = {
     'CHARGING_STATION_BLOCKED': 'error_cs_blocked'
 };
 // Module-level timer storage — survives card re-creation during config edits
-const $ce06635095588d37$var$TIMER_STORAGE_KEY = 'gardena_card_timers';
-const $ce06635095588d37$var$_persistedTimers = $ce06635095588d37$var$_loadTimers();
-function $ce06635095588d37$var$_loadTimers() {
+const $c181edec8277de1e$var$TIMER_STORAGE_KEY = 'gardena_card_timers';
+const $c181edec8277de1e$var$_persistedTimers = $c181edec8277de1e$var$_loadTimers();
+function $c181edec8277de1e$var$_loadTimers() {
     try {
-        const raw = localStorage.getItem($ce06635095588d37$var$TIMER_STORAGE_KEY);
+        const raw = localStorage.getItem($c181edec8277de1e$var$TIMER_STORAGE_KEY);
         if (!raw) return {};
         const parsed = JSON.parse(raw);
         const timers = {};
@@ -1083,18 +1083,18 @@ function $ce06635095588d37$var$_loadTimers() {
         return {};
     }
 }
-function $ce06635095588d37$var$_saveTimers() {
+function $c181edec8277de1e$var$_saveTimers() {
     try {
         const data = {};
-        for (const [id, t] of Object.entries($ce06635095588d37$var$_persistedTimers))data[id] = {
+        for (const [id, t] of Object.entries($c181edec8277de1e$var$_persistedTimers))data[id] = {
             startTime: t.startTime.toISOString(),
             durationSec: t.durationSec
         };
-        if (Object.keys(data).length > 0) localStorage.setItem($ce06635095588d37$var$TIMER_STORAGE_KEY, JSON.stringify(data));
-        else localStorage.removeItem($ce06635095588d37$var$TIMER_STORAGE_KEY);
+        if (Object.keys(data).length > 0) localStorage.setItem($c181edec8277de1e$var$TIMER_STORAGE_KEY, JSON.stringify(data));
+        else localStorage.removeItem($c181edec8277de1e$var$TIMER_STORAGE_KEY);
     } catch  {}
 }
-class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$export$3f2f9f5909897157) {
+class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
     static get properties() {
         return {
             config: {
@@ -1136,7 +1136,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         // Which pill popup is currently open (entityId or null)
         this._openPillPopup = null;
         // Local countdown tracking: entityId -> { startTime, durationSec }
-        this._valveTimers = $ce06635095588d37$var$_persistedTimers;
+        this._valveTimers = $c181edec8277de1e$var$_persistedTimers;
     }
     connectedCallback() {
         super.connectedCallback();
@@ -1153,15 +1153,15 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     }
     // ---------- Translation helper ----------
     _t(key) {
-        return (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this._hass, key);
+        return (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(this._hass, key);
     }
     set hass(hass) {
         this._hass = hass;
         // Auto-detect backend adapter
-        if (!this._backend && hass.services?.[$ce06635095588d37$var$DOMAIN]) {
+        if (!this._backend && hass.services?.[$c181edec8277de1e$var$DOMAIN]) {
             // valve_open is a domain-level service only registered by thecem's integration
-            if (hass.services[$ce06635095588d37$var$DOMAIN].valve_open) this._backend = new (0, $f88a84c408bb0ce9$export$40967b6313899a18)();
-            else this._backend = new (0, $e9db53adf75333c7$export$15679f44c07c43cc)();
+            if (hass.services[$c181edec8277de1e$var$DOMAIN].valve_open) this._backend = new (0, $745bb0daa83c0e2b$export$40967b6313899a18)();
+            else this._backend = new (0, $846aa683367f4d83$export$15679f44c07c43cc)();
         }
         // Detect patched integration via backend
         if (this._isPatchedIntegration === undefined && this._backend && this._entities?.valves?.length) this._isPatchedIntegration = this._backend.isPatchedIntegration(hass, this._entities);
@@ -1177,7 +1177,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 timerChanged = true;
             }
         }
-        if (timerChanged) $ce06635095588d37$var$_saveTimers();
+        if (timerChanged) $c181edec8277de1e$var$_saveTimers();
         this.requestUpdate();
     }
     get hass() {
@@ -1208,7 +1208,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         };
         for(const entityId in allEntities){
             const entity = allEntities[entityId];
-            if (entity.platform !== $ce06635095588d37$var$DOMAIN) continue;
+            if (entity.platform !== $c181edec8277de1e$var$DOMAIN) continue;
             const domain = entityId.split('.')[0];
             const state = hass.states[entityId];
             if (entity.device_id) found.deviceIds.add(entity.device_id);
@@ -1264,7 +1264,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         const device = (this._hass.devices || {})[entity.device_id];
         if (!device?.identifiers) return null;
         for (const [domain, id] of device.identifiers){
-            if (domain === $ce06635095588d37$var$DOMAIN) return id;
+            if (domain === $c181edec8277de1e$var$DOMAIN) return id;
         }
         return null;
     }
@@ -1359,8 +1359,8 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         const connEntityId = entityIds ? this._getConnectionEntityForDevices(entityIds) : null;
         const click = connEntityId ? ()=>this._fireMoreInfo(connEntityId) : null;
         const tooltip = status === 'online' ? this._t('state_online') : this._t('state_offline');
-        if (status === 'online') return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="section-status online" title="${tooltip}" @click="${click}"><svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></span>`;
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="section-status offline" title="${tooltip}" @click="${click}"><svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM17 7h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></span>`;
+        if (status === 'online') return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="section-status online" title="${tooltip}" @click="${click}"><svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></span>`;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="section-status offline" title="${tooltip}" @click="${click}"><svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM17 7h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></span>`;
     }
     _getDeviceOnlineStatus(entityIds) {
         if (!entityIds || entityIds.length === 0) return null;
@@ -1414,8 +1414,12 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         return min;
     }
     _renderSignalBars(level) {
-        const dim = 0.2;
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<svg viewBox="0 0 24 24"><path d="M3,21H6V18H3Z" fill="currentColor" opacity="${level >= 1 ? 1 : dim}"/><path d="M8,21H11V14H8Z" fill="currentColor" opacity="${level >= 25 ? 1 : dim}"/><path d="M13,21H16V9H13Z" fill="currentColor" opacity="${level >= 50 ? 1 : dim}"/><path d="M18,21H21V3H18V21Z" fill="currentColor" opacity="${level >= 75 ? 1 : dim}"/></svg>`;
+        let icon;
+        if (level >= 75) icon = 'mdi:signal-cellular-3';
+        else if (level >= 50) icon = 'mdi:signal-cellular-2';
+        else if (level >= 25) icon = 'mdi:signal-cellular-1';
+        else icon = 'mdi:signal-cellular-outline';
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<ha-icon .icon="${icon}"></ha-icon>`;
     }
     _getDeviceNameForEntities(entityIds) {
         const entities = this._hass.entities || {};
@@ -1468,10 +1472,10 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         const config = this.config;
         if (!hass || !config || !this._entities) {
             if (hass && config) this._entities = this._findEntities(hass);
-            if (!this._entities) return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<ha-card><div class="unavailable">${this._t("config_no_device")}</div></ha-card>`;
+            if (!this._entities) return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<ha-card><div class="unavailable">${this._t("config_no_device")}</div></ha-card>`;
         }
         // Show warning if no supported backend detected
-        if (!this._backend) return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        if (!this._backend) return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
         <ha-card>
           <div class="unavailable">
             <div class="version-warning">
@@ -1481,14 +1485,21 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
           </div>
         </ha-card>
       `;
-        const hasValves = this._getVisibleValves().length > 0;
-        const hasSockets = this._getVisibleSockets().length > 0;
-        const hasMowers = this._getVisibleMowers().length > 0;
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
-      <ha-card @click="${()=>this._closePillPopups()}">
+        const sections = this.config.sections || [
+            'mower',
+            'valves',
+            'socket',
+            'history'
+        ];
+        const hasValves = sections.includes('valves') && this._getVisibleValves().length > 0;
+        const hasSockets = sections.includes('socket') && this._getVisibleSockets().length > 0;
+        const hasMowers = sections.includes('mower') && this._getVisibleMowers().length > 0;
+        const showHistory = sections.includes('history') && this.config.show_history !== false && (hasValves || hasSockets || this.config.sections?.includes('history'));
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+      <ha-card class="${this.config.show_header === false ? 'no-header' : ''}${this.config.sections?.length === 1 ? ' single-section' : ''}" @click="${()=>this._closePillPopups()}">
         ${this.config.show_header !== false ? this._renderHeader() : ''}
         <div class="content">
-          ${this._isPatchedIntegration === false ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+          ${this._isPatchedIntegration === false ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
             <div class="patch-warning">
               <strong>${this._t("patch_warning_title")}</strong>
               ${this._t("patch_warning_message")}
@@ -1498,7 +1509,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
           ${hasMowers ? this._renderMowerSection() : ''}
           ${hasValves ? this._renderValvesSection() : ''}
           ${hasSockets ? this._renderSocketSection() : ''}
-          ${this.config.show_history !== false && (hasValves || hasSockets) ? this._renderHistorySection() : ''}
+          ${showHistory ? this._renderHistorySection() : ''}
         </div>
       </ha-card>
     `;
@@ -1521,7 +1532,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             return st?.attributes?.scheduled_events?.length > 0;
         });
         if (hasNativeSchedules) return '';
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="schedule-missing">
         <strong>${this._t('schedule_missing_title')}</strong>
         ${this._t('schedule_missing_message')}
@@ -1544,17 +1555,45 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             return s && s !== 'unavailable';
         });
     }
+    _getSingleSectionEntities() {
+        const sections = this.config.sections;
+        if (!sections || sections.length !== 1) return null;
+        const s = sections[0];
+        if (s === 'mower') return this._getVisibleMowers();
+        if (s === 'valves') return this._getVisibleValves();
+        if (s === 'socket') return this._getVisibleSockets();
+        return null;
+    }
+    _getSingleSectionTitle() {
+        const sections = this.config.sections;
+        if (!sections || sections.length !== 1) return null;
+        const s = sections[0];
+        const entitiesMap = {
+            mower: this._getVisibleMowers(),
+            valves: this._getVisibleValves(),
+            socket: this._getVisibleSockets()
+        };
+        const entities = entitiesMap[s];
+        if (!entities?.length) return this._t(`section_${s === 'socket' ? 'socket' : s === 'mower' ? 'mower' : 'valves'}`);
+        const deviceName = this._getDeviceNameForEntities(entities);
+        const sectionLabel = this._t(s === 'mower' ? 'section_mower' : s === 'valves' ? 'section_valves' : 'section_socket');
+        return deviceName ? `${deviceName} \u{2013} ${sectionLabel}` : sectionLabel;
+    }
     _renderHeader() {
-        const name = this.config.title || this._t("default_title");
+        const isSingle = this.config.sections?.length === 1;
+        const name = this.config.title || (isSingle ? this._getSingleSectionTitle() : null) || this._t("default_title");
         const wsOnline = this._isGlobalOnline();
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        // For single-section sub-cards, show signal strength instead of connection icon
+        const singleEntities = isSingle ? this._getSingleSectionEntities() : null;
+        const rfLink = singleEntities ? this._getMinRfLink(singleEntities) : null;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="card-header">
         <div class="header-title">${name}</div>
         <div class="header-right">
-          <span class="ws-icon ${wsOnline ? 'online' : 'offline'}" title="${wsOnline ? this._t('ws_connected') : this._t('ws_disconnected')}"
-            @click="${()=>this._fireMoreInfo(this._entities?.connection)}">
-            ${wsOnline ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M3,13V18L3,20H10V18H5V13H3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M14,15H20V19H14V15Z"/></svg>` : (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M3.88,13.46L2.46,14.88L4.59,17L2.46,19.12L3.88,20.54L6,18.41L8.12,20.54L9.54,19.12L7.41,17L9.54,14.88L8.12,13.46L6,15.59L3.88,13.46M14,15H20V19H14V15Z"/></svg>`}
-          </span>
+          ${rfLink != null ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="section-signal" @click="${()=>this._fireMoreInfo(this._getConnectionEntityForDevices(singleEntities))}">${this._renderSignalBars(rfLink)}</span>` : (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="ws-icon ${wsOnline ? 'online' : 'offline'}" title="${wsOnline ? this._t('ws_connected') : this._t('ws_disconnected')}"
+                @click="${()=>this._fireMoreInfo(this._entities?.connection)}">
+                ${wsOnline ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M3,13V18L3,20H10V18H5V13H3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M14,15H20V19H14V15Z"/></svg>` : (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<svg viewBox="0 0 24 24"><path d="M4,1C2.89,1 2,1.89 2,3V7C2,8.11 2.89,9 4,9H1V11H13V9H10C11.11,9 12,8.11 12,7V3C12,1.89 11.11,1 10,1H4M4,3H10V7H4V3M14,13C12.89,13 12,13.89 12,15V19C12,20.11 12.89,21 14,21H11V23H23V21H20C21.11,21 22,20.11 22,19V15C22,13.89 21.11,13 20,13H14M3.88,13.46L2.46,14.88L4.59,17L2.46,19.12L3.88,20.54L6,18.41L8.12,20.54L9.54,19.12L7.41,17L9.54,14.88L8.12,13.46L6,15.59L3.88,13.46M14,15H20V19H14V15Z"/></svg>`}
+              </span>`}
           <span class="header-menu" @click="${()=>this._navigateToDevice()}">
             <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
           </span>
@@ -1565,26 +1604,26 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     // ---------- Knob Duration Control ----------
     _renderKnobSection() {
         const dur = this._selectedDuration;
-        const angle = (dur - $ce06635095588d37$var$KNOB_MIN) / ($ce06635095588d37$var$KNOB_MAX - $ce06635095588d37$var$KNOB_MIN) * $ce06635095588d37$var$KNOB_ARC_SWEEP;
-        const fraction = angle / $ce06635095588d37$var$KNOB_ARC_SWEEP;
-        const fillLength = fraction * $ce06635095588d37$var$KNOB_ARC_LENGTH;
-        const gapLength = $ce06635095588d37$var$KNOB_CIRCUMFERENCE - $ce06635095588d37$var$KNOB_ARC_LENGTH;
+        const angle = (dur - $c181edec8277de1e$var$KNOB_MIN) / ($c181edec8277de1e$var$KNOB_MAX - $c181edec8277de1e$var$KNOB_MIN) * $c181edec8277de1e$var$KNOB_ARC_SWEEP;
+        const fraction = angle / $c181edec8277de1e$var$KNOB_ARC_SWEEP;
+        const fillLength = fraction * $c181edec8277de1e$var$KNOB_ARC_LENGTH;
+        const gapLength = $c181edec8277de1e$var$KNOB_CIRCUMFERENCE - $c181edec8277de1e$var$KNOB_ARC_LENGTH;
         // Handle position as percentage of 140x140 viewbox
-        const handleAngle = $ce06635095588d37$var$KNOB_ARC_START + angle;
+        const handleAngle = $c181edec8277de1e$var$KNOB_ARC_START + angle;
         const rad = handleAngle * Math.PI / 180;
-        const hx = $ce06635095588d37$var$KNOB_CX + $ce06635095588d37$var$KNOB_RADIUS * Math.cos(rad);
-        const hy = $ce06635095588d37$var$KNOB_CY + $ce06635095588d37$var$KNOB_RADIUS * Math.sin(rad);
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        const hx = $c181edec8277de1e$var$KNOB_CX + $c181edec8277de1e$var$KNOB_RADIUS * Math.cos(rad);
+        const hy = $c181edec8277de1e$var$KNOB_CY + $c181edec8277de1e$var$KNOB_RADIUS * Math.sin(rad);
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="knob-section">
         <div class="knob-container" @click="${this._onKnobClick}">
           <div class="knob-track">
             <svg viewBox="0 0 140 140">
               <circle class="knob-arc-bg" cx="70" cy="70" r="58"
-                stroke-dasharray="${$ce06635095588d37$var$KNOB_ARC_LENGTH} ${gapLength}"
+                stroke-dasharray="${$c181edec8277de1e$var$KNOB_ARC_LENGTH} ${gapLength}"
                 stroke-dashoffset="0"
                 transform="rotate(135 70 70)"/>
               <circle class="knob-arc-fill" cx="70" cy="70" r="58"
-                stroke-dasharray="${fillLength} ${$ce06635095588d37$var$KNOB_CIRCUMFERENCE}"
+                stroke-dasharray="${fillLength} ${$c181edec8277de1e$var$KNOB_CIRCUMFERENCE}"
                 stroke-dashoffset="0"
                 transform="rotate(135 70 70)"/>
             </svg>
@@ -1600,7 +1639,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
           </div>
         </div>
         <div class="knob-info">
-          ${$ce06635095588d37$var$KNOB_PRESETS.map((min)=>(0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+          ${$c181edec8277de1e$var$KNOB_PRESETS.map((min)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
             <button class="knob-preset ${dur === min ? 'active' : ''}"
               @click="${(e)=>{
                 e.stopPropagation();
@@ -1631,8 +1670,8 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         if (!this._isDragging) return;
         e.preventDefault();
         const angle = this._getAngleFromEvent(e);
-        const t = Math.max(0, Math.min(1, angle / $ce06635095588d37$var$KNOB_ARC_SWEEP));
-        this._selectedDuration = Math.round(($ce06635095588d37$var$KNOB_MIN + t * ($ce06635095588d37$var$KNOB_MAX - $ce06635095588d37$var$KNOB_MIN)) / 5) * 5;
+        const t = Math.max(0, Math.min(1, angle / $c181edec8277de1e$var$KNOB_ARC_SWEEP));
+        this._selectedDuration = Math.round(($c181edec8277de1e$var$KNOB_MIN + t * ($c181edec8277de1e$var$KNOB_MAX - $c181edec8277de1e$var$KNOB_MIN)) / 5) * 5;
     }
     _onKnobDragEnd() {
         this._isDragging = false;
@@ -1645,8 +1684,8 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         if (e.target.closest('.knob-handle') || e.target.closest('.knob-preset')) return;
         const angle = this._getAngleFromEvent(e);
         if (angle < 0) return;
-        const t = Math.max(0, Math.min(1, angle / $ce06635095588d37$var$KNOB_ARC_SWEEP));
-        this._selectedDuration = Math.round(($ce06635095588d37$var$KNOB_MIN + t * ($ce06635095588d37$var$KNOB_MAX - $ce06635095588d37$var$KNOB_MIN)) / 5) * 5;
+        const t = Math.max(0, Math.min(1, angle / $c181edec8277de1e$var$KNOB_ARC_SWEEP));
+        this._selectedDuration = Math.round(($c181edec8277de1e$var$KNOB_MIN + t * ($c181edec8277de1e$var$KNOB_MAX - $c181edec8277de1e$var$KNOB_MIN)) / 5) * 5;
     }
     _getAngleFromEvent(e) {
         const container = this.shadowRoot.querySelector('.knob-container');
@@ -1657,9 +1696,9 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
         let angle = Math.atan2(clientY - cy, clientX - cx) * (180 / Math.PI);
-        angle = (angle - $ce06635095588d37$var$KNOB_ARC_START + 360) % 360;
-        if (angle > $ce06635095588d37$var$KNOB_ARC_SWEEP + 20) angle = 0;
-        if (angle > $ce06635095588d37$var$KNOB_ARC_SWEEP) angle = $ce06635095588d37$var$KNOB_ARC_SWEEP;
+        angle = (angle - $c181edec8277de1e$var$KNOB_ARC_START + 360) % 360;
+        if (angle > $c181edec8277de1e$var$KNOB_ARC_SWEEP + 20) angle = 0;
+        if (angle > $c181edec8277de1e$var$KNOB_ARC_SWEEP) angle = $c181edec8277de1e$var$KNOB_ARC_SWEEP;
         return angle;
     }
     // ---------- Pill Track Duration Helpers ----------
@@ -1710,8 +1749,8 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     _renderPill(entityId, isActive, isDisabled, onToggle, amberToggle = false) {
         const dur = this._getEntityDuration(entityId);
         const isOpen = this._openPillPopup === entityId;
-        const isCustom = !$ce06635095588d37$export$4db43f2ac07d900b.PILL_DURATIONS.includes(dur);
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        const isCustom = !$c181edec8277de1e$export$4db43f2ac07d900b.PILL_DURATIONS.includes(dur);
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="pill">
         <div class="pill-dur-wrap">
           <div class="pill-dur ${isOpen ? 'open' : ''} ${isActive ? 'locked' : ''}"
@@ -1720,10 +1759,10 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             if (!isActive) this._togglePillPopup(entityId, e);
         }}">
             <span>${dur}m</span>
-            ${isActive ? '' : (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>`}
+            ${isActive ? '' : (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>`}
           </div>
           <div class="pill-pop ${isOpen ? 'show' : ''}" @click="${(e)=>e.stopPropagation()}">
-            ${$ce06635095588d37$export$4db43f2ac07d900b.PILL_DURATIONS.map((d)=>(0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+            ${$c181edec8277de1e$export$4db43f2ac07d900b.PILL_DURATIONS.map((d)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
               <span class="pop-chip ${d === dur ? 'sel' : ''}"
                 @click="${(e)=>{
                 e.stopPropagation();
@@ -1771,12 +1810,13 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         const status = this._getDeviceOnlineStatus(valves);
         const rfLink = this._getMinRfLink(valves);
         const deviceName = this._getDeviceNameForEntities(valves);
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        const isSingle = this.config.sections?.length === 1;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="valves-section">
-        <div class="section-label">
+        ${!isSingle ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="section-label">
           ${deviceName ? `${deviceName} \u{2013} ` : ''}${this._t('section_valves')}
-          ${rfLink != null ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="section-signal" @click="${()=>this._fireMoreInfo(this._getConnectionEntityForDevices(valves))}">${this._renderSignalBars(rfLink)}</span>` : status ? this._renderConnectionIcon(status, valves) : ''}
-        </div>
+          ${rfLink != null ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="section-signal" @click="${()=>this._fireMoreInfo(this._getConnectionEntityForDevices(valves))}">${this._renderSignalBars(rfLink)}</span>` : status ? this._renderConnectionIcon(status, valves) : ''}
+        </div>` : ''}
         <div class="valves-grid count-${Math.min(valves.length, this.config?.valve_columns || 3)}">
           ${valves.map((entityId, i)=>this._renderValve(entityId, i, status === 'offline'))}
         </div>
@@ -1793,7 +1833,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         const pct = isActive && total > 0 && remaining > 0 ? Math.round(remaining / total * 100) : 0;
         const scheduleEvents = this._getScheduleEvents(entityId);
         const isSchedulePaused = scheduleEvents.some((ev)=>ev.paused === true);
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="valve ${isActive ? 'active' : ''} ${isOffline ? 'offline' : ''} ${isSchedulePaused ? 'schedule-paused' : ''} ${this._openPillPopup === entityId ? 'pill-open' : ''}" style="animation-delay:${index * 0.05 + 0.05}s">
         <div class="valve-header">
           <span class="valve-zone-label">${zoneLabel}</span>
@@ -1804,7 +1844,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
           ${isOffline && !isActive ? this._t('state_offline') : this._getValveStatusText(state, remaining)}
         </div>
         <div class="valve-progress">
-          ${isActive ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<div class="valve-progress-fill" style="width:${pct}%"></div>` : ''}
+          ${isActive ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="valve-progress-fill" style="width:${pct}%"></div>` : ''}
         </div>
         ${this._renderValveScheduleMini(entityId)}
       </div>
@@ -1834,7 +1874,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 durationSec: durationSec
             };
         }
-        $ce06635095588d37$var$_saveTimers();
+        $c181edec8277de1e$var$_saveTimers();
     }
     // ---------- Socket Section ----------
     _getVisibleSockets() {
@@ -1960,12 +2000,13 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         if (mowers.length === 0) return '';
         const status = this._getDeviceOnlineStatus(mowers);
         const rfLink = this._getMinRfLink(mowers);
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        const isSingle = this.config.sections?.length === 1;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="mower-section">
-        <div class="section-label">
+        ${!isSingle ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="section-label">
           ${this._t('section_mower')}
-          ${rfLink != null ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="section-signal" @click="${()=>this._fireMoreInfo(this._getConnectionEntityForDevices(mowers))}">${this._renderSignalBars(rfLink)}</span>` : status ? this._renderConnectionIcon(status, mowers) : ''}
-        </div>
+          ${rfLink != null ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="section-signal" @click="${()=>this._fireMoreInfo(this._getConnectionEntityForDevices(mowers))}">${this._renderSignalBars(rfLink)}</span>` : status ? this._renderConnectionIcon(status, mowers) : ''}
+        </div>` : ''}
         ${mowers.map((entityId)=>this._renderMower(entityId, status === 'offline'))}
       </div>
     `;
@@ -1996,31 +2037,31 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         if (!state) return '';
         const info = this._getMowerInfo(state);
         const shortName = this._shortEntityName(state, this._t('section_mower'));
-        const activityKey = $ce06635095588d37$var$MOWER_ACTIVITY_MAP[info.activity] || `mower_${info.haState}`;
+        const activityKey = $c181edec8277de1e$var$MOWER_ACTIVITY_MAP[info.activity] || `mower_${info.haState}`;
         const activityText = this._t(activityKey);
         const actions = this._getMowerActions(info.haState);
         const isMowing = info.haState === 'mowing';
         const stateClass = isMowing ? 'active' : info.haState === 'error' ? 'error' : info.haState === 'paused' ? 'paused' : 'docked';
         const { remaining: remaining, total: total } = this._getMowerRemaining(entityId, info);
         const pct = isMowing && total > 0 && remaining > 0 ? Math.round(remaining / total * 100) : 0;
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="mower-card ${stateClass} ${isOffline ? 'offline' : ''} ${this._openPillPopup === entityId ? 'pill-open' : ''}">
         <div class="mower-header">
           <div class="mower-icon ${isMowing ? 'mowing' : ''}">
             <span class="mower-drive">
               <svg viewBox="0 0 24 24"><path d="M1 14C1 16.76 3.24 19 6 19C7.64 19 9.09 18.21 10 17H15.17C15.58 18.17 16.7 19 18 19C19.31 19 20.42 18.17 20.83 17H23V15C23 9.5 18.5 5 13 5H1V14M21 15H10.9C10.97 14.68 11 14.34 11 14C11 11.24 8.76 9 6 9C4.87 9 3.84 9.37 3 10V7H12.5C15.1 7 17.42 8.16 19 10H15V12H20.25C20.67 12.92 20.92 13.94 21 15M6 11C7.66 11 9 12.34 9 14C9 15.66 7.66 17 6 17C4.34 17 3 15.66 3 14C3 12.34 4.34 11 6 11Z"/></svg>
-              ${isMowing ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="grass-particles"></span>` : ''}
+              ${isMowing ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="grass-particles"></span>` : ''}
             </span>
           </div>
           <div class="mower-info">
             <div class="mower-name" @click="${()=>this._fireMoreInfo(entityId)}">${shortName}</div>
             <div class="mower-activity">
-              ${isMowing ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="mow-dot"></span>` : ''}
+              ${isMowing ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="mow-dot"></span>` : ''}
               ${activityText}
-              ${isMowing && remaining > 0 ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="mower-remaining">${this._formatTime(remaining)}</span>` : ''}
+              ${isMowing && remaining > 0 ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="mower-remaining">${this._formatTime(remaining)}</span>` : ''}
             </div>
           </div>
-          ${info.battery != null ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+          ${info.battery != null ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
             <div class="mower-battery-chip ${info.batteryState === 'REPLACE_NOW' ? 'replace' : info.batteryState === 'LOW' || info.battery < 20 ? 'low' : ''} ${info.batteryState === 'CHARGING' ? 'charging' : ''}"
               @click="${()=>{
             const devId = (this._hass.entities || {})[entityId]?.device_id;
@@ -2033,20 +2074,20 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
           ` : ''}
         </div>
 
-        ${isMowing && pct > 0 ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        ${isMowing && pct > 0 ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
           <div class="mower-progress">
             <div class="mower-progress-fill" style="width:${pct}%"></div>
           </div>
         ` : ''}
 
-        ${info.haState === 'error' && info.lastError ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        ${info.haState === 'error' && info.lastError ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
           <div class="mower-error-banner">
-            ${this._t('mower_error_prefix')}: ${$ce06635095588d37$var$MOWER_ERROR_MAP[info.lastError] ? this._t($ce06635095588d37$var$MOWER_ERROR_MAP[info.lastError]) : info.lastError}
+            ${this._t('mower_error_prefix')}: ${$c181edec8277de1e$var$MOWER_ERROR_MAP[info.lastError] ? this._t($c181edec8277de1e$var$MOWER_ERROR_MAP[info.lastError]) : info.lastError}
           </div>
         ` : ''}
 
         <div class="mower-actions">
-          ${actions.map((a)=>a.showDuration && this._isPatchedIntegration !== false ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+          ${actions.map((a)=>a.showDuration && this._isPatchedIntegration !== false ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
             <div class="mower-btn-wrap" style="position:relative">
               <button class="mower-btn ${a.primary ? 'primary' : ''}"
                 @click="${()=>this._callMowerAction(entityId, a.action)}"
@@ -2063,7 +2104,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                   <svg viewBox="0 0 24 24" width="10" height="10"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
                 </div>
                 <div class="pill-pop ${this._openPillPopup === entityId ? 'show' : ''}" @click="${(e)=>e.stopPropagation()}">
-                  ${$ce06635095588d37$export$4db43f2ac07d900b.MOWER_DURATIONS.map((d)=>(0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+                  ${$c181edec8277de1e$export$4db43f2ac07d900b.MOWER_DURATIONS.map((d)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
                     <span class="pop-chip ${d === this._getEntityDuration(entityId) ? 'sel' : ''}"
                       @click="${(e)=>{
                     e.stopPropagation();
@@ -2072,7 +2113,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                   `)}
                   <div class="pop-custom">
                     <input class="pop-input" type="number" min="1" max="360" placeholder="z.B. 25"
-                      .value="${!$ce06635095588d37$export$4db43f2ac07d900b.MOWER_DURATIONS.includes(this._getEntityDuration(entityId)) ? String(this._getEntityDuration(entityId)) : ''}"
+                      .value="${!$c181edec8277de1e$export$4db43f2ac07d900b.MOWER_DURATIONS.includes(this._getEntityDuration(entityId)) ? String(this._getEntityDuration(entityId)) : ''}"
                       @click="${(e)=>e.stopPropagation()}"
                       @keydown="${(e)=>{
                 if (e.key === 'Enter') {
@@ -2094,7 +2135,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 </div>
               </div>
             </div>
-          ` : (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+          ` : (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
             <button class="mower-btn ${a.primary ? 'primary' : ''}"
               @click="${()=>this._isPatchedIntegration !== false && this._callMowerAction(entityId, a.action)}"
               ?disabled="${isOffline || this._isPatchedIntegration === false}">
@@ -2114,7 +2155,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 startTime: new Date(),
                 durationSec: durationSec
             };
-            $ce06635095588d37$var$_saveTimers();
+            $c181edec8277de1e$var$_saveTimers();
         }
     }
     // ---------- Schedule Helpers ----------
@@ -2144,7 +2185,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             let label = this._t('valve_watering');
             if (activity === 'SCHEDULED_WATERING') label = this._t('valve_watering_scheduled');
             else if (activity === 'MANUAL_WATERING') label = this._t('valve_watering_manual');
-            return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="water-icon"></span><span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
+            return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="water-icon"></span><span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
         }
         return this._t('valve_ready');
     }
@@ -2156,7 +2197,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             if (activity === 'SCHEDULED_ON') label = this._t('socket_active_scheduled');
             else if (activity === 'FOREVER_ON') label = this._t('socket_active_manual');
             else if (activity === 'TIME_LIMITED_ON') label = this._t('socket_active_timed');
-            return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
+            return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
         }
         return this._t('socket_off');
     }
@@ -2194,7 +2235,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     }
     _scheduleIcon(isPaused = false, isActive = false) {
         const tooltip = isPaused ? this._t('schedule_tooltip_paused') : isActive ? this._t('schedule_tooltip_active') : this._t('schedule_tooltip');
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="schedule-icon-wrap"><svg class="schedule-icon" viewBox="0 0 24 24"><title>${tooltip}</title><path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"/></svg></span>`;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="schedule-icon-wrap"><svg class="schedule-icon" viewBox="0 0 24 24"><title>${tooltip}</title><path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"/></svg></span>`;
     }
     _getScheduleEvents(entityId) {
         if (this.config?.show_schedules === false) return [];
@@ -2250,23 +2291,23 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     _renderScheduleStrip(entityId) {
         const events = this._getScheduleEvents(entityId);
         if (events.length === 0) return '';
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="schedule-strip">
         ${events.map((ev)=>{
             const isPaused = ev.paused === true;
             const weekdays = ev.weekdays || [];
             const nowActive = this._isScheduleActive(ev, entityId);
-            return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+            return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
             <div class="schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
               <span class="schedule-time">${this._scheduleIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
               <span class="schedule-days">
-                ${$ce06635095588d37$export$4db43f2ac07d900b.SCHEDULE_WEEKDAYS.map((day, i)=>{
+                ${$c181edec8277de1e$export$4db43f2ac07d900b.SCHEDULE_WEEKDAYS.map((day, i)=>{
                 const isActive = weekdays.includes(day);
                 const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
-                return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="schedule-day ${cls}">${this._t($ce06635095588d37$export$4db43f2ac07d900b.SCHEDULE_DAY_KEYS[i])}</span>`;
+                return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="schedule-day ${cls}">${this._t($c181edec8277de1e$export$4db43f2ac07d900b.SCHEDULE_DAY_KEYS[i])}</span>`;
             })}
               </span>
-              ${isPaused ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="schedule-pause-badge">${ev.paused_until ? `${this._t('schedule_paused_until')} ${this._formatPauseDate(ev.paused_until)}` : this._t('schedule_paused')}</span>` : ''}
+              ${isPaused ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="schedule-pause-badge">${ev.paused_until ? `${this._t('schedule_paused_until')} ${this._formatPauseDate(ev.paused_until)}` : this._t('schedule_paused')}</span>` : ''}
             </div>
           `;
         })}
@@ -2276,20 +2317,20 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     _renderValveScheduleMini(entityId) {
         const events = this._getScheduleEvents(entityId);
         if (events.length === 0) return '';
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="valve-schedule-mini">
         ${events.map((ev)=>{
             const isPaused = ev.paused === true;
             const weekdays = ev.weekdays || [];
             const nowActive = this._isScheduleActive(ev, entityId);
-            return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+            return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
             <div class="valve-schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
               <span class="valve-schedule-time">${this._scheduleIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)}–${this._cleanTime(ev.end_at)}</span>
               <span class="schedule-days">
-                ${$ce06635095588d37$export$4db43f2ac07d900b.SCHEDULE_WEEKDAYS.map((day, i)=>{
+                ${$c181edec8277de1e$export$4db43f2ac07d900b.SCHEDULE_WEEKDAYS.map((day, i)=>{
                 const isActive = weekdays.includes(day);
                 const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
-                return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="schedule-day ${cls}">${this._t($ce06635095588d37$export$4db43f2ac07d900b.SCHEDULE_DAY_KEYS[i])}</span>`;
+                return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="schedule-day ${cls}">${this._t($c181edec8277de1e$export$4db43f2ac07d900b.SCHEDULE_DAY_KEYS[i])}</span>`;
             })}
               </span>
             </div>
@@ -2301,22 +2342,22 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     _renderSocketSchedule(entityId) {
         const events = this._getScheduleEvents(entityId);
         if (events.length === 0) return '';
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       ${events.map((ev)=>{
             const isPaused = ev.paused === true;
             const weekdays = ev.weekdays || [];
             const nowActive = this._isScheduleActive(ev, entityId);
-            return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+            return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
           <div class="socket-schedule-mini ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
             <span class="schedule-time">${this._scheduleIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
             <span class="schedule-days">
-              ${$ce06635095588d37$export$4db43f2ac07d900b.SCHEDULE_WEEKDAYS.map((day, i)=>{
+              ${$c181edec8277de1e$export$4db43f2ac07d900b.SCHEDULE_WEEKDAYS.map((day, i)=>{
                 const isActive = weekdays.includes(day);
                 const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
-                return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="schedule-day ${cls}">${this._t($ce06635095588d37$export$4db43f2ac07d900b.SCHEDULE_DAY_KEYS[i])}</span>`;
+                return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="schedule-day ${cls}">${this._t($c181edec8277de1e$export$4db43f2ac07d900b.SCHEDULE_DAY_KEYS[i])}</span>`;
             })}
             </span>
-            ${isPaused ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="schedule-pause-badge">${ev.paused_until ? `${this._t('schedule_paused_until')} ${this._formatPauseDate(ev.paused_until)}` : this._t('schedule_paused')}</span>` : ''}
+            ${isPaused ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="schedule-pause-badge">${ev.paused_until ? `${this._t('schedule_paused_until')} ${this._formatPauseDate(ev.paused_until)}` : this._t('schedule_paused')}</span>` : ''}
           </div>
         `;
         })}
@@ -2349,12 +2390,13 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         if (sockets.length === 0) return '';
         const status = this._getDeviceOnlineStatus(sockets);
         const rfLink = this._getMinRfLink(sockets);
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        const isSingle = this.config.sections?.length === 1;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="socket-section">
-        <div class="section-label">
+        ${!isSingle ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="section-label">
           ${this._t('section_socket')}
-          ${rfLink != null ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<span class="section-signal" @click="${()=>this._fireMoreInfo(this._getConnectionEntityForDevices(sockets))}">${this._renderSignalBars(rfLink)}</span>` : status ? this._renderConnectionIcon(status, sockets) : ''}
-        </div>
+          ${rfLink != null ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="section-signal" @click="${()=>this._fireMoreInfo(this._getConnectionEntityForDevices(sockets))}">${this._renderSignalBars(rfLink)}</span>` : status ? this._renderConnectionIcon(status, sockets) : ''}
+        </div>` : ''}
         ${sockets.map((entityId)=>this._renderSocket(entityId, status === 'offline'))}
       </div>
     `;
@@ -2381,7 +2423,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             }
         }
         const pct = isActive && total > 0 && remaining > 0 ? Math.round(remaining / total * 100) : 0;
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="socket-card ${isActive ? 'active' : ''} ${isOffline && !isActive ? 'offline' : ''} ${this._openPillPopup === entityId ? 'pill-open' : ''}">
         <div class="socket-left">
           <div class="socket-icon">
@@ -2402,7 +2444,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         <div class="socket-right">
           ${this._renderPill(entityId, isActive, isOffline && !isActive || this._isPatchedIntegration === false, ()=>this._toggleSocket(entityId, isActive), true)}
         </div>
-        ${isActive && pct > 0 ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        ${isActive && pct > 0 ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
           <div class="socket-progress-wrap">
             <div class="socket-progress-track">
               <div class="socket-progress-fill" style="width:${pct}%"></div>
@@ -2434,7 +2476,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 durationSec: durationSec
             };
         }
-        $ce06635095588d37$var$_saveTimers();
+        $c181edec8277de1e$var$_saveTimers();
     }
     // ---------- History Section ----------
     static HISTORY_COLORS = [
@@ -2574,9 +2616,10 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         days.forEach((d)=>d.minutes.forEach((m, i)=>{
                 if (m > 0) usedEntities.add(i);
             }));
-        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        const isSingle = this.config.sections?.length === 1;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="history-section">
-        <div class="section-label">${this._t('section_history')}</div>
+        ${!isSingle ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="section-label">${this._t('section_history')}</div>` : ''}
         <div class="history-header">
           <div class="history-period">${periodStr}</div>
           <div class="history-total">${totalStr}</div>
@@ -2585,7 +2628,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
           <div class="chart-y-axis">
             ${Array.from({
             length: gridSteps + 1
-        }, (_, i)=>(0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        }, (_, i)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
               <span class="chart-y-label" style="top:${i / gridSteps * 100}%">${Math.round(maxTotal - maxTotal / gridSteps * i)}</span>
             `)}
           </div>
@@ -2593,27 +2636,27 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             <div class="chart-gridlines">
               ${Array.from({
             length: gridSteps + 1
-        }, ()=>(0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<div class="chart-gridline"></div>`)}
+        }, ()=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="chart-gridline"></div>`)}
             </div>
             <div class="chart-bars">
               ${days.map((day, di)=>{
             const isToday = day.date.getDate() === today.getDate() && day.date.getMonth() === today.getMonth();
             const dayTotal = dayTotals[di];
             const dateStr = day.date.getDate() + '.' + (day.date.getMonth() + 1) + '.';
-            return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+            return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
                   <div class="chart-bar-group ${isToday ? 'today' : ''}">
                     <div class="chart-stack">
-                      ${day.minutes.map((mins, zi)=>mins > 0 ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
-                        <div class="chart-segment" style="height:${Math.max(1, mins / maxTotal * chartHeight)}px;background:${$ce06635095588d37$export$4db43f2ac07d900b.HISTORY_COLORS[zi % 10]};cursor:pointer" @click="${()=>this._navigateHistory(entities[zi])}"></div>
+                      ${day.minutes.map((mins, zi)=>mins > 0 ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+                        <div class="chart-segment" style="height:${Math.max(1, mins / maxTotal * chartHeight)}px;background:${$c181edec8277de1e$export$4db43f2ac07d900b.HISTORY_COLORS[zi % 10]};cursor:pointer" @click="${()=>this._navigateHistory(entities[zi])}"></div>
                       ` : '')}
                     </div>
                     <div class="chart-day-label">${isToday ? this._t('day_today') : dateStr}</div>
-                    ${dayTotal > 0 ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+                    ${dayTotal > 0 ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
                       <div class="chart-tooltip">
                         <div class="tooltip-title">${dayNames[day.date.getDay()]}, ${dateStr}</div>
-                        ${day.minutes.map((mins, zi)=>mins > 0 ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+                        ${day.minutes.map((mins, zi)=>mins > 0 ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
                           <div class="tooltip-line">
-                            <span class="tooltip-dot" style="background:${$ce06635095588d37$export$4db43f2ac07d900b.HISTORY_COLORS[zi % 10]}"></span>
+                            <span class="tooltip-dot" style="background:${$c181edec8277de1e$export$4db43f2ac07d900b.HISTORY_COLORS[zi % 10]}"></span>
                             <span>${entityNames[zi]}</span>
                             <span class="tooltip-mins">${mins} min</span>
                           </div>
@@ -2631,9 +2674,9 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
           </div>
         </div>
         <div class="chart-legend">
-          ${entityNames.map((name, i)=>usedEntities.has(i) ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+          ${entityNames.map((name, i)=>usedEntities.has(i) ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
             <div class="legend-item" @click="${()=>this._navigateHistory(entities[i])}" style="cursor:pointer">
-              <span class="legend-dot" style="background:${$ce06635095588d37$export$4db43f2ac07d900b.HISTORY_COLORS[i % 10]}"></span>
+              <span class="legend-dot" style="background:${$c181edec8277de1e$export$4db43f2ac07d900b.HISTORY_COLORS[i % 10]}"></span>
               ${name}
             </div>
           ` : '')}
@@ -2643,7 +2686,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     }
     // ---------- Styles ----------
     static get styles() {
-        return (0, $06bdd16cbb4a41b3$export$8d80f9cac07cdb3)((0, (/*@__PURE__*/$parcel$interopDefault($4cf6573eae743e82$exports))));
+        return (0, $def2de46b9306e8a$export$8d80f9cac07cdb3)((0, (/*@__PURE__*/$parcel$interopDefault($4828e467d1847026$exports))));
     }
     // ---------- Config form ----------
     static getConfigForm() {
@@ -2651,22 +2694,41 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             schema: [
                 {
                     name: "title",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_title"),
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_title"),
                     selector: {
                         text: {}
                     }
                 },
                 {
-                    name: "show_header",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_show_header"),
+                    name: "sections",
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_sections"),
                     selector: {
-                        boolean: {}
-                    },
-                    default: true
+                        select: {
+                            multiple: true,
+                            options: [
+                                {
+                                    value: "mower",
+                                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "section_mower")
+                                },
+                                {
+                                    value: "valves",
+                                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "section_valves")
+                                },
+                                {
+                                    value: "socket",
+                                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "section_socket")
+                                },
+                                {
+                                    value: "history",
+                                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "section_history")
+                                }
+                            ]
+                        }
+                    }
                 },
                 {
-                    name: "show_duration",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_show_duration"),
+                    name: "show_header",
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_show_header"),
                     selector: {
                         boolean: {}
                     },
@@ -2674,7 +2736,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 },
                 {
                     name: "show_history",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_show_history"),
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_show_history"),
                     selector: {
                         boolean: {}
                     },
@@ -2682,7 +2744,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 },
                 {
                     name: "show_schedules",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_show_schedules"),
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_show_schedules"),
                     selector: {
                         boolean: {}
                     },
@@ -2690,7 +2752,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 },
                 {
                     name: "default_duration",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_default_duration"),
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_default_duration"),
                     selector: {
                         number: {
                             min: 5,
@@ -2703,7 +2765,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 },
                 {
                     name: "mower_entities",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_mower_entities"),
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_mower_entities"),
                     selector: {
                         entity: {
                             filter: [
@@ -2718,7 +2780,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 },
                 {
                     name: "valve_columns",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_valve_columns"),
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_valve_columns"),
                     selector: {
                         number: {
                             min: 1,
@@ -2731,7 +2793,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 },
                 {
                     name: "valve_entities",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_valve_entities"),
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_valve_entities"),
                     selector: {
                         entity: {
                             filter: [
@@ -2746,7 +2808,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 },
                 {
                     name: "socket_entities",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_socket_entities"),
+                    label: (0, $bfc33d6b165ebf37$export$625550452a3fa3ec)(null, "config_socket_entities"),
                     selector: {
                         entity: {
                             filter: [
@@ -2776,7 +2838,113 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
 }
 
 
-if (!customElements.get("gardena-smart-system-card")) customElements.define("gardena-smart-system-card", (0, $ce06635095588d37$export$4db43f2ac07d900b));
+
+const $241519ecc570b12f$var$SUB_CARDS = [
+    {
+        type: 'gardena-smart-mower-card',
+        name: 'Gardena Smart System - Mower',
+        description: 'Mower section from the Gardena Smart System card.',
+        sections: [
+            'mower'
+        ],
+        configFields: [
+            'title',
+            'show_header',
+            'show_schedules',
+            'mower_entities'
+        ],
+        size: 3
+    },
+    {
+        type: 'gardena-smart-valves-card',
+        name: 'Gardena Smart System - Valves',
+        description: 'Valve zones section from the Gardena Smart System card.',
+        sections: [
+            'valves'
+        ],
+        configFields: [
+            'title',
+            'show_header',
+            'show_schedules',
+            'default_duration',
+            'valve_columns',
+            'valve_entities'
+        ],
+        size: 4
+    },
+    {
+        type: 'gardena-smart-socket-card',
+        name: 'Gardena Smart System - Socket',
+        description: 'Power socket section from the Gardena Smart System card.',
+        sections: [
+            'socket'
+        ],
+        configFields: [
+            'title',
+            'show_header',
+            'show_schedules',
+            'default_duration',
+            'socket_entities'
+        ],
+        size: 2
+    },
+    {
+        type: 'gardena-smart-history-card',
+        name: 'Gardena Smart System - History',
+        description: 'History chart from the Gardena Smart System card.',
+        sections: [
+            'history'
+        ],
+        configFields: [
+            'title',
+            'show_header',
+            'valve_entities',
+            'socket_entities'
+        ],
+        size: 3
+    }
+];
+function $241519ecc570b12f$var$createSubCardClass(def) {
+    class SubCard extends (0, $c181edec8277de1e$export$4db43f2ac07d900b) {
+        setConfig(config) {
+            super.setConfig({
+                ...config,
+                sections: def.sections
+            });
+        }
+        static getConfigForm() {
+            const fullForm = (0, $c181edec8277de1e$export$4db43f2ac07d900b).getConfigForm();
+            return {
+                schema: fullForm.schema.filter((f)=>def.configFields.includes(f.name))
+            };
+        }
+        static getStubConfig(hass) {
+            const full = (0, $c181edec8277de1e$export$4db43f2ac07d900b).getStubConfig(hass);
+            const stub = {};
+            for (const key of def.configFields)if (full[key] !== undefined) stub[key] = full[key];
+            return stub;
+        }
+        getCardSize() {
+            return def.size;
+        }
+    }
+    return SubCard;
+}
+function $241519ecc570b12f$export$e0977bf6e2c8a92() {
+    for (const def of $241519ecc570b12f$var$SUB_CARDS){
+        if (!customElements.get(def.type)) customElements.define(def.type, $241519ecc570b12f$var$createSubCardClass(def));
+        window.customCards = window.customCards || [];
+        window.customCards.push({
+            type: def.type,
+            name: def.name,
+            description: def.description,
+            preview: true
+        });
+    }
+}
+
+
+if (!customElements.get("gardena-smart-system-card")) customElements.define("gardena-smart-system-card", (0, $c181edec8277de1e$export$4db43f2ac07d900b));
 window.customCards = window.customCards || [];
 window.customCards.push({
     type: "gardena-smart-system-card",
@@ -2784,6 +2952,8 @@ window.customCards.push({
     description: "Custom card for the Gardena Smart System integration with mower, irrigation, and sensor support.",
     preview: true
 });
-console.info(`%c GARDENA-SMART-SYSTEM-CARD %c v${(0, $ce06635095588d37$export$d5e7ce6d07daf10f)} `, "color:#fff;background:#1c1c1c;padding:2px 6px;border-radius:4px 0 0 4px;font-weight:700", "color:#1c1c1c;background:#4caf50;padding:2px 6px;border-radius:0 4px 4px 0;font-weight:700");
+(0, $241519ecc570b12f$export$e0977bf6e2c8a92)();
+console.info(`%c GARDENA-SMART-SYSTEM-CARD %c v${(0, $c181edec8277de1e$export$d5e7ce6d07daf10f)} `, "color:#fff;background:#1c1c1c;padding:2px 6px;border-radius:4px 0 0 4px;font-weight:700", "color:#1c1c1c;background:#4caf50;padding:2px 6px;border-radius:0 4px 4px 0;font-weight:700");
 
 
+//# sourceMappingURL=gardena_smart_system_card.js.map
