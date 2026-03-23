@@ -1519,3 +1519,53 @@ ha-card {
         justify-content: center;
     }
 }
+@container (max-width: 300px) {
+    .mower-section, .valve-section, .socket-section {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .card-header {
+        padding: 12px 1rem;
+    }
+    .valves-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .mower-header {
+        gap: 8px;
+    }
+    .mower-name {
+        font-size: 12px;
+    }
+    .mower-activity {
+        font-size: 10px;
+        flex-wrap: wrap;
+    }
+    .mower-battery-chip {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+    .mower-btn {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+    .schedule-row {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .schedule-time {
+        min-width: unset;
+        font-size: 10px;
+    }
+    .schedule-day {
+        width: 16px;
+        height: 14px;
+        font-size: 8px;
+    }
+    .schedule-days {
+        gap: 2px;
+    }
+    .socket-schedule-mini {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+}

@@ -37,7 +37,7 @@
   "socket_active": "Active",
   "socket_active_scheduled": "Active (schedule)",
   "socket_active_manual": "Active (always on)",
-  "socket_remaining": "remaining",
+  "socket_active_timed": "Active (manual)",
 
   "section_mower": "Mower",
   "config_mower_entities": "Mowers to display (leave empty for all)",

@@ -317,8 +317,11 @@ export class GardenaSmartSystemCard extends LitElement {
 
   _getScheduleRemaining(entityId, state) {
     const activity = state.attributes?.activity;
-    if (activity !== 'SCHEDULED_WATERING' && activity !== 'SCHEDULED_ON') return null;
-    const events = state.attributes?.scheduled_events;
+    const haState = state.state;
+    const isScheduled = activity === 'SCHEDULED_WATERING' || activity === 'SCHEDULED_ON'
+      || (haState === 'mowing' && (activity === 'OK_CUTTING' || activity === 'OK_CUTTING_TIMER_OVERRIDDEN'));
+    if (!isScheduled) return null;
+    const events = this._getScheduleEvents(entityId);
     if (!events || events.length === 0) return null;
     const now = this._now;
     const dayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -969,6 +972,12 @@ export class GardenaSmartSystemCard extends LitElement {
       const remaining = Math.max(0, timer.durationSec - elapsed);
       return { remaining, total: timer.durationSec };
     }
+    // Fall back to schedule-based timer
+    const state = this._hass.states[entityId];
+    if (state && info.haState === 'mowing') {
+      const scheduleTimer = this._getScheduleRemaining(entityId, state);
+      if (scheduleTimer) return scheduleTimer;
+    }
     return { remaining: 0, total: 0 };
   }
 
@@ -1091,14 +1100,10 @@ export class GardenaSmartSystemCard extends LitElement {
     const activity = state.attributes?.activity;
     if (state.state === 'open') {
       const timeText = this._formatTime(remaining);
-      if (activity === 'SCHEDULED_WATERING') {
-        return html`<span class="water-icon"></span><span class="countdown-text">${timeText || this._t('valve_watering_scheduled')}</span>`;
-      }
-      if (activity === 'MANUAL_WATERING') {
-        return html`<span class="water-icon"></span><span class="countdown-text">${timeText || this._t('valve_watering_manual')}</span>`;
-      }
-      // Fallback: no activity attribute available
-      return html`<span class="water-icon"></span><span class="countdown-text">${timeText || this._t('valve_watering')}</span>`;
+      let label = this._t('valve_watering');
+      if (activity === 'SCHEDULED_WATERING') label = this._t('valve_watering_scheduled');
+      else if (activity === 'MANUAL_WATERING') label = this._t('valve_watering_manual');
+      return html`<span class="water-icon"></span><span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
     }
     return this._t('valve_ready');
   }
@@ -1106,13 +1111,12 @@ export class GardenaSmartSystemCard extends LitElement {
   _getSocketStatusText(state, remaining) {
     const activity = state.attributes?.activity;
     if (state.state === 'on') {
-      if (remaining > 0) {
-        return html`<span class="countdown-text">${this._formatTime(remaining)} ${this._t('socket_remaining')}</span>`;
-      }
-      if (activity === 'SCHEDULED_ON') return this._t('socket_active_scheduled');
-      if (activity === 'FOREVER_ON') return this._t('socket_active_manual');
-      if (activity === 'TIME_LIMITED_ON') return this._t('socket_active');
-      return this._t('socket_active');
+      const timeText = this._formatTime(remaining);
+      let label = this._t('socket_active');
+      if (activity === 'SCHEDULED_ON') label = this._t('socket_active_scheduled');
+      else if (activity === 'FOREVER_ON') label = this._t('socket_active_manual');
+      else if (activity === 'TIME_LIMITED_ON') label = this._t('socket_active_timed');
+      return html`<span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
     }
     return this._t('socket_off');
   }
@@ -1373,8 +1377,6 @@ export class GardenaSmartSystemCard extends LitElement {
           </div>
         </div>
         <div class="socket-right">
-          ${isActive && remaining > 0
-            ? html`<span class="socket-timer">${this._formatTime(remaining)}</span>` : ''}
           ${this._renderPill(entityId, isActive,
             (isOffline && !isActive) || this._isPatchedIntegration === false,
             () => this._toggleSocket(entityId, isActive), true)}

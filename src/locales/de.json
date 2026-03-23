@@ -37,7 +37,7 @@
   "socket_active": "Aktiv",
   "socket_active_scheduled": "Aktiv (Zeitplan)",
   "socket_active_manual": "Aktiv (Dauerbetrieb)",
-  "socket_remaining": "verbleibend",
+  "socket_active_timed": "Aktiv (manuell)",
 
   "section_mower": "Mäher",
   "config_mower_entities": "Anzuzeigende Mäher (leer = alle)",
