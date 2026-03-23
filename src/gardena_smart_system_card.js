@@ -744,22 +744,28 @@ export class GardenaSmartSystemCard extends LitElement {
     const isCustom = !GardenaSmartSystemCard.PILL_DURATIONS.includes(dur);
     return html`
       <div class="pill">
-        <button class="pill-dur ${isOpen ? 'open' : ''} ${isActive ? 'locked' : ''}"
-          @click="${(e) => !isActive && this._togglePillPopup(entityId, e)}">
-          <span>${dur}m</span>
-          ${isActive ? '' : html`<svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>`}
+        <div class="pill-dur-wrap">
+          <div class="pill-dur ${isOpen ? 'open' : ''} ${isActive ? 'locked' : ''}"
+            @click="${(e) => { e.stopPropagation(); if (!isActive) this._togglePillPopup(entityId, e); }}">
+            <span>${dur}m</span>
+            ${isActive ? '' : html`<svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>`}
+          </div>
           <div class="pill-pop ${isOpen ? 'show' : ''}" @click="${(e) => e.stopPropagation()}">
             ${GardenaSmartSystemCard.PILL_DURATIONS.map(d => html`
               <span class="pop-chip ${d === dur ? 'sel' : ''}"
                 @click="${(e) => { e.stopPropagation(); this._setEntityDuration(entityId, d); }}">${d}m</span>
             `)}
-            <input class="pop-input ${isCustom ? 'sel' : ''}" type="number" min="1" max="90" placeholder="min"
-              .value="${isCustom ? String(dur) : ''}"
-              @click="${(e) => e.stopPropagation()}"
-              @keydown="${(e) => { if (e.key === 'Enter') { const v = Math.max(1, Math.min(90, parseInt(e.target.value))); if (v) this._setEntityDuration(entityId, v); } }}"
-            />
+            <div class="pop-custom">
+              <input class="pop-input" type="number" min="1" max="90" placeholder="z.B. 25"
+                .value="${isCustom ? String(dur) : ''}"
+                @click="${(e) => e.stopPropagation()}"
+                @keydown="${(e) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); const v = Math.max(1, Math.min(90, parseInt(e.target.value))); if (v) this._setEntityDuration(entityId, v); } }}"
+              />
+              <span class="pop-input-unit">min</span>
+              <button class="pop-ok" @click="${(e) => { e.stopPropagation(); const inp = e.target.closest('.pop-custom').querySelector('input'); const v = Math.max(1, Math.min(90, parseInt(inp.value))); if (v) this._setEntityDuration(entityId, v); }}">OK</button>
+            </div>
           </div>
-        </button>
+        </div>
         <div class="pill-tog ${isActive ? 'on' : ''} ${amberToggle && isActive ? 'amber' : ''} ${isDisabled ? 'disabled' : ''}"
           @click="${() => !isDisabled && onToggle()}"></div>
       </div>
@@ -986,7 +992,7 @@ export class GardenaSmartSystemCard extends LitElement {
       ? Math.round((remaining / total) * 100) : 0;
 
     return html`
-      <div class="mower-card ${stateClass} ${isOffline ? 'offline' : ''}">
+      <div class="mower-card ${stateClass} ${isOffline ? 'offline' : ''} ${this._openPillPopup === entityId ? 'pill-open' : ''}">
         <div class="mower-header">
           <div class="mower-icon ${isMowing ? 'mowing' : ''}">
             <span class="mower-drive">
@@ -1031,24 +1037,28 @@ export class GardenaSmartSystemCard extends LitElement {
                 ?disabled="${isOffline || this._isPatchedIntegration === false}">
                 ${this._t(a.key)}
               </button>
-              <button class="mower-dur-btn ${this._openPillPopup === entityId ? 'open' : ''}"
-                @click="${(e) => { e.stopPropagation(); this._togglePillPopup(entityId, e); }}"
-                ?disabled="${isOffline || this._isPatchedIntegration === false}">
-                ${this._formatDurationLabel(this._getEntityDuration(entityId))}
-                <svg viewBox="0 0 24 24" width="10" height="10"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+              <div class="mower-dur-wrap">
+                <div class="mower-dur-btn ${this._openPillPopup === entityId ? 'open' : ''}"
+                  @click="${(e) => { e.stopPropagation(); if (!isOffline && this._isPatchedIntegration !== false) this._togglePillPopup(entityId, e); }}">
+                  ${this._formatDurationLabel(this._getEntityDuration(entityId))}
+                  <svg viewBox="0 0 24 24" width="10" height="10"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+                </div>
                 <div class="pill-pop ${this._openPillPopup === entityId ? 'show' : ''}" @click="${(e) => e.stopPropagation()}">
                   ${GardenaSmartSystemCard.MOWER_DURATIONS.map(d => html`
                     <span class="pop-chip ${d === this._getEntityDuration(entityId) ? 'sel' : ''}"
                       @click="${(e) => { e.stopPropagation(); this._setEntityDuration(entityId, d); }}">${this._formatDurationLabel(d)}</span>
                   `)}
-                  <input class="pop-input ${!GardenaSmartSystemCard.MOWER_DURATIONS.includes(this._getEntityDuration(entityId)) ? 'sel' : ''}"
-                    type="number" min="1" max="360" placeholder="min"
-                    .value="${!GardenaSmartSystemCard.MOWER_DURATIONS.includes(this._getEntityDuration(entityId)) ? String(this._getEntityDuration(entityId)) : ''}"
-                    @click="${(e) => e.stopPropagation()}"
-                    @keydown="${(e) => { if (e.key === 'Enter') { const v = Math.max(1, Math.min(360, parseInt(e.target.value))); if (v) this._setEntityDuration(entityId, v); } }}"
-                  />
+                  <div class="pop-custom">
+                    <input class="pop-input" type="number" min="1" max="360" placeholder="z.B. 25"
+                      .value="${!GardenaSmartSystemCard.MOWER_DURATIONS.includes(this._getEntityDuration(entityId)) ? String(this._getEntityDuration(entityId)) : ''}"
+                      @click="${(e) => e.stopPropagation()}"
+                      @keydown="${(e) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); const v = Math.max(1, Math.min(360, parseInt(e.target.value))); if (v) this._setEntityDuration(entityId, v); } }}"
+                    />
+                    <span class="pop-input-unit">min</span>
+                    <button class="pop-ok" @click="${(e) => { e.stopPropagation(); const inp = e.target.closest('.pop-custom').querySelector('input'); const v = Math.max(1, Math.min(360, parseInt(inp.value))); if (v) this._setEntityDuration(entityId, v); }}">OK</button>
+                  </div>
                 </div>
-              </button>
+              </div>
             </div>
           ` : html`
             <button class="mower-btn ${a.primary ? 'primary' : ''}"
