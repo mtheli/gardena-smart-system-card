@@ -1013,7 +1013,7 @@ class $846aa683367f4d83$export$15679f44c07c43cc {
 }
 
 
-const $c181edec8277de1e$export$d5e7ce6d07daf10f = "0.3.0";
+const $c181edec8277de1e$export$d5e7ce6d07daf10f = "0.4.0";
 // ---------- Knob constants ----------
 const $c181edec8277de1e$var$KNOB_MIN = 5;
 const $c181edec8277de1e$var$KNOB_MAX = 120;

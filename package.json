@@ -1,6 +1,6 @@
 {
   "name": "gardena_smart_system_card",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "description": "Custom Lovelace card for the Gardena Smart System integration",
   "source": "src/index.js",
   "module": "dist/gardena_smart_system_card.js",

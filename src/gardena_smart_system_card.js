@@ -11,7 +11,7 @@ import { t } from './translations.js';
 import { ThecemBackend } from './backends/thecem.js';
 import { KayloehmannBackend } from './backends/kayloehmann.js';
 
-export const CARD_VERSION = "0.3.0";
+export const CARD_VERSION = "0.4.0";
 
 // ---------- Knob constants ----------
 const KNOB_MIN = 5;
