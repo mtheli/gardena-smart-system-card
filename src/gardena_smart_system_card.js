@@ -1121,7 +1121,9 @@ export class GardenaSmartSystemCard extends LitElement {
     const state = this._hass.states[entityId];
     if (!state) return false;
     const activity = state.attributes?.activity;
-    const isScheduled = activity === 'SCHEDULED_WATERING' || activity === 'SCHEDULED_ON';
+    const haState = state.state;
+    const isScheduled = activity === 'SCHEDULED_WATERING' || activity === 'SCHEDULED_ON'
+      || (haState === 'mowing' && (activity === 'OK_CUTTING' || activity === 'OK_CUTTING_TIMER_OVERRIDDEN'));
     if (!isScheduled) return false;
     const now = this._now;
     const dayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];

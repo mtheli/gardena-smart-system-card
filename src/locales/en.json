@@ -42,8 +42,8 @@
   "section_mower": "Mower",
   "config_mower_entities": "Mowers to display (leave empty for all)",
 
-  "mower_cutting": "Cutting",
-  "mower_cutting_manual": "Cutting (manual)",
+  "mower_cutting": "Mowing",
+  "mower_cutting_manual": "Mowing (manual)",
   "mower_searching": "Returning to dock",
   "mower_leaving": "Leaving dock",
   "mower_next_action": "Starting next action",
