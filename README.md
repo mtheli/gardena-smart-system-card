@@ -167,6 +167,10 @@ npm install
 npm run build
 ```
 
+## Disclaimer
+
+This is an independent community project and is not affiliated with, endorsed by, or sponsored by Gardena or Husqvarna Group. All product names, trademarks, and registered trademarks are property of their respective owners.
+
 ## License
 
 MIT License — see [LICENSE](LICENSE)
