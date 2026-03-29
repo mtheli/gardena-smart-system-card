@@ -823,11 +823,17 @@ class $745bb0daa83c0e2b$export$40967b6313899a18 {
 
 /**
  * Backend adapter for kayloehmann's ha-gardena-smart-system integration
- * (kayloehmann/ha-gardena-smart-system)
+ * (kayloehmann/ha-gardena-smart-system) v1.4+
  *
  * Uses standard HA services (valve.open_valve, lawn_mower.start_mowing, switch.turn_on)
  * plus entity-services for timed operations (duration in minutes).
  * Device identifiers use serial number: (DOMAIN, device.serial).
+ *
+ * Key differences from thecem backend:
+ *   - activity, battery_state are separate sensor entities (not attributes on mower)
+ *   - valve remaining duration is a separate sensor (not attribute on valve)
+ *   - valve activity is not exposed at all (inferred via schedule integration)
+ *   - socket activity IS an extra_state_attribute on the switch entity
  */ const $846aa683367f4d83$var$DOMAIN = 'gardena_smart_system';
 class $846aa683367f4d83$export$15679f44c07c43cc {
     get id() {
@@ -954,7 +960,7 @@ class $846aa683367f4d83$export$15679f44c07c43cc {
         }
     }
     getMowerInfo(hass, state, { entities: entities, deviceId: deviceId }) {
-        // activity, battery_state, last_error_code are extra_state_attributes on the mower entity
+        // kayloehmann exposes activity, battery_state as separate sensor entities
         // battery_level is on a separate sensor entity (device lookup)
         let battery = null;
         if (deviceId && entities?.deviceBatteries?.[deviceId]) {
@@ -965,11 +971,23 @@ class $846aa683367f4d83$export$15679f44c07c43cc {
                 if (isNaN(battery)) battery = null;
             }
         }
+        // Activity from separate sensor (raw Gardena values: OK_CUTTING, PARKED_TIMER, etc.)
+        let activity = state.attributes.activity; // fallback to attribute if present
+        if (!activity && deviceId && entities?.deviceMowerActivities?.[deviceId]) {
+            const actSensor = hass.states[entities.deviceMowerActivities[deviceId]];
+            if (actSensor) activity = actSensor.state;
+        }
+        // Battery state from separate enum sensor (lowercase: charging, ok, low, etc.)
+        let batteryState = state.attributes.battery_state;
+        if (!batteryState && deviceId && entities?.deviceBatteryStates?.[deviceId]) {
+            const batStateSensor = hass.states[entities.deviceBatteryStates[deviceId]];
+            if (batStateSensor) batteryState = batStateSensor.state?.toUpperCase();
+        }
         return {
             haState: state.state,
-            activity: state.attributes.activity,
+            activity: activity,
             battery: battery,
-            batteryState: state.attributes.battery_state,
+            batteryState: batteryState,
             opHours: null,
             lastError: state.attributes.last_error_code,
             deviceState: null
@@ -1204,6 +1222,10 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
             deviceBatteries: {},
             deviceConnections: {},
             deviceSignals: {},
+            deviceMowerActivities: {},
+            deviceBatteryStates: {},
+            deviceValveRemainingDurations: {},
+            deviceSocketRemainingDurations: {},
             deviceIds: new Set()
         };
         for(const entityId in allEntities){
@@ -1223,6 +1245,10 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
                     if (!found.battery) found.battery = entityId;
                     if (entity.device_id) found.deviceBatteries[entity.device_id] = entityId;
                 } else if (entity.translation_key === 'rf_link_level' && entity.device_id) found.deviceSignals[entity.device_id] = entityId;
+                else if (entity.translation_key === 'mower_activity' && entity.device_id) found.deviceMowerActivities[entity.device_id] = entityId;
+                else if (entity.translation_key === 'battery_state' && entity.device_id) found.deviceBatteryStates[entity.device_id] = entityId;
+                else if (entity.translation_key === 'valve_remaining_duration' && entity.device_id) found.deviceValveRemainingDurations[entity.device_id] = entityId;
+                else if (entity.translation_key === 'power_socket_remaining_duration' && entity.device_id) found.deviceSocketRemainingDurations[entity.device_id] = entityId;
             }
         }
         return found;
@@ -1282,6 +1308,20 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
             remaining: state.attributes.valve_remaining_time,
             total: state.attributes.valve_duration || state.attributes.valve_remaining_time
         };
+        // Try separate remaining_duration sensor (kayloehmann)
+        const entityReg = (this._hass.entities || {})[entityId];
+        const devId = entityReg?.device_id;
+        if (devId) {
+            const remainSensorId = this._entities?.deviceValveRemainingDurations?.[devId];
+            if (remainSensorId) {
+                const remainSensor = this._hass.states[remainSensorId];
+                const secs = parseFloat(remainSensor?.state);
+                if (secs > 0) return {
+                    remaining: secs,
+                    total: secs
+                };
+            }
+        }
         // Fall back to local timer tracking (py-smart-gardena v2)
         const timer = this._valveTimers[entityId];
         if (timer) {
@@ -1301,7 +1341,7 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
         };
     }
     _getScheduleRemaining(entityId, state) {
-        const activity = state.attributes?.activity;
+        const activity = this._getEntityActivity(entityId, state);
         const haState = state.state;
         const isScheduled = activity === 'SCHEDULED_WATERING' || activity === 'SCHEDULED_ON' || haState === 'mowing' && (activity === 'OK_CUTTING' || activity === 'OK_CUTTING_TIMER_OVERRIDDEN');
         if (!isScheduled) return null;
@@ -1841,7 +1881,7 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
         </div>
         <div class="valve-name" @click="${()=>this._fireMoreInfo(entityId)}">${shortName}</div>
         <div class="valve-status">
-          ${isOffline && !isActive ? this._t('state_offline') : this._getValveStatusText(state, remaining)}
+          ${isOffline && !isActive ? this._t('state_offline') : this._getValveStatusText(entityId, state, remaining)}
         </div>
         <div class="valve-progress">
           ${isActive ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="valve-progress-fill" style="width:${pct}%"></div>` : ''}
@@ -2178,18 +2218,38 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
         'schedule_day_su'
     ];
     // ---------- Activity Helpers ----------
-    _getValveStatusText(state, remaining) {
+    /** Resolve activity for any entity: attribute first, then device sensor fallback */ _getEntityActivity(entityId, state) {
+        const activity = state?.attributes?.activity;
+        if (activity) return activity;
+        const entityReg = (this._hass.entities || {})[entityId];
+        const devId = entityReg?.device_id;
+        if (!devId) return null;
+        // Mower activity sensor
+        const mowerActId = this._entities?.deviceMowerActivities?.[devId];
+        if (mowerActId) {
+            const s = this._hass.states[mowerActId];
+            if (s?.state && s.state !== 'unknown' && s.state !== 'unavailable') return s.state;
+        }
+        return null;
+    }
+    _getValveStatusText(entityId, state, remaining) {
         const activity = state.attributes?.activity;
         if (state.state === 'open') {
             const timeText = this._formatTime(remaining);
             let label = this._t('valve_watering');
             if (activity === 'SCHEDULED_WATERING') label = this._t('valve_watering_scheduled');
             else if (activity === 'MANUAL_WATERING') label = this._t('valve_watering_manual');
+            else if (!activity) {
+                // Infer from schedule events if activity is not available (kayloehmann)
+                const scheduleTimer = this._getScheduleRemaining(entityId, state);
+                if (scheduleTimer) label = this._t('valve_watering_scheduled');
+                else label = this._t('valve_watering_manual');
+            }
             return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="water-icon"></span><span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
         }
         return this._t('valve_ready');
     }
-    _getSocketStatusText(state, remaining) {
+    _getSocketStatusText(entityId, state, remaining) {
         const activity = state.attributes?.activity;
         if (state.state === 'on') {
             const timeText = this._formatTime(remaining);
@@ -2197,6 +2257,12 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
             if (activity === 'SCHEDULED_ON') label = this._t('socket_active_scheduled');
             else if (activity === 'FOREVER_ON') label = this._t('socket_active_manual');
             else if (activity === 'TIME_LIMITED_ON') label = this._t('socket_active_timed');
+            else if (!activity) {
+                // Infer from schedule events if activity is not available (kayloehmann)
+                const scheduleTimer = this._getScheduleRemaining(entityId, state);
+                if (scheduleTimer) label = this._t('socket_active_scheduled');
+                else label = this._t('socket_active_manual');
+            }
             return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
         }
         return this._t('socket_off');
@@ -2204,7 +2270,7 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
     _isScheduleActive(ev, entityId) {
         const state = this._hass.states[entityId];
         if (!state) return false;
-        const activity = state.attributes?.activity;
+        const activity = this._getEntityActivity(entityId, state);
         const haState = state.state;
         const isScheduled = activity === 'SCHEDULED_WATERING' || activity === 'SCHEDULED_ON' || haState === 'mowing' && (activity === 'OK_CUTTING' || activity === 'OK_CUTTING_TIMER_OVERRIDDEN');
         if (!isScheduled) return false;
@@ -2414,6 +2480,22 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
             remaining = Math.max(0, timer.durationSec - elapsed);
             total = timer.durationSec;
         }
+        // Try separate remaining_duration sensor (kayloehmann)
+        if (isActive && remaining === 0) {
+            const entityReg = (this._hass.entities || {})[entityId];
+            const devId = entityReg?.device_id;
+            if (devId) {
+                const remainSensorId = this._entities?.deviceSocketRemainingDurations?.[devId];
+                if (remainSensorId) {
+                    const remainSensor = this._hass.states[remainSensorId];
+                    const secs = parseFloat(remainSensor?.state);
+                    if (secs > 0) {
+                        remaining = secs;
+                        total = secs;
+                    }
+                }
+            }
+        }
         // Fall back to schedule-based timer
         if (isActive && remaining === 0) {
             const scheduleTimer = this._getScheduleRemaining(entityId, state);
@@ -2437,7 +2519,7 @@ class $c181edec8277de1e$export$4db43f2ac07d900b extends (0, $ab210b2da7b39b9d$ex
           <div class="socket-info">
             <div class="socket-name" @click="${()=>this._fireMoreInfo(entityId)}">${shortName}</div>
             <div class="socket-status">
-              ${isOffline && !isActive ? this._t('state_offline') : this._getSocketStatusText(state, remaining)}
+              ${isOffline && !isActive ? this._t('state_offline') : this._getSocketStatusText(entityId, state, remaining)}
             </div>
           </div>
         </div>

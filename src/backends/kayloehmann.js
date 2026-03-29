@@ -1,10 +1,16 @@
 /**
  * Backend adapter for kayloehmann's ha-gardena-smart-system integration
- * (kayloehmann/ha-gardena-smart-system)
+ * (kayloehmann/ha-gardena-smart-system) v1.4+
  *
  * Uses standard HA services (valve.open_valve, lawn_mower.start_mowing, switch.turn_on)
  * plus entity-services for timed operations (duration in minutes).
  * Device identifiers use serial number: (DOMAIN, device.serial).
+ *
+ * Key differences from thecem backend:
+ *   - activity, battery_state are separate sensor entities (not attributes on mower)
+ *   - valve remaining duration is a separate sensor (not attribute on valve)
+ *   - valve activity is not exposed at all (inferred via schedule integration)
+ *   - socket activity IS an extra_state_attribute on the switch entity
  */
 
 const DOMAIN = 'gardena_smart_system';
@@ -90,7 +96,7 @@ export class KayloehmannBackend {
   }
 
   getMowerInfo(hass, state, { entities, deviceId }) {
-    // activity, battery_state, last_error_code are extra_state_attributes on the mower entity
+    // kayloehmann exposes activity, battery_state as separate sensor entities
     // battery_level is on a separate sensor entity (device lookup)
     let battery = null;
     if (deviceId && entities?.deviceBatteries?.[deviceId]) {
@@ -102,12 +108,26 @@ export class KayloehmannBackend {
       }
     }
 
+    // Activity from separate sensor (raw Gardena values: OK_CUTTING, PARKED_TIMER, etc.)
+    let activity = state.attributes.activity; // fallback to attribute if present
+    if (!activity && deviceId && entities?.deviceMowerActivities?.[deviceId]) {
+      const actSensor = hass.states[entities.deviceMowerActivities[deviceId]];
+      if (actSensor) activity = actSensor.state;
+    }
+
+    // Battery state from separate enum sensor (lowercase: charging, ok, low, etc.)
+    let batteryState = state.attributes.battery_state;
+    if (!batteryState && deviceId && entities?.deviceBatteryStates?.[deviceId]) {
+      const batStateSensor = hass.states[entities.deviceBatteryStates[deviceId]];
+      if (batStateSensor) batteryState = batStateSensor.state?.toUpperCase();
+    }
+
     return {
       haState: state.state,
-      activity: state.attributes.activity,
+      activity,
       battery,
-      batteryState: state.attributes.battery_state,
-      opHours: null, // not available as mower attribute; exists as separate sensor
+      batteryState,
+      opHours: null,
       lastError: state.attributes.last_error_code,
       deviceState: null,
     };

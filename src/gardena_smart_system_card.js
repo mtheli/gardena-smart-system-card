@@ -206,7 +206,7 @@ export class GardenaSmartSystemCard extends LitElement {
   // ---------- Entity discovery (domain-based) ----------
   _findEntities(hass) {
     const allEntities = hass.entities || {};
-    const found = { valves: [], sockets: [], mowers: [], connection: null, battery: null, deviceBatteries: {}, deviceConnections: {}, deviceSignals: {}, deviceIds: new Set() };
+    const found = { valves: [], sockets: [], mowers: [], connection: null, battery: null, deviceBatteries: {}, deviceConnections: {}, deviceSignals: {}, deviceMowerActivities: {}, deviceBatteryStates: {}, deviceValveRemainingDurations: {}, deviceSocketRemainingDurations: {}, deviceIds: new Set() };
 
     for (const entityId in allEntities) {
       const entity = allEntities[entityId];
@@ -232,6 +232,14 @@ export class GardenaSmartSystemCard extends LitElement {
           if (entity.device_id) found.deviceBatteries[entity.device_id] = entityId;
         } else if (entity.translation_key === 'rf_link_level' && entity.device_id) {
           found.deviceSignals[entity.device_id] = entityId;
+        } else if (entity.translation_key === 'mower_activity' && entity.device_id) {
+          found.deviceMowerActivities[entity.device_id] = entityId;
+        } else if (entity.translation_key === 'battery_state' && entity.device_id) {
+          found.deviceBatteryStates[entity.device_id] = entityId;
+        } else if (entity.translation_key === 'valve_remaining_duration' && entity.device_id) {
+          found.deviceValveRemainingDurations[entity.device_id] = entityId;
+        } else if (entity.translation_key === 'power_socket_remaining_duration' && entity.device_id) {
+          found.deviceSocketRemainingDurations[entity.device_id] = entityId;
         }
       }
     }
@@ -302,6 +310,19 @@ export class GardenaSmartSystemCard extends LitElement {
         total: state.attributes.valve_duration || state.attributes.valve_remaining_time,
       };
     }
+    // Try separate remaining_duration sensor (kayloehmann)
+    const entityReg = (this._hass.entities || {})[entityId];
+    const devId = entityReg?.device_id;
+    if (devId) {
+      const remainSensorId = this._entities?.deviceValveRemainingDurations?.[devId];
+      if (remainSensorId) {
+        const remainSensor = this._hass.states[remainSensorId];
+        const secs = parseFloat(remainSensor?.state);
+        if (secs > 0) {
+          return { remaining: secs, total: secs };
+        }
+      }
+    }
     // Fall back to local timer tracking (py-smart-gardena v2)
     const timer = this._valveTimers[entityId];
     if (timer) {
@@ -316,7 +337,7 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   _getScheduleRemaining(entityId, state) {
-    const activity = state.attributes?.activity;
+    const activity = this._getEntityActivity(entityId, state);
     const haState = state.state;
     const isScheduled = activity === 'SCHEDULED_WATERING' || activity === 'SCHEDULED_ON'
       || (haState === 'mowing' && (activity === 'OK_CUTTING' || activity === 'OK_CUTTING_TIMER_OVERRIDDEN'));
@@ -869,7 +890,7 @@ export class GardenaSmartSystemCard extends LitElement {
         <div class="valve-status">
           ${isOffline && !isActive
             ? this._t('state_offline')
-            : this._getValveStatusText(state, remaining)}
+            : this._getValveStatusText(entityId, state, remaining)}
         </div>
         <div class="valve-progress">
           ${isActive ? html`<div class="valve-progress-fill" style="width:${pct}%"></div>` : ''}
@@ -1133,19 +1154,42 @@ export class GardenaSmartSystemCard extends LitElement {
   static SCHEDULE_DAY_KEYS = ['schedule_day_mo', 'schedule_day_tu', 'schedule_day_we', 'schedule_day_th', 'schedule_day_fr', 'schedule_day_sa', 'schedule_day_su'];
 
   // ---------- Activity Helpers ----------
-  _getValveStatusText(state, remaining) {
+
+  /** Resolve activity for any entity: attribute first, then device sensor fallback */
+  _getEntityActivity(entityId, state) {
+    const activity = state?.attributes?.activity;
+    if (activity) return activity;
+    const entityReg = (this._hass.entities || {})[entityId];
+    const devId = entityReg?.device_id;
+    if (!devId) return null;
+    // Mower activity sensor
+    const mowerActId = this._entities?.deviceMowerActivities?.[devId];
+    if (mowerActId) {
+      const s = this._hass.states[mowerActId];
+      if (s?.state && s.state !== 'unknown' && s.state !== 'unavailable') return s.state;
+    }
+    return null;
+  }
+
+  _getValveStatusText(entityId, state, remaining) {
     const activity = state.attributes?.activity;
     if (state.state === 'open') {
       const timeText = this._formatTime(remaining);
       let label = this._t('valve_watering');
       if (activity === 'SCHEDULED_WATERING') label = this._t('valve_watering_scheduled');
       else if (activity === 'MANUAL_WATERING') label = this._t('valve_watering_manual');
+      else if (!activity) {
+        // Infer from schedule events if activity is not available (kayloehmann)
+        const scheduleTimer = this._getScheduleRemaining(entityId, state);
+        if (scheduleTimer) label = this._t('valve_watering_scheduled');
+        else label = this._t('valve_watering_manual');
+      }
       return html`<span class="water-icon"></span><span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
     }
     return this._t('valve_ready');
   }
 
-  _getSocketStatusText(state, remaining) {
+  _getSocketStatusText(entityId, state, remaining) {
     const activity = state.attributes?.activity;
     if (state.state === 'on') {
       const timeText = this._formatTime(remaining);
@@ -1153,6 +1197,12 @@ export class GardenaSmartSystemCard extends LitElement {
       if (activity === 'SCHEDULED_ON') label = this._t('socket_active_scheduled');
       else if (activity === 'FOREVER_ON') label = this._t('socket_active_manual');
       else if (activity === 'TIME_LIMITED_ON') label = this._t('socket_active_timed');
+      else if (!activity) {
+        // Infer from schedule events if activity is not available (kayloehmann)
+        const scheduleTimer = this._getScheduleRemaining(entityId, state);
+        if (scheduleTimer) label = this._t('socket_active_scheduled');
+        else label = this._t('socket_active_manual');
+      }
       return html`<span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
     }
     return this._t('socket_off');
@@ -1161,7 +1211,7 @@ export class GardenaSmartSystemCard extends LitElement {
   _isScheduleActive(ev, entityId) {
     const state = this._hass.states[entityId];
     if (!state) return false;
-    const activity = state.attributes?.activity;
+    const activity = this._getEntityActivity(entityId, state);
     const haState = state.state;
     const isScheduled = activity === 'SCHEDULED_WATERING' || activity === 'SCHEDULED_ON'
       || (haState === 'mowing' && (activity === 'OK_CUTTING' || activity === 'OK_CUTTING_TIMER_OVERRIDDEN'));
@@ -1386,6 +1436,19 @@ export class GardenaSmartSystemCard extends LitElement {
       remaining = Math.max(0, timer.durationSec - elapsed);
       total = timer.durationSec;
     }
+    // Try separate remaining_duration sensor (kayloehmann)
+    if (isActive && remaining === 0) {
+      const entityReg = (this._hass.entities || {})[entityId];
+      const devId = entityReg?.device_id;
+      if (devId) {
+        const remainSensorId = this._entities?.deviceSocketRemainingDurations?.[devId];
+        if (remainSensorId) {
+          const remainSensor = this._hass.states[remainSensorId];
+          const secs = parseFloat(remainSensor?.state);
+          if (secs > 0) { remaining = secs; total = secs; }
+        }
+      }
+    }
     // Fall back to schedule-based timer
     if (isActive && remaining === 0) {
       const scheduleTimer = this._getScheduleRemaining(entityId, state);
@@ -1410,7 +1473,7 @@ export class GardenaSmartSystemCard extends LitElement {
             <div class="socket-status">
               ${isOffline && !isActive
                 ? this._t('state_offline')
-                : this._getSocketStatusText(state, remaining)}
+                : this._getSocketStatusText(entityId, state, remaining)}
             </div>
           </div>
         </div>
