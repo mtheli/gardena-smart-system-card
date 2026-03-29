@@ -67,7 +67,7 @@ To display schedules from the Gardena App on the card, install:
 |-------------|-----------|-------|
 | **Gardena Smart Schedule** | [mtheli/gardena-smart-schedule](https://github.com/mtheli/gardena-smart-schedule) | Reads schedule data from the Gardena Cloud API and exposes it as sensor entities. |
 
-Without this integration the card works fully, but the schedule rows (times and weekdays) are not shown.
+Without this integration the card works fully, but the schedule rows (times and weekdays) are not shown. See [Schedule Documentation](docs/schedules.md) for details and alternatives using Home Assistant automations.
 
 ## Installation
 
