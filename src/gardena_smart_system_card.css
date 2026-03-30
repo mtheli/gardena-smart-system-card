@@ -1284,6 +1284,15 @@ ha-card.single-section .valves-grid {
 }
 
 /* ── Schedule Strip (Mower) ── */
+.scheduler-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gs-text-dimmer);
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
 .schedule-strip {
     margin-top: 10px;
     padding-top: 10px;
@@ -1488,16 +1497,23 @@ ha-card.single-section .valves-grid {
     }
 }
 .valve.schedule-paused {
-    border-color: color-mix(in srgb, var(--gs-amber) 20%, transparent);
+}
+.socket-schedules-wrap {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--gs-border);
 }
 .socket-schedule-mini {
     width: 100%;
     margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--gs-border);
     display: flex;
     align-items: center;
     gap: 8px;
+}
+.socket-schedule-mini:first-child,
+.socket-schedules-wrap > .scheduler-label:first-child + .socket-schedule-mini,
+.socket-schedules-wrap > .socket-schedule-mini:first-child {
+    margin-top: 0;
 }
 .socket-schedule-mini .schedule-time {
     min-width: auto;

@@ -61,13 +61,20 @@ The card auto-detects which backend is installed and adapts accordingly.
 
 ### Schedule Integration (optional)
 
-To display schedules from the Gardena App on the card, install:
+The card supports two schedule sources. You can use either or both:
 
-| Integration | Repository | Notes |
-|-------------|-----------|-------|
-| **Gardena Smart Schedule** | [mtheli/gardena-smart-schedule](https://github.com/mtheli/gardena-smart-schedule) | Reads schedule data from the Gardena Cloud API and exposes it as sensor entities. |
+| Source | Integration | How it works |
+|--------|------------|--------------|
+| **Gardena App** | [Gardena Smart Schedule](https://github.com/mtheli/gardena-smart-schedule) | Reads schedules configured in the [Gardena Smart App](https://smart.gardena.com/) and exposes them as sensor entities. |
+| **Scheduler** | [scheduler-component](https://github.com/nielsfaber/scheduler-component) + [scheduler-card](https://github.com/nielsfaber/scheduler-card) | Create and manage schedules locally in Home Assistant with a visual editor. |
 
-Without this integration the card works fully, but the schedule rows (times and weekdays) are not shown. See [Schedule Documentation](docs/schedules.md) for details and alternatives using Home Assistant automations.
+The card **auto-detects** both sources. Gardena App schedules are shown with a calendar icon, scheduler-component schedules with a clock icon. When both sources exist for a device, each section is labeled ("Gardena" / "Scheduler").
+
+**Display mode** (config option `show_scheduler_schedules`):
+- `mixed` (default) — all schedules in one list
+- `separate` — scheduler schedules in their own labeled section
+
+Without any schedule integration the card works fully, but no schedule rows are shown. See [Schedule Documentation](docs/schedules.md) for details, recommended scheduler-card configuration, and alternatives using Home Assistant automations.
 
 ## Installation
 
@@ -111,7 +118,8 @@ The card is configured via the UI — just add it and all Gardena entities are a
 | sections        | string[] | all               | Sections to display: `mower`, `valves`, `socket`, `history` |
 | show_header     | boolean  | true              | Show card header with title and status icons        |
 | show_history    | boolean  | true              | Show usage history chart                            |
-| show_schedules  | boolean  | true              | Show schedule rows from the Gardena App             |
+| show_schedules  | boolean  | true              | Show schedule rows                                  |
+| show_scheduler_schedules | string | mixed        | Scheduler display: `mixed` or `separate`            |
 | default_duration| number   | 30                | Default duration in minutes for valves/sockets      |
 | valve_columns   | number   | 3                 | Number of valve columns per row (1–3)               |
 | mower_entities  | string[] | all               | Mowers to display (leave empty for all)             |

@@ -11,7 +11,7 @@ import { t } from './translations.js';
 import { ThecemBackend } from './backends/thecem.js';
 import { KayloehmannBackend } from './backends/kayloehmann.js';
 
-export const CARD_VERSION = "0.4.1";
+export const CARD_VERSION = "0.5.0";
 
 // ---------- Knob constants ----------
 const KNOB_MIN = 5;
@@ -56,6 +56,17 @@ const MOWER_ERROR_MAP = {
   'LOW_BATTERY':                 'error_low_battery',
   'TEMPORARILY_STOPPED':         'error_temp_stopped',
   'CHARGING_STATION_BLOCKED':    'error_cs_blocked',
+};
+
+// Scheduler-component weekday mapping
+const SCHEDULER_WEEKDAY_MAP = {
+  'mon': 'monday', 'tue': 'tuesday', 'wed': 'wednesday',
+  'thu': 'thursday', 'fri': 'friday', 'sat': 'saturday', 'sun': 'sunday',
+};
+const SCHEDULER_WEEKDAY_EXPAND = {
+  'daily': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+  'workday': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+  'weekend': ['saturday', 'sunday'],
 };
 
 // Module-level timer storage — survives card re-creation during config edits
@@ -206,10 +217,22 @@ export class GardenaSmartSystemCard extends LitElement {
   // ---------- Entity discovery (domain-based) ----------
   _findEntities(hass) {
     const allEntities = hass.entities || {};
-    const found = { valves: [], sockets: [], mowers: [], connection: null, battery: null, deviceBatteries: {}, deviceConnections: {}, deviceSignals: {}, deviceMowerActivities: {}, deviceBatteryStates: {}, deviceValveRemainingDurations: {}, deviceSocketRemainingDurations: {}, deviceIds: new Set() };
+    const found = { valves: [], sockets: [], mowers: [], connection: null, battery: null, deviceBatteries: {}, deviceConnections: {}, deviceSignals: {}, deviceMowerActivities: {}, deviceBatteryStates: {}, deviceValveRemainingDurations: {}, deviceSocketRemainingDurations: {}, deviceIds: new Set(), schedulerMap: {} };
+
+    // Collect scheduler-component candidates in first pass
+    const schedulerCandidates = [];
 
     for (const entityId in allEntities) {
       const entity = allEntities[entityId];
+
+      // Collect switch.schedule_* entities for scheduler-component matching
+      if (entityId.startsWith('switch.schedule_')) {
+        const st = hass.states[entityId];
+        const targetEntities = st?.attributes?.entities;
+        if (Array.isArray(targetEntities)) schedulerCandidates.push({ entityId, targetEntities });
+        continue;
+      }
+
       if (entity.platform !== DOMAIN) continue;
 
       const domain = entityId.split('.')[0];
@@ -240,6 +263,21 @@ export class GardenaSmartSystemCard extends LitElement {
           found.deviceValveRemainingDurations[entity.device_id] = entityId;
         } else if (entity.translation_key === 'power_socket_remaining_duration' && entity.device_id) {
           found.deviceSocketRemainingDurations[entity.device_id] = entityId;
+        }
+      }
+    }
+
+    // Match scheduler-component entities to Gardena devices
+    if (schedulerCandidates.length > 0) {
+      const allGardenaEntityIds = new Set([...found.valves, ...found.sockets, ...found.mowers]);
+      for (const { entityId, targetEntities } of schedulerCandidates) {
+        for (const targetId of targetEntities) {
+          if (allGardenaEntityIds.has(targetId)) {
+            if (!found.schedulerMap[targetId]) found.schedulerMap[targetId] = [];
+            if (!found.schedulerMap[targetId].includes(entityId)) {
+              found.schedulerMap[targetId].push(entityId);
+            }
+          }
         }
       }
     }
@@ -310,19 +348,9 @@ export class GardenaSmartSystemCard extends LitElement {
         total: state.attributes.valve_duration || state.attributes.valve_remaining_time,
       };
     }
-    // Try separate remaining_duration sensor (kayloehmann)
-    const entityReg = (this._hass.entities || {})[entityId];
-    const devId = entityReg?.device_id;
-    if (devId) {
-      const remainSensorId = this._entities?.deviceValveRemainingDurations?.[devId];
-      if (remainSensorId) {
-        const remainSensor = this._hass.states[remainSensorId];
-        const secs = parseFloat(remainSensor?.state);
-        if (secs > 0) {
-          return { remaining: secs, total: secs };
-        }
-      }
-    }
+    // Try scheduler-component timeslot (ticks every second)
+    const schedulerTimer = this._getSchedulerRemaining(entityId);
+    if (schedulerTimer) return schedulerTimer;
     // Fall back to local timer tracking (py-smart-gardena v2)
     const timer = this._valveTimers[entityId];
     if (timer) {
@@ -334,6 +362,38 @@ export class GardenaSmartSystemCard extends LitElement {
     const scheduleTimer = this._getScheduleRemaining(entityId, state);
     if (scheduleTimer) return scheduleTimer;
     return { remaining: 0, total: 0 };
+  }
+
+  _getSchedulerRemaining(entityId) {
+    const events = this._getScheduleEventsFromSchedulerComponent(entityId);
+    if (events.length === 0) return null;
+    const now = this._now;
+    const dayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const today = dayMap[now.getDay()];
+    const nowMins = now.getHours() * 60 + now.getMinutes();
+    for (const ev of events) {
+      if (ev.paused) continue;
+      if (!(ev.weekdays || []).includes(today)) continue;
+      const [sh, sm] = (ev.start_at || '').split(':').map(Number);
+      const [eh, em] = (ev.end_at || '').split(':').map(Number);
+      if (isNaN(sh) || isNaN(eh)) continue;
+      const startMins = sh * 60 + (sm || 0);
+      const endMins = eh * 60 + (em || 0);
+      const crossesMidnight = endMins <= startMins;
+      const inRange = crossesMidnight
+        ? (nowMins >= startMins || nowMins <= endMins)
+        : (nowMins >= startMins && nowMins <= endMins);
+      if (inRange) {
+        const totalSec = crossesMidnight
+          ? (1440 - startMins + endMins) * 60
+          : (endMins - startMins) * 60;
+        const elapsedSec = crossesMidnight && nowMins < startMins
+          ? (1440 - startMins + nowMins) * 60 + now.getSeconds()
+          : (nowMins - startMins) * 60 + now.getSeconds();
+        return { remaining: Math.max(0, totalSec - elapsedSec), total: totalSec };
+      }
+    }
+    return null;
   }
 
   _getScheduleRemaining(entityId, state) {
@@ -580,6 +640,14 @@ export class GardenaSmartSystemCard extends LitElement {
       return st?.attributes?.scheduled_events?.length > 0;
     });
     if (hasNativeSchedules) return '';
+    // Also skip if scheduler-component entities target Gardena devices
+    const states = this._hass.states || {};
+    const hasSchedulerEntities = Object.keys(states).some(sid => {
+      if (!sid.startsWith('switch.schedule_')) return false;
+      const targets = states[sid]?.attributes?.entities;
+      return Array.isArray(targets) && targets.some(t => allEntityIds.includes(t));
+    });
+    if (hasSchedulerEntities) return '';
     return html`
       <div class="schedule-missing">
         <strong>${this._t('schedule_missing_title')}</strong>
@@ -799,6 +867,9 @@ export class GardenaSmartSystemCard extends LitElement {
 
   _renderPill(entityId, isActive, isDisabled, onToggle, amberToggle = false) {
     const dur = this._getEntityDuration(entityId);
+    // Show scheduler duration when active in a scheduler timeslot
+    const schedulerTimer = isActive ? this._getSchedulerRemaining(entityId) : null;
+    const displayDur = schedulerTimer ? this._formatDurationLabel(Math.round(schedulerTimer.total / 60)) : `${dur}m`;
     const isOpen = this._openPillPopup === entityId;
     const isCustom = !GardenaSmartSystemCard.PILL_DURATIONS.includes(dur);
     return html`
@@ -806,7 +877,7 @@ export class GardenaSmartSystemCard extends LitElement {
         <div class="pill-dur-wrap">
           <div class="pill-dur ${isOpen ? 'open' : ''} ${isActive ? 'locked' : ''}"
             @click="${(e) => { e.stopPropagation(); if (!isActive) this._togglePillPopup(entityId, e); }}">
-            <span>${dur}m</span>
+            <span>${isActive && schedulerTimer ? displayDur : `${dur}m`}</span>
             ${isActive ? '' : html`<svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>`}
           </div>
           <div class="pill-pop ${isOpen ? 'show' : ''}" @click="${(e) => e.stopPropagation()}">
@@ -896,6 +967,7 @@ export class GardenaSmartSystemCard extends LitElement {
           ${isActive ? html`<div class="valve-progress-fill" style="width:${pct}%"></div>` : ''}
         </div>
         ${this._renderValveScheduleMini(entityId)}
+        ${this._renderSchedulerValveMini(entityId)}
       </div>
     `;
   }
@@ -1024,15 +1096,20 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   _getMowerRemaining(entityId, info) {
+    if (info.haState !== 'mowing') return { remaining: 0, total: 0 };
+    // Try scheduler-component timeslot (ticks every second)
+    const schedulerTimer = this._getSchedulerRemaining(entityId);
+    if (schedulerTimer) return schedulerTimer;
+    // Try local timer (card UI start)
     const timer = this._valveTimers[entityId];
-    if (timer && info.haState === 'mowing') {
+    if (timer) {
       const elapsed = (this._now.getTime() - timer.startTime.getTime()) / 1000;
       const remaining = Math.max(0, timer.durationSec - elapsed);
       return { remaining, total: timer.durationSec };
     }
     // Fall back to schedule-based timer
     const state = this._hass.states[entityId];
-    if (state && info.haState === 'mowing') {
+    if (state) {
       const scheduleTimer = this._getScheduleRemaining(entityId, state);
       if (scheduleTimer) return scheduleTimer;
     }
@@ -1045,7 +1122,11 @@ export class GardenaSmartSystemCard extends LitElement {
 
     const info = this._getMowerInfo(state);
     const shortName = this._shortEntityName(state, this._t('section_mower'));
-    const activityKey = MOWER_ACTIVITY_MAP[info.activity] || `mower_${info.haState}`;
+    let activityKey = MOWER_ACTIVITY_MAP[info.activity] || `mower_${info.haState}`;
+    // Show "mowing (schedule)" when in scheduler timeslot
+    if ((activityKey === 'mower_cutting_manual' || activityKey === 'mower_cutting') && this._isInSchedulerTimeslot(entityId)) {
+      activityKey = 'mower_cutting_scheduled';
+    }
     const activityText = this._t(activityKey);
     const actions = this._getMowerActions(info.haState);
     const isMowing = info.haState === 'mowing';
@@ -1136,6 +1217,7 @@ export class GardenaSmartSystemCard extends LitElement {
           `)}
         </div>
         ${this._renderScheduleStrip(entityId)}
+        ${this._renderSchedulerMowerStrip(entityId)}
       </div>
     `;
   }
@@ -1177,12 +1259,11 @@ export class GardenaSmartSystemCard extends LitElement {
       const timeText = this._formatTime(remaining);
       let label = this._t('valve_watering');
       if (activity === 'SCHEDULED_WATERING') label = this._t('valve_watering_scheduled');
-      else if (activity === 'MANUAL_WATERING') label = this._t('valve_watering_manual');
-      else if (!activity) {
-        // Infer from schedule events if activity is not available (kayloehmann)
+      else if (activity === 'MANUAL_WATERING' || !activity) {
         const scheduleTimer = this._getScheduleRemaining(entityId, state);
         if (scheduleTimer) label = this._t('valve_watering_scheduled');
-        else label = this._t('valve_watering_manual');
+        else if (this._isInSchedulerTimeslot(entityId)) label = this._t('valve_watering_scheduled');
+        else label = activity ? this._t('valve_watering_manual') : this._t('valve_watering_manual');
       }
       return html`<span class="water-icon"></span><span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
     }
@@ -1196,12 +1277,11 @@ export class GardenaSmartSystemCard extends LitElement {
       let label = this._t('socket_active');
       if (activity === 'SCHEDULED_ON') label = this._t('socket_active_scheduled');
       else if (activity === 'FOREVER_ON') label = this._t('socket_active_manual');
-      else if (activity === 'TIME_LIMITED_ON') label = this._t('socket_active_timed');
-      else if (!activity) {
-        // Infer from schedule events if activity is not available (kayloehmann)
+      else if (activity === 'TIME_LIMITED_ON' || !activity) {
         const scheduleTimer = this._getScheduleRemaining(entityId, state);
         if (scheduleTimer) label = this._t('socket_active_scheduled');
-        else label = this._t('socket_active_manual');
+        else if (this._isInSchedulerTimeslot(entityId)) label = this._t('socket_active_scheduled');
+        else label = activity ? this._t('socket_active_timed') : this._t('socket_active_manual');
       }
       return html`<span class="countdown-text">${label}${timeText ? ` ${timeText}` : ''}</span>`;
     }
@@ -1213,8 +1293,11 @@ export class GardenaSmartSystemCard extends LitElement {
     if (!state) return false;
     const activity = this._getEntityActivity(entityId, state);
     const haState = state.state;
+    const isSchedulerEvent = ev.source === 'scheduler';
+    const isDeviceActive = haState === 'open' || haState === 'on' || haState === 'mowing';
     const isScheduled = activity === 'SCHEDULED_WATERING' || activity === 'SCHEDULED_ON'
-      || (haState === 'mowing' && (activity === 'OK_CUTTING' || activity === 'OK_CUTTING_TIMER_OVERRIDDEN'));
+      || (haState === 'mowing' && (activity === 'OK_CUTTING' || activity === 'OK_CUTTING_TIMER_OVERRIDDEN'))
+      || (isSchedulerEvent && isDeviceActive);
     if (!isScheduled) return false;
     const now = this._now;
     const dayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -1236,9 +1319,142 @@ export class GardenaSmartSystemCard extends LitElement {
     return nowMins >= startMins && nowMins <= endMins;
   }
 
+  _isInSchedulerTimeslot(entityId) {
+    const events = this._getScheduleEventsFromSchedulerComponent(entityId);
+    if (events.length === 0) return false;
+    const now = this._now;
+    const dayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const today = dayMap[now.getDay()];
+    const nowMins = now.getHours() * 60 + now.getMinutes();
+    for (const ev of events) {
+      if (ev.paused) continue;
+      if (!(ev.weekdays || []).includes(today)) continue;
+      const [sh, sm] = (ev.start_at || '').split(':').map(Number);
+      const [eh, em] = (ev.end_at || '').split(':').map(Number);
+      if (isNaN(sh) || isNaN(eh)) continue;
+      const startMins = sh * 60 + (sm || 0);
+      const endMins = eh * 60 + (em || 0);
+      const inRange = endMins <= startMins
+        ? (nowMins >= startMins || nowMins <= endMins)
+        : (nowMins >= startMins && nowMins <= endMins);
+      if (inRange) return true;
+    }
+    return false;
+  }
+
+  _scheduleIconForEvent(ev, isPaused = false, isActive = false) {
+    return ev.source === 'scheduler'
+      ? this._schedulerIcon(isPaused, isActive)
+      : this._scheduleIcon(isPaused, isActive);
+  }
+
   _scheduleIcon(isPaused = false, isActive = false) {
     const tooltip = isPaused ? this._t('schedule_tooltip_paused') : isActive ? this._t('schedule_tooltip_active') : this._t('schedule_tooltip');
     return html`<span class="schedule-icon-wrap"><svg class="schedule-icon" viewBox="0 0 24 24"><title>${tooltip}</title><path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"/></svg></span>`;
+  }
+
+  _schedulerIcon(isPaused = false, isActive = false) {
+    const tooltip = isPaused ? this._t('scheduler_tooltip_paused') : isActive ? this._t('scheduler_tooltip_active') : this._t('scheduler_tooltip');
+    return html`<span class="schedule-icon-wrap"><svg class="schedule-icon" viewBox="0 0 24 24"><title>${tooltip}</title><path d="M12,20A7,7 0 0,1 5,13A7,7 0 0,1 12,6A7,7 0 0,1 19,13A7,7 0 0,1 12,20M12,4A9,9 0 0,0 3,13A9,9 0 0,0 12,22A9,9 0 0,0 21,13A9,9 0 0,0 12,4M12.5,8H11V14L16.2,17.2L17,15.9L12.5,13.2V8Z"/></svg></span>`;
+  }
+
+  _hasBothScheduleSources(entityId) {
+    const state = this._hass.states[entityId];
+    const mainEvents = state?.attributes?.scheduled_events;
+    const hasGardena = (mainEvents && mainEvents.length > 0)
+      || this._getScheduleEventsFromScheduleIntegration(entityId).length > 0;
+    const hasScheduler = this._getScheduleEventsFromSchedulerComponent(entityId).length > 0;
+    return hasGardena && hasScheduler;
+  }
+
+  _getSchedulerEventsForSeparate(entityId) {
+    if (this.config?.show_schedules === false) return [];
+    if (this.config?.show_scheduler_schedules !== 'separate') return [];
+    return this._getScheduleEventsFromSchedulerComponent(entityId);
+  }
+
+  _renderSchedulerMowerStrip(entityId) {
+    const events = this._getSchedulerEventsForSeparate(entityId);
+    if (events.length === 0) return '';
+    const showLabel = this._hasBothScheduleSources(entityId);
+    return html`
+      <div class="schedule-strip">
+        ${showLabel ? html`<div class="scheduler-label">${this._t('scheduler_section_label')}</div>` : ''}
+        ${events.map(ev => {
+          const isPaused = ev.paused === true;
+          const weekdays = ev.weekdays || [];
+          const nowActive = this._isScheduleActive(ev, entityId);
+          return html`
+            <div class="schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
+              <span class="schedule-time">${this._schedulerIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
+              <span class="schedule-days">
+                ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                  const isActive = weekdays.includes(day);
+                  const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
+                  return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                })}
+              </span>
+              ${isPaused ? html`<span class="schedule-pause-badge">${this._t('schedule_paused')}</span>` : ''}
+            </div>
+          `;
+        })}
+      </div>
+    `;
+  }
+
+  _renderSchedulerValveMini(entityId) {
+    const events = this._getSchedulerEventsForSeparate(entityId);
+    if (events.length === 0) return '';
+    const showLabel = this._hasBothScheduleSources(entityId);
+    return html`
+      <div class="valve-schedule-mini">
+        ${showLabel ? html`<div class="scheduler-label">${this._t('scheduler_section_label')}</div>` : ''}
+        ${events.map(ev => {
+          const isPaused = ev.paused === true;
+          const weekdays = ev.weekdays || [];
+          const nowActive = this._isScheduleActive(ev, entityId);
+          return html`
+            <div class="valve-schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
+              <span class="valve-schedule-time">${this._schedulerIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)}–${this._cleanTime(ev.end_at)}</span>
+              <span class="schedule-days">
+                ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                  const isActive = weekdays.includes(day);
+                  const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
+                  return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                })}
+              </span>
+            </div>
+          `;
+        })}
+      </div>
+    `;
+  }
+
+  _renderSchedulerSocketSchedule(entityId) {
+    const events = this._getSchedulerEventsForSeparate(entityId);
+    if (events.length === 0) return '';
+    const showLabel = this._hasBothScheduleSources(entityId);
+    return html`
+      ${showLabel ? html`<div class="scheduler-label">${this._t('scheduler_section_label')}</div>` : ''}
+      ${events.map(ev => {
+        const isPaused = ev.paused === true;
+        const weekdays = ev.weekdays || [];
+        const nowActive = this._isScheduleActive(ev, entityId);
+        return html`
+          <div class="socket-schedule-mini ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
+            <span class="schedule-time">${this._schedulerIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
+            <span class="schedule-days">
+              ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                const isActive = weekdays.includes(day);
+                const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
+                return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+              })}
+            </span>
+            ${isPaused ? html`<span class="schedule-pause-badge">${this._t('schedule_paused')}</span>` : ''}
+          </div>
+        `;
+      })}
+    `;
   }
 
   _getScheduleEvents(entityId) {
@@ -1246,9 +1462,16 @@ export class GardenaSmartSystemCard extends LitElement {
     const state = this._hass.states[entityId];
     // Primary: check main entity attributes (patched integration / fork)
     const mainEvents = state?.attributes?.scheduled_events;
-    if (mainEvents && mainEvents.length > 0) return mainEvents;
-    // Fallback: look for gardena_smart_schedule sensor on the same device
-    return this._getScheduleEventsFromScheduleIntegration(entityId);
+    let events = (mainEvents && mainEvents.length > 0)
+      ? mainEvents
+      : this._getScheduleEventsFromScheduleIntegration(entityId);
+    // Add scheduler-component events in mixed mode (default)
+    const schedulerMode = this.config?.show_scheduler_schedules;
+    if (schedulerMode !== 'separate' && schedulerMode !== false) {
+      const schedulerEvents = this._getScheduleEventsFromSchedulerComponent(entityId);
+      if (schedulerEvents.length > 0) events = [...events, ...schedulerEvents];
+    }
+    return events;
   }
 
   _getScheduleEventsFromScheduleIntegration(entityId) {
@@ -1283,6 +1506,64 @@ export class GardenaSmartSystemCard extends LitElement {
     return noValve ? noValve.attributes.scheduled_events : candidates[0].attributes.scheduled_events;
   }
 
+  _getScheduleEventsFromSchedulerComponent(entityId) {
+    // Scan live instead of using cached schedulerMap (scheduler entities can change dynamically)
+    const schedulerIds = [];
+    const states = this._hass.states || {};
+    for (const sid in states) {
+      if (!sid.startsWith('switch.schedule_')) continue;
+      const st = states[sid];
+      const targets = st?.attributes?.entities;
+      if (Array.isArray(targets) && targets.includes(entityId)) {
+        schedulerIds.push(sid);
+      }
+    }
+    if (schedulerIds.length === 0) return [];
+    const events = [];
+    for (const switchId of schedulerIds) {
+      const state = this._hass.states[switchId];
+      if (!state) continue;
+      const isPaused = state.state === 'off';
+      const timeslots = state.attributes?.timeslots || [];
+      const rawWeekdays = state.attributes?.weekdays || [];
+      const weekdays = [];
+      for (const wd of rawWeekdays) {
+        if (SCHEDULER_WEEKDAY_EXPAND[wd]) weekdays.push(...SCHEDULER_WEEKDAY_EXPAND[wd]);
+        else if (SCHEDULER_WEEKDAY_MAP[wd]) weekdays.push(SCHEDULER_WEEKDAY_MAP[wd]);
+      }
+      const uniqueWeekdays = [...new Set(weekdays)];
+      // Extract duration from actions (data.duration or service_data.duration)
+      const actions = state.attributes?.actions || [];
+      let durationMins = null;
+      for (const action of actions) {
+        const d = action?.data?.duration ?? action?.service_data?.duration;
+        if (d != null) { durationMins = d; break; }
+      }
+      for (const slot of timeslots) {
+        let start_at = '', end_at = '';
+        if (typeof slot === 'string') {
+          // Format: "20:30:00 - 20:45:00" or "20:55:00"
+          const parts = slot.split(' - ');
+          start_at = (parts[0] || '').substring(0, 5);
+          end_at = parts[1] ? parts[1].substring(0, 5) : '';
+        } else if (slot && typeof slot === 'object') {
+          start_at = slot.start || '';
+          end_at = slot.stop || '';
+        }
+        // Compute end_at from duration if only start time is given
+        if (!end_at && start_at && durationMins) {
+          const [h, m] = start_at.split(':').map(Number);
+          if (!isNaN(h)) {
+            const totalMins = h * 60 + (m || 0) + durationMins;
+            end_at = `${String(Math.floor(totalMins / 60) % 24).padStart(2, '0')}:${String(totalMins % 60).padStart(2, '0')}`;
+          }
+        }
+        events.push({ start_at, end_at, weekdays: uniqueWeekdays, paused: isPaused, source: 'scheduler' });
+      }
+    }
+    return events;
+  }
+
   _getValveIndex(entityId) {
     if (!entityId.startsWith('valve.')) return null;
     const entities = this._hass.entities;
@@ -1302,16 +1583,18 @@ export class GardenaSmartSystemCard extends LitElement {
   _renderScheduleStrip(entityId) {
     const events = this._getScheduleEvents(entityId);
     if (events.length === 0) return '';
+    const showLabel = this._hasBothScheduleSources(entityId);
 
     return html`
       <div class="schedule-strip">
+        ${showLabel ? html`<div class="scheduler-label">${this._t('gardena_section_label')}</div>` : ''}
         ${events.map(ev => {
           const isPaused = ev.paused === true;
           const weekdays = ev.weekdays || [];
           const nowActive = this._isScheduleActive(ev, entityId);
           return html`
             <div class="schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
-              <span class="schedule-time">${this._scheduleIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
+              <span class="schedule-time">${this._scheduleIconForEvent(ev, isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
               <span class="schedule-days">
                 ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
                   const isActive = weekdays.includes(day);
@@ -1330,16 +1613,18 @@ export class GardenaSmartSystemCard extends LitElement {
   _renderValveScheduleMini(entityId) {
     const events = this._getScheduleEvents(entityId);
     if (events.length === 0) return '';
+    const showLabel = this._hasBothScheduleSources(entityId);
 
     return html`
       <div class="valve-schedule-mini">
+        ${showLabel ? html`<div class="scheduler-label">${this._t('gardena_section_label')}</div>` : ''}
         ${events.map(ev => {
           const isPaused = ev.paused === true;
           const weekdays = ev.weekdays || [];
           const nowActive = this._isScheduleActive(ev, entityId);
           return html`
             <div class="valve-schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
-              <span class="valve-schedule-time">${this._scheduleIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)}–${this._cleanTime(ev.end_at)}</span>
+              <span class="valve-schedule-time">${this._scheduleIconForEvent(ev, isPaused, nowActive)}${this._cleanTime(ev.start_at)}–${this._cleanTime(ev.end_at)}</span>
               <span class="schedule-days">
                 ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
                   const isActive = weekdays.includes(day);
@@ -1357,15 +1642,17 @@ export class GardenaSmartSystemCard extends LitElement {
   _renderSocketSchedule(entityId) {
     const events = this._getScheduleEvents(entityId);
     if (events.length === 0) return '';
+    const showLabel = this._hasBothScheduleSources(entityId);
 
     return html`
+      ${showLabel ? html`<div class="scheduler-label">${this._t('gardena_section_label')}</div>` : ''}
       ${events.map(ev => {
         const isPaused = ev.paused === true;
         const weekdays = ev.weekdays || [];
         const nowActive = this._isScheduleActive(ev, entityId);
         return html`
           <div class="socket-schedule-mini ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
-            <span class="schedule-time">${this._scheduleIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
+            <span class="schedule-time">${this._scheduleIconForEvent(ev, isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
             <span class="schedule-days">
               ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
                 const isActive = weekdays.includes(day);
@@ -1436,18 +1723,10 @@ export class GardenaSmartSystemCard extends LitElement {
       remaining = Math.max(0, timer.durationSec - elapsed);
       total = timer.durationSec;
     }
-    // Try separate remaining_duration sensor (kayloehmann)
+    // Try scheduler-component timeslot (ticks every second)
     if (isActive && remaining === 0) {
-      const entityReg = (this._hass.entities || {})[entityId];
-      const devId = entityReg?.device_id;
-      if (devId) {
-        const remainSensorId = this._entities?.deviceSocketRemainingDurations?.[devId];
-        if (remainSensorId) {
-          const remainSensor = this._hass.states[remainSensorId];
-          const secs = parseFloat(remainSensor?.state);
-          if (secs > 0) { remaining = secs; total = secs; }
-        }
-      }
+      const schedulerTimer = this._getSchedulerRemaining(entityId);
+      if (schedulerTimer) { remaining = schedulerTimer.remaining; total = schedulerTimer.total; }
     }
     // Fall back to schedule-based timer
     if (isActive && remaining === 0) {
@@ -1461,11 +1740,8 @@ export class GardenaSmartSystemCard extends LitElement {
       <div class="socket-card ${isActive ? 'active' : ''} ${isOffline && !isActive ? 'offline' : ''} ${this._openPillPopup === entityId ? 'pill-open' : ''}">
         <div class="socket-left">
           <div class="socket-icon">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v6"/><path d="M6 2v6"/>
-              <rect x="2" y="8" width="16" height="4" rx="1"/>
-              <path d="M10 12v4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-4"/>
-              <path d="M6 18v4"/><path d="M12 18v4"/>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M7.5,10.5A1.5,1.5 0 0,1 9,12A1.5,1.5 0 0,1 7.5,13.5C6.66,13.5 6,12.83 6,12A1.5,1.5 0 0,1 7.5,10.5M16.5,10.5A1.5,1.5 0 0,1 18,12A1.5,1.5 0 0,1 16.5,13.5A1.5,1.5 0 0,1 15,12A1.5,1.5 0 0,1 16.5,10.5M4.22,2H19.78C21,2 22,3 22,4.22V19.78A2.22,2.22 0 0,1 19.78,22H4.22C3,22 2,21 2,19.78V4.22A2.22,2.22 0 0,1 4.22,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/>
             </svg>
           </div>
           <div class="socket-info">
@@ -1489,9 +1765,16 @@ export class GardenaSmartSystemCard extends LitElement {
             </div>
           </div>
         ` : ''}
-        ${this._renderSocketSchedule(entityId)}
+        ${this._renderSocketSchedulesWrap(entityId)}
       </div>
     `;
+  }
+
+  _renderSocketSchedulesWrap(entityId) {
+    const gardena = this._renderSocketSchedule(entityId);
+    const scheduler = this._renderSchedulerSocketSchedule(entityId);
+    if (!gardena && !scheduler) return '';
+    return html`<div class="socket-schedules-wrap">${gardena}${scheduler}</div>`;
   }
 
   async _toggleSocket(entityId, isOn) {
@@ -1753,6 +2036,18 @@ export class GardenaSmartSystemCard extends LitElement {
           label: t(null, "config_show_schedules"),
           selector: { boolean: {} },
           default: true,
+        },
+        {
+          name: "show_scheduler_schedules",
+          label: t(null, "config_show_scheduler_schedules"),
+          selector: {
+            select: {
+              options: [
+                { value: "mixed", label: t(null, "scheduler_mode_mixed") },
+                { value: "separate", label: t(null, "scheduler_mode_separate") },
+              ],
+            },
+          },
         },
         {
           name: "default_duration",

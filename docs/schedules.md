@@ -11,6 +11,71 @@ The card can display schedules (time slots and weekdays) below each device. This
 
 **Without this integration**, the card works fully — you just won't see the schedule rows.
 
+## Alternative: Scheduler Component
+
+If you prefer a visual schedule editor inside Home Assistant, you can use the [scheduler-component](https://github.com/nielsfaber/scheduler-component) together with the [scheduler-card](https://github.com/nielsfaber/scheduler-card). Both are available via HACS.
+
+The Gardena Smart System Card **automatically detects** scheduler-component schedules (`switch.schedule_*` entities) that target Gardena devices and displays them in the schedule section. This works out of the box — no additional configuration needed on the Gardena card side.
+
+### Display Mode
+
+By default, scheduler schedules are mixed into the existing schedule list. You can change this via the `show_scheduler_schedules` config option:
+
+- `mixed` (default) — scheduler entries appear alongside Gardena App schedules
+- `separate` — scheduler entries get their own labeled section
+
+### Recommended Scheduler Card Configuration
+
+The standard valve/switch/mower actions don't include a duration parameter. To get proper timed control, add custom actions to your scheduler-card config:
+
+```yaml
+type: custom:scheduler-card
+customize:
+  valve.garten_bewasserung:
+    actions:
+      - service: gardena_smart_system.start_watering
+        name: Water
+        variables:
+          duration:
+            name: Duration (minutes)
+            min: 5
+            max: 120
+            step: 5
+            unit: min
+  switch.power:
+    actions:
+      - service: gardena_smart_system.turn_on_for
+        name: Turn on
+        variables:
+          duration:
+            name: Duration (minutes)
+            min: 5
+            max: 120
+            step: 5
+            unit: min
+  lawn_mower.garten_schaf:
+    actions:
+      - service: gardena_smart_system.override_schedule
+        name: Mow
+        variables:
+          duration:
+            name: Duration (minutes)
+            min: 30
+            max: 480
+            step: 30
+            unit: min
+```
+
+> **Note:** Replace the entity IDs with your own. If you have multiple valve zones, add each one individually — domain-level keys (e.g., `valve`) are [not yet supported](https://github.com/nielsfaber/scheduler-card/issues/1127) for the entity picker.
+
+### Why custom actions?
+
+| Device | Standard action | Custom action |
+|--------|----------------|---------------|
+| Valve | `valve.open_valve` — opens indefinitely (Gardena default ~60 min timeout) | `gardena_smart_system.start_watering` — waters for exact duration, then closes |
+| Socket | `switch.turn_on` — turns on indefinitely | `gardena_smart_system.turn_on_for` — turns on for exact duration, then off |
+| Mower | `lawn_mower.start_mowing` — mows until next park schedule or battery empty | `gardena_smart_system.override_schedule` — mows for exact duration, then resumes schedule |
+
 ## Alternative: Home Assistant Automations
 
 If you prefer to manage schedules locally in Home Assistant instead of the Gardena App, you can create automations that trigger Gardena devices on a time-based schedule. The card does not display these automations, but device control and status work as usual.

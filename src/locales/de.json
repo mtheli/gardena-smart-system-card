@@ -45,6 +45,7 @@
 
   "mower_cutting": "Mäht",
   "mower_cutting_manual": "Mäht (manuell)",
+  "mower_cutting_scheduled": "Mäht (Zeitplan)",
   "mower_searching": "Rückkehr zur Station",
   "mower_leaving": "Verlässt Station",
   "mower_next_action": "Nächste Aktion",
@@ -98,8 +99,10 @@
   "config_show_schedules": "Zeitpläne anzeigen",
 
   "schedule_tooltip": "Zeitplan aus der Gardena App",
-  "schedule_tooltip_paused": "Zeitplan pausiert",
-  "schedule_tooltip_active": "Zeitplan gerade aktiv",
+  "schedule_tooltip_paused": "Zeitplan pausiert (Gardena App)",
+  "schedule_tooltip_active": "Zeitplan aktiv (Gardena App)",
+  "scheduler_tooltip_paused": "Zeitplan pausiert (Scheduler)",
+  "scheduler_tooltip_active": "Zeitplan aktiv (Scheduler)",
   "schedule_paused": "Pausiert",
   "schedule_paused_until": "Pausiert bis",
 
@@ -110,6 +113,13 @@
   "schedule_day_fr": "Fr",
   "schedule_day_sa": "Sa",
   "schedule_day_su": "So",
+
+  "config_show_scheduler_schedules": "Scheduler-Integration Anzeige",
+  "scheduler_mode_mixed": "Gemischt (in Zeitplanliste)",
+  "scheduler_mode_separate": "Eigene Sektion",
+  "gardena_section_label": "Gardena",
+  "scheduler_section_label": "Scheduler",
+  "scheduler_tooltip": "Zeitplan aus scheduler-component",
 
   "schedule_missing_title": "Schedule-Integration nicht installiert",
   "schedule_missing_message": "Installiere Gardena Smart Schedule über HACS, um Zeitpläne aus der Gardena App anzuzeigen.",
