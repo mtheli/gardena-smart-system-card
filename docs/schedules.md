@@ -79,7 +79,8 @@ customize:
 
 > **Note:** Replace the entity IDs with your own. If you have multiple valve zones, add each one individually — domain-level keys (e.g., `valve`) are [not yet supported](https://github.com/nielsfaber/scheduler-card/issues/1127) for the entity picker.
 
-> **Warning:** Without custom actions, the scheduler uses standard services like `valve.open_valve` which do **not** include a duration. Gardena will apply its own default timeout (currently ~60 minutes). This means your valve may water for 60 minutes regardless of the timeslot configured in the scheduler. Always use the Gardena-specific services listed above to get precise duration control.
+> [!CAUTION]
+> Without custom actions, the scheduler uses standard services like `valve.open_valve` which do **not** include a duration. Gardena will apply its own default timeout (currently ~60 minutes). This means your valve may water for 60 minutes regardless of the timeslot configured in the scheduler. Always use the Gardena-specific services listed above to get precise duration control.
 
 ### Why custom actions?
 
