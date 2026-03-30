@@ -1,5 +1,16 @@
 # Schedules
 
+- [Schedule Display in the Card](#schedule-display-in-the-card)
+- [Alternative: Scheduler Component](#alternative-scheduler-component)
+  - [Display Mode](#display-mode)
+  - [Recommended Scheduler Card Configuration](#recommended-scheduler-card-configuration)
+  - [Why custom actions?](#why-custom-actions)
+- [Alternative: Home Assistant Automations](#alternative-home-assistant-automations)
+  - [Mower](#mower--mow-monfri-at-1000-for-3-hours)
+  - [Valve](#valve--water-zone-1-daily-at-0600-for-30-minutes)
+  - [Power Socket](#power-socket--turn-on-every-evening-at-2000-for-2-hours)
+  - [Smart Conditions](#smart-conditions)
+
 ## Schedule Display in the Card
 
 The card can display schedules (time slots and weekdays) below each device. This requires the optional [Gardena Smart Schedule](https://github.com/mtheli/gardena-smart-schedule) integration, which reads schedule data from the Gardena Cloud API.
