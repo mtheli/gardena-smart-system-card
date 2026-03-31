@@ -217,7 +217,7 @@ export class GardenaSmartSystemCard extends LitElement {
   // ---------- Entity discovery (domain-based) ----------
   _findEntities(hass) {
     const allEntities = hass.entities || {};
-    const found = { valves: [], sockets: [], mowers: [], connection: null, battery: null, deviceBatteries: {}, deviceConnections: {}, deviceSignals: {}, deviceMowerActivities: {}, deviceBatteryStates: {}, deviceValveRemainingDurations: {}, deviceSocketRemainingDurations: {}, deviceIds: new Set(), schedulerMap: {} };
+    const found = { valves: [], sockets: [], mowers: [], connection: null, battery: null, deviceBatteries: {}, deviceConnections: {}, deviceSignals: {}, deviceMowerActivities: {}, deviceMowerErrors: {}, deviceBatteryStates: {}, deviceValveRemainingDurations: {}, deviceSocketRemainingDurations: {}, deviceSocketActivities: {}, deviceIds: new Set(), schedulerMap: {} };
 
     // Collect scheduler-component candidates in first pass
     const schedulerCandidates = [];
@@ -257,12 +257,16 @@ export class GardenaSmartSystemCard extends LitElement {
           found.deviceSignals[entity.device_id] = entityId;
         } else if (entity.translation_key === 'mower_activity' && entity.device_id) {
           found.deviceMowerActivities[entity.device_id] = entityId;
+        } else if (entity.translation_key === 'mower_last_error_code' && entity.device_id) {
+          found.deviceMowerErrors[entity.device_id] = entityId;
         } else if (entity.translation_key === 'battery_state' && entity.device_id) {
           found.deviceBatteryStates[entity.device_id] = entityId;
         } else if (entity.translation_key === 'valve_remaining_duration' && entity.device_id) {
           found.deviceValveRemainingDurations[entity.device_id] = entityId;
         } else if (entity.translation_key === 'power_socket_remaining_duration' && entity.device_id) {
           found.deviceSocketRemainingDurations[entity.device_id] = entityId;
+        } else if (entity.translation_key === 'power_socket_state' && entity.device_id) {
+          found.deviceSocketActivities[entity.device_id] = entityId;
         }
       }
     }
@@ -347,6 +351,17 @@ export class GardenaSmartSystemCard extends LitElement {
         remaining: state.attributes.valve_remaining_time,
         total: state.attributes.valve_duration || state.attributes.valve_remaining_time,
       };
+    }
+    // Try dedicated remaining duration sensor (kayloehmann v1.2+)
+    const entityReg = (this._hass.entities || {})[entityId];
+    const devId = entityReg?.device_id;
+    if (devId) {
+      const durSensorId = this._entities?.deviceValveRemainingDurations?.[devId];
+      if (durSensorId) {
+        const durState = this._hass.states[durSensorId];
+        const remaining = parseFloat(durState?.state);
+        if (remaining > 0) return { remaining, total: remaining };
+      }
     }
     // Try scheduler-component timeslot (ticks every second)
     const schedulerTimer = this._getSchedulerRemaining(entityId);
@@ -1237,24 +1252,38 @@ export class GardenaSmartSystemCard extends LitElement {
 
   // ---------- Activity Helpers ----------
 
-  /** Resolve activity for any entity: attribute first, then device sensor fallback */
+  /** Resolve mower/valve activity via device sensor lookup */
   _getEntityActivity(entityId, state) {
-    const activity = state?.attributes?.activity;
-    if (activity) return activity;
     const entityReg = (this._hass.entities || {})[entityId];
     const devId = entityReg?.device_id;
-    if (!devId) return null;
+    if (!devId) return state?.attributes?.activity || null;
     // Mower activity sensor
     const mowerActId = this._entities?.deviceMowerActivities?.[devId];
     if (mowerActId) {
       const s = this._hass.states[mowerActId];
       if (s?.state && s.state !== 'unknown' && s.state !== 'unavailable') return s.state;
     }
-    return null;
+    return state?.attributes?.activity || null;
+  }
+
+  /** Resolve socket activity via device sensor lookup (power_socket_state) */
+  _getSocketActivity(entityId, state) {
+    const entityReg = (this._hass.entities || {})[entityId];
+    const devId = entityReg?.device_id;
+    if (devId) {
+      const sockActId = this._entities?.deviceSocketActivities?.[devId];
+      if (sockActId) {
+        const s = this._hass.states[sockActId];
+        if (s?.state && s.state !== 'unknown' && s.state !== 'unavailable') {
+          return s.state.toUpperCase();
+        }
+      }
+    }
+    return state?.attributes?.activity || null;
   }
 
   _getValveStatusText(entityId, state, remaining) {
-    const activity = state.attributes?.activity;
+    const activity = this._getEntityActivity(entityId, state);
     if (state.state === 'open') {
       const timeText = this._formatTime(remaining);
       let label = this._t('valve_watering');
@@ -1271,7 +1300,7 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   _getSocketStatusText(entityId, state, remaining) {
-    const activity = state.attributes?.activity;
+    const activity = this._getSocketActivity(entityId, state);
     if (state.state === 'on') {
       const timeText = this._formatTime(remaining);
       let label = this._t('socket_active');
@@ -1291,7 +1320,8 @@ export class GardenaSmartSystemCard extends LitElement {
   _isScheduleActive(ev, entityId) {
     const state = this._hass.states[entityId];
     if (!state) return false;
-    const activity = this._getEntityActivity(entityId, state);
+    const domain = entityId.split('.')[0];
+    const activity = domain === 'switch' ? this._getSocketActivity(entityId, state) : this._getEntityActivity(entityId, state);
     const haState = state.state;
     const isSchedulerEvent = ev.source === 'scheduler';
     const isDeviceActive = haState === 'open' || haState === 'on' || haState === 'mowing';
@@ -1722,6 +1752,19 @@ export class GardenaSmartSystemCard extends LitElement {
       const elapsed = (this._now.getTime() - timer.startTime.getTime()) / 1000;
       remaining = Math.max(0, timer.durationSec - elapsed);
       total = timer.durationSec;
+    }
+    // Try dedicated remaining duration sensor (kayloehmann v1.2+)
+    if (isActive && remaining === 0) {
+      const entityReg = (this._hass.entities || {})[entityId];
+      const devId = entityReg?.device_id;
+      if (devId) {
+        const durSensorId = this._entities?.deviceSocketRemainingDurations?.[devId];
+        if (durSensorId) {
+          const durState = this._hass.states[durSensorId];
+          const dur = parseFloat(durState?.state);
+          if (dur > 0) { remaining = dur; total = dur; }
+        }
+      }
     }
     // Try scheduler-component timeslot (ticks every second)
     if (isActive && remaining === 0) {

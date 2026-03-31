@@ -7,10 +7,10 @@
  * Device identifiers use serial number: (DOMAIN, device.serial).
  *
  * Key differences from thecem backend:
- *   - activity, battery_state are separate sensor entities (not attributes on mower)
+ *   - activity, battery_state, error_code are separate sensor entities (not attributes)
  *   - valve remaining duration is a separate sensor (not attribute on valve)
  *   - valve activity is not exposed at all (inferred via schedule integration)
- *   - socket activity IS an extra_state_attribute on the switch entity
+ *   - socket activity is a separate sensor (power_socket_state), not an attribute (since v1.5.5)
  */
 
 const DOMAIN = 'gardena_smart_system';
@@ -109,17 +109,24 @@ export class KayloehmannBackend {
     }
 
     // Activity from separate sensor (raw Gardena values: OK_CUTTING, PARKED_TIMER, etc.)
-    let activity = state.attributes.activity; // fallback to attribute if present
-    if (!activity && deviceId && entities?.deviceMowerActivities?.[deviceId]) {
+    let activity = null;
+    if (deviceId && entities?.deviceMowerActivities?.[deviceId]) {
       const actSensor = hass.states[entities.deviceMowerActivities[deviceId]];
       if (actSensor) activity = actSensor.state;
     }
 
     // Battery state from separate enum sensor (lowercase: charging, ok, low, etc.)
-    let batteryState = state.attributes.battery_state;
-    if (!batteryState && deviceId && entities?.deviceBatteryStates?.[deviceId]) {
+    let batteryState = null;
+    if (deviceId && entities?.deviceBatteryStates?.[deviceId]) {
       const batStateSensor = hass.states[entities.deviceBatteryStates[deviceId]];
       if (batStateSensor) batteryState = batStateSensor.state?.toUpperCase();
+    }
+
+    // Error code from separate sensor
+    let lastError = null;
+    if (deviceId && entities?.deviceMowerErrors?.[deviceId]) {
+      const errSensor = hass.states[entities.deviceMowerErrors[deviceId]];
+      if (errSensor) lastError = errSensor.state;
     }
 
     return {
@@ -128,7 +135,7 @@ export class KayloehmannBackend {
       battery,
       batteryState,
       opHours: null,
-      lastError: state.attributes.last_error_code,
+      lastError,
       deviceState: null,
     };
   }
