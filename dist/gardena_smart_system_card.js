@@ -830,10 +830,10 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
  * Device identifiers use serial number: (DOMAIN, device.serial).
  *
  * Key differences from thecem backend:
- *   - activity, battery_state are separate sensor entities (not attributes on mower)
+ *   - activity, battery_state, error_code are separate sensor entities (not attributes)
  *   - valve remaining duration is a separate sensor (not attribute on valve)
  *   - valve activity is not exposed at all (inferred via schedule integration)
- *   - socket activity IS an extra_state_attribute on the switch entity
+ *   - socket activity is a separate sensor (power_socket_state), not an attribute (since v1.5.5)
  */ const $e9db53adf75333c7$var$DOMAIN = 'gardena_smart_system';
 class $e9db53adf75333c7$export$15679f44c07c43cc {
     get id() {
@@ -972,16 +972,22 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
             }
         }
         // Activity from separate sensor (raw Gardena values: OK_CUTTING, PARKED_TIMER, etc.)
-        let activity = state.attributes.activity; // fallback to attribute if present
-        if (!activity && deviceId && entities?.deviceMowerActivities?.[deviceId]) {
+        let activity = null;
+        if (deviceId && entities?.deviceMowerActivities?.[deviceId]) {
             const actSensor = hass.states[entities.deviceMowerActivities[deviceId]];
             if (actSensor) activity = actSensor.state;
         }
         // Battery state from separate enum sensor (lowercase: charging, ok, low, etc.)
-        let batteryState = state.attributes.battery_state;
-        if (!batteryState && deviceId && entities?.deviceBatteryStates?.[deviceId]) {
+        let batteryState = null;
+        if (deviceId && entities?.deviceBatteryStates?.[deviceId]) {
             const batStateSensor = hass.states[entities.deviceBatteryStates[deviceId]];
             if (batStateSensor) batteryState = batStateSensor.state?.toUpperCase();
+        }
+        // Error code from separate sensor
+        let lastError = null;
+        if (deviceId && entities?.deviceMowerErrors?.[deviceId]) {
+            const errSensor = hass.states[entities.deviceMowerErrors[deviceId]];
+            if (errSensor) lastError = errSensor.state;
         }
         return {
             haState: state.state,
@@ -989,7 +995,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
             battery: battery,
             batteryState: batteryState,
             opHours: null,
-            lastError: state.attributes.last_error_code,
+            lastError: lastError,
             deviceState: null
         };
     }
@@ -1255,9 +1261,11 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             deviceConnections: {},
             deviceSignals: {},
             deviceMowerActivities: {},
+            deviceMowerErrors: {},
             deviceBatteryStates: {},
             deviceValveRemainingDurations: {},
             deviceSocketRemainingDurations: {},
+            deviceSocketActivities: {},
             deviceIds: new Set(),
             schedulerMap: {}
         };
@@ -1291,9 +1299,11 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                     if (entity.device_id) found.deviceBatteries[entity.device_id] = entityId;
                 } else if (entity.translation_key === 'rf_link_level' && entity.device_id) found.deviceSignals[entity.device_id] = entityId;
                 else if (entity.translation_key === 'mower_activity' && entity.device_id) found.deviceMowerActivities[entity.device_id] = entityId;
+                else if (entity.translation_key === 'mower_last_error_code' && entity.device_id) found.deviceMowerErrors[entity.device_id] = entityId;
                 else if (entity.translation_key === 'battery_state' && entity.device_id) found.deviceBatteryStates[entity.device_id] = entityId;
                 else if (entity.translation_key === 'valve_remaining_duration' && entity.device_id) found.deviceValveRemainingDurations[entity.device_id] = entityId;
                 else if (entity.translation_key === 'power_socket_remaining_duration' && entity.device_id) found.deviceSocketRemainingDurations[entity.device_id] = entityId;
+                else if (entity.translation_key === 'power_socket_state' && entity.device_id) found.deviceSocketActivities[entity.device_id] = entityId;
             }
         }
         // Match scheduler-component entities to Gardena devices
@@ -1367,6 +1377,20 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             remaining: state.attributes.valve_remaining_time,
             total: state.attributes.valve_duration || state.attributes.valve_remaining_time
         };
+        // Try dedicated remaining duration sensor (kayloehmann v1.2+)
+        const entityReg = (this._hass.entities || {})[entityId];
+        const devId = entityReg?.device_id;
+        if (devId) {
+            const durSensorId = this._entities?.deviceValveRemainingDurations?.[devId];
+            if (durSensorId) {
+                const durState = this._hass.states[durSensorId];
+                const remaining = parseFloat(durState?.state);
+                if (remaining > 0) return {
+                    remaining: remaining,
+                    total: remaining
+                };
+            }
+        }
         // Try scheduler-component timeslot (ticks every second)
         const schedulerTimer = this._getSchedulerRemaining(entityId);
         if (schedulerTimer) return schedulerTimer;
@@ -2325,22 +2349,32 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         'schedule_day_su'
     ];
     // ---------- Activity Helpers ----------
-    /** Resolve activity for any entity: attribute first, then device sensor fallback */ _getEntityActivity(entityId, state) {
-        const activity = state?.attributes?.activity;
-        if (activity) return activity;
+    /** Resolve mower/valve activity via device sensor lookup */ _getEntityActivity(entityId, state) {
         const entityReg = (this._hass.entities || {})[entityId];
         const devId = entityReg?.device_id;
-        if (!devId) return null;
+        if (!devId) return state?.attributes?.activity || null;
         // Mower activity sensor
         const mowerActId = this._entities?.deviceMowerActivities?.[devId];
         if (mowerActId) {
             const s = this._hass.states[mowerActId];
             if (s?.state && s.state !== 'unknown' && s.state !== 'unavailable') return s.state;
         }
-        return null;
+        return state?.attributes?.activity || null;
+    }
+    /** Resolve socket activity via device sensor lookup (power_socket_state) */ _getSocketActivity(entityId, state) {
+        const entityReg = (this._hass.entities || {})[entityId];
+        const devId = entityReg?.device_id;
+        if (devId) {
+            const sockActId = this._entities?.deviceSocketActivities?.[devId];
+            if (sockActId) {
+                const s = this._hass.states[sockActId];
+                if (s?.state && s.state !== 'unknown' && s.state !== 'unavailable') return s.state.toUpperCase();
+            }
+        }
+        return state?.attributes?.activity || null;
     }
     _getValveStatusText(entityId, state, remaining) {
-        const activity = state.attributes?.activity;
+        const activity = this._getEntityActivity(entityId, state);
         if (state.state === 'open') {
             const timeText = this._formatTime(remaining);
             let label = this._t('valve_watering');
@@ -2356,7 +2390,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         return this._t('valve_ready');
     }
     _getSocketStatusText(entityId, state, remaining) {
-        const activity = state.attributes?.activity;
+        const activity = this._getSocketActivity(entityId, state);
         if (state.state === 'on') {
             const timeText = this._formatTime(remaining);
             let label = this._t('socket_active');
@@ -2375,7 +2409,8 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     _isScheduleActive(ev, entityId) {
         const state = this._hass.states[entityId];
         if (!state) return false;
-        const activity = this._getEntityActivity(entityId, state);
+        const domain = entityId.split('.')[0];
+        const activity = domain === 'switch' ? this._getSocketActivity(entityId, state) : this._getEntityActivity(entityId, state);
         const haState = state.state;
         const isSchedulerEvent = ev.source === 'scheduler';
         const isDeviceActive = haState === 'open' || haState === 'on' || haState === 'mowing';
@@ -2795,6 +2830,22 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             remaining = Math.max(0, timer.durationSec - elapsed);
             total = timer.durationSec;
         }
+        // Try dedicated remaining duration sensor (kayloehmann v1.2+)
+        if (isActive && remaining === 0) {
+            const entityReg = (this._hass.entities || {})[entityId];
+            const devId = entityReg?.device_id;
+            if (devId) {
+                const durSensorId = this._entities?.deviceSocketRemainingDurations?.[devId];
+                if (durSensorId) {
+                    const durState = this._hass.states[durSensorId];
+                    const dur = parseFloat(durState?.state);
+                    if (dur > 0) {
+                        remaining = dur;
+                        total = dur;
+                    }
+                }
+            }
+        }
         // Try scheduler-component timeslot (ticks every second)
         if (isActive && remaining === 0) {
             const schedulerTimer = this._getSchedulerRemaining(entityId);
@@ -2948,8 +2999,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 }
             }
         });
-        // Round minutes
-        days.forEach((d)=>d.minutes = d.minutes.map((m)=>Math.round(m)));
+        days.forEach((d)=>d.minutes = d.minutes.map((m)=>Math.ceil(m)));
         return days;
     }
     _renderHistorySection() {

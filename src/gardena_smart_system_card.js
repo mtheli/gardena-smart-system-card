@@ -1907,8 +1907,7 @@ export class GardenaSmartSystemCard extends LitElement {
       }
     });
 
-    // Round minutes
-    days.forEach(d => d.minutes = d.minutes.map(m => Math.round(m)));
+    days.forEach(d => d.minutes = d.minutes.map(m => Math.ceil(m)));
     return days;
   }
 
