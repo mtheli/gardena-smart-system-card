@@ -11,7 +11,8 @@
   },
   "scripts": {
     "watch": "parcel watch",
-    "build": "parcel build src/index.js --dist-dir dist --no-source-maps"
+    "build": "parcel build src/index.js --dist-dir dist --no-source-maps",
+    "check:translations": "node scripts/check-translations.js"
   },
   "devDependencies": {
     "@parcel/transformer-inline-string": "^2.15.2",

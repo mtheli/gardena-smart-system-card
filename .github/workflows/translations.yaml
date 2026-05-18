@@ -1,0 +1,27 @@
+name: Translations
+
+on:
+  pull_request:
+    paths:
+      - "src/locales/**"
+      - "src/translations.js"
+      - "scripts/check-translations.js"
+      - ".github/workflows/translations.yaml"
+  push:
+    branches: [main]
+    paths:
+      - "src/locales/**"
+      - "src/translations.js"
+      - "scripts/check-translations.js"
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check translation parity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm run check:translations
