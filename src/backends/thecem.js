@@ -6,6 +6,8 @@
  * Duration parameters are in seconds.
  */
 
+import { alphabeticValveIndex } from './shared.js';
+
 const DOMAIN = 'gardena_smart_system';
 
 export class ThecemBackend {
@@ -118,6 +120,19 @@ export class ThecemBackend {
     if (!entities?.valves?.length) return undefined;
     const firstValve = hass.states[entities.valves[0]];
     return firstValve?.attributes?.service_id != null;
+  }
+
+  // Real 1-based Gardena valve number, read from py-smart-gardena's
+  // "{device_uuid}:{valve_number}" service_id attribute. This is the
+  // authoritative mapping and is independent of entity_id sort order.
+  getValveIndex(hass, entityId) {
+    const serviceId = hass.states?.[entityId]?.attributes?.service_id;
+    if (typeof serviceId === 'string') {
+      const num = parseInt(serviceId.split(':').pop(), 10);
+      if (!Number.isNaN(num)) return num;
+    }
+    // Pre-patch installs without service_id: fall back to the alphabetic heuristic.
+    return alphabeticValveIndex(hass, entityId);
   }
 
   getGardenaDeviceId(hass, entityId) {

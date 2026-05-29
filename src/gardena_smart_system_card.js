@@ -11,7 +11,7 @@ import { t } from './translations.js';
 import { ThecemBackend } from './backends/thecem.js';
 import { KayloehmannBackend } from './backends/kayloehmann.js';
 
-export const CARD_VERSION = "0.7.0";
+export const CARD_VERSION = "0.7.1";
 
 // ---------- Knob constants ----------
 const KNOB_MIN = 5;
@@ -1596,18 +1596,13 @@ export class GardenaSmartSystemCard extends LitElement {
 
   _getValveIndex(entityId) {
     if (!entityId.startsWith('valve.')) return null;
-    const entities = this._hass.entities;
-    if (!entities) return null;
-    const sourceEntity = entities[entityId];
-    if (!sourceEntity?.device_id) return null;
-    // Find all valve entities on the same device, sorted by entity_id
-    const deviceId = sourceEntity.device_id;
-    const valveEntities = Object.keys(entities)
-      .filter(eid => eid.startsWith('valve.') && entities[eid]?.device_id === deviceId)
-      .sort();
-    const idx = valveEntities.indexOf(entityId);
-    // Return 1-based index to match schedule API valve_id
-    return idx >= 0 ? idx + 1 : null;
+    // Delegate to the backend, which maps the valve entity to its real Gardena
+    // valve number (thecem reads service_id; kayloehmann uses entity_id order).
+    // Without a backend the card has no working state — every valve/mower/socket
+    // control path dereferences this._backend — so there is no meaningful mapping
+    // here. Returning null also keeps the brief pre-backend first render from
+    // applying the entity_id-order heuristic this lookup exists to avoid.
+    return this._backend ? this._backend.getValveIndex(this._hass, entityId) : null;
   }
 
   _renderScheduleStrip(entityId) {

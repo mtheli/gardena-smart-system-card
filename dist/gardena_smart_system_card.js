@@ -658,7 +658,32 @@ function $d8078e452c66bdbe$export$625550452a3fa3ec(hass, key) {
  *
  * Uses custom domain-level services (gardena_smart_system.*) with device_id parameter.
  * Duration parameters are in seconds.
- */ const $f88a84c408bb0ce9$var$DOMAIN = 'gardena_smart_system';
+ */ /**
+ * Shared helpers used by both backend adapters and the card itself.
+ */ /**
+ * Legacy heuristic for a valve's 1-based Gardena number: its position among
+ * the same-device valve entities when sorted alphabetically by entity_id.
+ *
+ * This is correct only when the entity_ids happen to sort in the same order
+ * as the Gardena valve numbering — typically only when valves keep their
+ * default names. Kept as a fallback for the kayloehmann backend (which exposes
+ * no per-valve service_id) and for pre-patch py-smart-gardena installs that
+ * don't expose service_id either.
+ *
+ * @returns {number|null} 1-based valve number, or null if not resolvable.
+ */ function $d04187abcc848c11$export$ebcca8cc4275b3d4(hass, entityId) {
+    const entities = hass?.entities;
+    if (!entities) return null;
+    const sourceEntity = entities[entityId];
+    if (!sourceEntity?.device_id) return null;
+    const deviceId = sourceEntity.device_id;
+    const valveEntities = Object.keys(entities).filter((eid)=>eid.startsWith('valve.') && entities[eid]?.device_id === deviceId).sort();
+    const idx = valveEntities.indexOf(entityId);
+    return idx >= 0 ? idx + 1 : null;
+}
+
+
+const $f88a84c408bb0ce9$var$DOMAIN = 'gardena_smart_system';
 class $f88a84c408bb0ce9$export$40967b6313899a18 {
     get id() {
         return 'thecem';
@@ -813,6 +838,18 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
         const firstValve = hass.states[entities.valves[0]];
         return firstValve?.attributes?.service_id != null;
     }
+    // Real 1-based Gardena valve number, read from py-smart-gardena's
+    // "{device_uuid}:{valve_number}" service_id attribute. This is the
+    // authoritative mapping and is independent of entity_id sort order.
+    getValveIndex(hass, entityId) {
+        const serviceId = hass.states?.[entityId]?.attributes?.service_id;
+        if (typeof serviceId === 'string') {
+            const num = parseInt(serviceId.split(':').pop(), 10);
+            if (!Number.isNaN(num)) return num;
+        }
+        // Pre-patch installs without service_id: fall back to the alphabetic heuristic.
+        return (0, $d04187abcc848c11$export$ebcca8cc4275b3d4)(hass, entityId);
+    }
     getGardenaDeviceId(hass, entityId) {
         const entity = (hass.entities || {})[entityId];
         if (!entity?.device_id) return null;
@@ -839,7 +876,8 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
  *   - valve remaining duration is a separate sensor (not attribute on valve)
  *   - valve activity is not exposed at all (inferred via schedule integration)
  *   - socket activity is a separate sensor (power_socket_state), not an attribute (since v1.5.5)
- */ const $e9db53adf75333c7$var$DOMAIN = 'gardena_smart_system';
+ */ 
+const $e9db53adf75333c7$var$DOMAIN = 'gardena_smart_system';
 class $e9db53adf75333c7$export$15679f44c07c43cc {
     get id() {
         return 'kayloehmann';
@@ -1028,6 +1066,12 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
         // kayloehmann's integration always has working controls
         return true;
     }
+    // kayloehmann's integration exposes no per-valve service_id, so the
+    // alphabetic-order heuristic is the best available signal. (Schedules can
+    // still land under the wrong valve here when names sort non-alphabetically.)
+    getValveIndex(hass, entityId) {
+        return (0, $d04187abcc848c11$export$ebcca8cc4275b3d4)(hass, entityId);
+    }
     getGardenaDeviceId(hass, entityId) {
         // kayloehmann uses serial as device identifier: (DOMAIN, serial)
         const entity = (hass.entities || {})[entityId];
@@ -1042,7 +1086,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
 }
 
 
-const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.7.0";
+const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.7.1";
 // ---------- Knob constants ----------
 const $ce06635095588d37$var$KNOB_MIN = 5;
 const $ce06635095588d37$var$KNOB_MAX = 120;
@@ -2692,16 +2736,13 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     }
     _getValveIndex(entityId) {
         if (!entityId.startsWith('valve.')) return null;
-        const entities = this._hass.entities;
-        if (!entities) return null;
-        const sourceEntity = entities[entityId];
-        if (!sourceEntity?.device_id) return null;
-        // Find all valve entities on the same device, sorted by entity_id
-        const deviceId = sourceEntity.device_id;
-        const valveEntities = Object.keys(entities).filter((eid)=>eid.startsWith('valve.') && entities[eid]?.device_id === deviceId).sort();
-        const idx = valveEntities.indexOf(entityId);
-        // Return 1-based index to match schedule API valve_id
-        return idx >= 0 ? idx + 1 : null;
+        // Delegate to the backend, which maps the valve entity to its real Gardena
+        // valve number (thecem reads service_id; kayloehmann uses entity_id order).
+        // Without a backend the card has no working state — every valve/mower/socket
+        // control path dereferences this._backend — so there is no meaningful mapping
+        // here. Returning null also keeps the brief pre-backend first render from
+        // applying the entity_id-order heuristic this lookup exists to avoid.
+        return this._backend ? this._backend.getValveIndex(this._hass, entityId) : null;
     }
     _renderScheduleStrip(entityId) {
         const events = this._getScheduleEvents(entityId);

@@ -13,6 +13,8 @@
  *   - socket activity is a separate sensor (power_socket_state), not an attribute (since v1.5.5)
  */
 
+import { alphabeticValveIndex } from './shared.js';
+
 const DOMAIN = 'gardena_smart_system';
 
 export class KayloehmannBackend {
@@ -166,6 +168,13 @@ export class KayloehmannBackend {
   isPatchedIntegration() {
     // kayloehmann's integration always has working controls
     return true;
+  }
+
+  // kayloehmann's integration exposes no per-valve service_id, so the
+  // alphabetic-order heuristic is the best available signal. (Schedules can
+  // still land under the wrong valve here when names sort non-alphabetically.)
+  getValveIndex(hass, entityId) {
+    return alphabeticValveIndex(hass, entityId);
   }
 
   getGardenaDeviceId(hass, entityId) {
