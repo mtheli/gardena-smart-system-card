@@ -1,10 +1,14 @@
 /**
  * Backend adapter for kayloehmann's ha-gardena-smart-system integration
- * (kayloehmann/ha-gardena-smart-system) v1.4+
+ * (kayloehmann/ha-gardena-smart-system) v2.x, domain 'gardena_smart_system_ng'.
+ *
+ * v1.x registered under the legacy domain 'gardena_smart_system' (shared with
+ * thecem's integration); v1 support was dropped in card v0.8.0 — v1 predates
+ * the integration's HACS inclusion and had no migration path to v2.
  *
  * Uses standard HA services (valve.open_valve, lawn_mower.start_mowing, switch.turn_on)
  * plus entity-services for timed operations (duration in minutes).
- * Device identifiers use serial number: (DOMAIN, device.serial).
+ * Device identifiers use serial number: (domain, device.serial).
  *
  * Key differences from thecem backend:
  *   - activity, battery_state, error_code are separate sensor entities (not attributes)
@@ -15,10 +19,12 @@
 
 import { alphabeticValveIndex } from './shared.js';
 
-const DOMAIN = 'gardena_smart_system';
+const DOMAIN = 'gardena_smart_system_ng';
 
 export class KayloehmannBackend {
   get id() { return 'kayloehmann'; }
+
+  get domain() { return DOMAIN; }
 
   // -- Valve --
 
@@ -178,7 +184,7 @@ export class KayloehmannBackend {
   }
 
   getGardenaDeviceId(hass, entityId) {
-    // kayloehmann uses serial as device identifier: (DOMAIN, serial)
+    // kayloehmann uses serial as device identifier: (domain, serial)
     const entity = (hass.entities || {})[entityId];
     if (!entity?.device_id) return null;
     const device = (hass.devices || {})[entity.device_id];

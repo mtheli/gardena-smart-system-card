@@ -13,6 +13,8 @@ const DOMAIN = 'gardena_smart_system';
 export class ThecemBackend {
   get id() { return 'thecem'; }
 
+  get domain() { return DOMAIN; }
+
   // -- Valve --
 
   async openValve(hass, { entityId, gardenaDeviceId, serviceId, durationSec }) {

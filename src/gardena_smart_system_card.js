@@ -2,7 +2,7 @@
  * Gardena Smart System Card for Home Assistant
  * Supports multiple backend integrations:
  *   - hass-gardena-smart-system (thecem / py-smart-gardena)
- *   - ha-gardena-smart-system (kayloehmann)
+ *   - ha-gardena-smart-system (kayloehmann) v2.x ('gardena_smart_system_ng')
  */
 
 import { LitElement, html, unsafeCSS } from 'lit';
@@ -11,7 +11,7 @@ import { t } from './translations.js';
 import { ThecemBackend } from './backends/thecem.js';
 import { KayloehmannBackend } from './backends/kayloehmann.js';
 
-export const CARD_VERSION = "0.7.1";
+export const CARD_VERSION = "0.8.0";
 
 // ---------- Knob constants ----------
 const KNOB_MIN = 5;
@@ -25,8 +25,13 @@ const KNOB_CIRCUMFERENCE = 2 * Math.PI * KNOB_RADIUS;
 const KNOB_ARC_LENGTH = (KNOB_ARC_SWEEP / 360) * KNOB_CIRCUMFERENCE;
 const KNOB_PRESETS = [10, 30, 60, 120];
 
-// Integration domain for custom services (v2+)
-const DOMAIN = 'gardena_smart_system';
+// Integration domains: thecem's integration owns the legacy domain,
+// kayloehmann v2.x registers as 'gardena_smart_system_ng'.
+// (kayloehmann v1.x also used the legacy domain; its support was dropped in
+// v0.8.0 — v1 predates that integration's HACS inclusion.)
+const LEGACY_DOMAIN = 'gardena_smart_system';
+const NG_DOMAIN = 'gardena_smart_system_ng';
+const ALL_DOMAINS = [LEGACY_DOMAIN, NG_DOMAIN];
 
 // ---------- Mower activity mapping ----------
 const MOWER_ACTIVITY_MAP = {
@@ -159,13 +164,13 @@ export class GardenaSmartSystemCard extends LitElement {
   set hass(hass) {
     this._hass = hass;
 
-    // Auto-detect backend adapter
-    if (!this._backend && hass.services?.[DOMAIN]) {
-      // valve_open is a domain-level service only registered by thecem's integration
-      if (hass.services[DOMAIN].valve_open) {
-        this._backend = new ThecemBackend();
-      } else {
+    // Auto-detect backend adapter: each supported integration has its own
+    // domain, so the registered service domain identifies the backend.
+    if (!this._backend) {
+      if (hass.services?.[NG_DOMAIN]) {
         this._backend = new KayloehmannBackend();
+      } else if (hass.services?.[LEGACY_DOMAIN]) {
+        this._backend = new ThecemBackend();
       }
     }
 
@@ -222,6 +227,9 @@ export class GardenaSmartSystemCard extends LitElement {
     // Collect scheduler-component candidates in first pass
     const schedulerCandidates = [];
 
+    // Match the detected backend's domain; before detection, accept either
+    const activeDomain = this._backend?.domain;
+
     for (const entityId in allEntities) {
       const entity = allEntities[entityId];
 
@@ -233,7 +241,7 @@ export class GardenaSmartSystemCard extends LitElement {
         continue;
       }
 
-      if (entity.platform !== DOMAIN) continue;
+      if (activeDomain ? entity.platform !== activeDomain : !ALL_DOMAINS.includes(entity.platform)) continue;
 
       const domain = entityId.split('.')[0];
       const state = hass.states[entityId];
@@ -247,6 +255,12 @@ export class GardenaSmartSystemCard extends LitElement {
       } else if (domain === 'lawn_mower') {
         found.mowers.push(entityId);
       } else if (domain === 'binary_sensor' && state?.attributes?.device_class === 'connectivity') {
+        // kayloehmann v2.x adds hub-level connectivity diagnostics (cloud
+        // websocket / optional local gateway). They describe the hub, not a
+        // device — never use them as device or global connection state, or an
+        // unused local channel would render the whole card "offline".
+        if (entity.translation_key === 'hub_websocket_connected'
+          || entity.translation_key === 'hub_local_connected') continue;
         found.deviceConnections[entity.device_id] = entityId;
         if (!found.connection) found.connection = entityId;
       } else if (domain === 'sensor') {
@@ -330,7 +344,7 @@ export class GardenaSmartSystemCard extends LitElement {
     const device = (this._hass.devices || {})[entity.device_id];
     if (!device?.identifiers) return null;
     for (const [domain, id] of device.identifiers) {
-      if (domain === DOMAIN) return id;
+      if (ALL_DOMAINS.includes(domain)) return id;
     }
     return null;
   }
@@ -2098,7 +2112,7 @@ export class GardenaSmartSystemCard extends LitElement {
           label: t(null, "config_mower_entities"),
           selector: {
             entity: {
-              filter: [{ domain: "lawn_mower", integration: "gardena_smart_system" }],
+              filter: ALL_DOMAINS.map(integration => ({ domain: "lawn_mower", integration })),
               multiple: true,
             },
           },
@@ -2116,7 +2130,7 @@ export class GardenaSmartSystemCard extends LitElement {
           label: t(null, "config_valve_entities"),
           selector: {
             entity: {
-              filter: [{ domain: "valve", integration: "gardena_smart_system" }],
+              filter: ALL_DOMAINS.map(integration => ({ domain: "valve", integration })),
               multiple: true,
             },
           },
@@ -2126,7 +2140,7 @@ export class GardenaSmartSystemCard extends LitElement {
           label: t(null, "config_socket_entities"),
           selector: {
             entity: {
-              filter: [{ domain: "switch", integration: "gardena_smart_system" }],
+              filter: ALL_DOMAINS.map(integration => ({ domain: "switch", integration })),
               multiple: true,
             },
           },
@@ -2137,7 +2151,7 @@ export class GardenaSmartSystemCard extends LitElement {
 
   static getStubConfig(hass) {
     const allEntities = Object.values(hass.entities).filter(
-      (e) => e.platform === "gardena_smart_system"
+      (e) => ALL_DOMAINS.includes(e.platform)
     );
     const byDomain = (domain) => allEntities
       .filter(e => e.entity_id.startsWith(domain + '.'))

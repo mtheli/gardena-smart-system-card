@@ -6,7 +6,7 @@ function $parcel$interopDefault(a) {
  * Gardena Smart System Card for Home Assistant
  * Supports multiple backend integrations:
  *   - hass-gardena-smart-system (thecem / py-smart-gardena)
- *   - ha-gardena-smart-system (kayloehmann)
+ *   - ha-gardena-smart-system (kayloehmann) v2.x ('gardena_smart_system_ng')
  */ /**
  * @license
  * Copyright 2019 Google LLC
@@ -688,6 +688,9 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
     get id() {
         return 'thecem';
     }
+    get domain() {
+        return $f88a84c408bb0ce9$var$DOMAIN;
+    }
     // -- Valve --
     async openValve(hass, { entityId: entityId, gardenaDeviceId: gardenaDeviceId, serviceId: serviceId, durationSec: durationSec }) {
         const data = {
@@ -865,11 +868,15 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
 
 /**
  * Backend adapter for kayloehmann's ha-gardena-smart-system integration
- * (kayloehmann/ha-gardena-smart-system) v1.4+
+ * (kayloehmann/ha-gardena-smart-system) v2.x, domain 'gardena_smart_system_ng'.
+ *
+ * v1.x registered under the legacy domain 'gardena_smart_system' (shared with
+ * thecem's integration); v1 support was dropped in card v0.8.0 — v1 predates
+ * the integration's HACS inclusion and had no migration path to v2.
  *
  * Uses standard HA services (valve.open_valve, lawn_mower.start_mowing, switch.turn_on)
  * plus entity-services for timed operations (duration in minutes).
- * Device identifiers use serial number: (DOMAIN, device.serial).
+ * Device identifiers use serial number: (domain, device.serial).
  *
  * Key differences from thecem backend:
  *   - activity, battery_state, error_code are separate sensor entities (not attributes)
@@ -877,10 +884,13 @@ class $f88a84c408bb0ce9$export$40967b6313899a18 {
  *   - valve activity is not exposed at all (inferred via schedule integration)
  *   - socket activity is a separate sensor (power_socket_state), not an attribute (since v1.5.5)
  */ 
-const $e9db53adf75333c7$var$DOMAIN = 'gardena_smart_system';
+const $e9db53adf75333c7$var$DOMAIN = 'gardena_smart_system_ng';
 class $e9db53adf75333c7$export$15679f44c07c43cc {
     get id() {
         return 'kayloehmann';
+    }
+    get domain() {
+        return $e9db53adf75333c7$var$DOMAIN;
     }
     // -- Valve --
     async openValve(hass, { entityId: entityId, durationSec: durationSec }) {
@@ -1073,7 +1083,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
         return (0, $d04187abcc848c11$export$ebcca8cc4275b3d4)(hass, entityId);
     }
     getGardenaDeviceId(hass, entityId) {
-        // kayloehmann uses serial as device identifier: (DOMAIN, serial)
+        // kayloehmann uses serial as device identifier: (domain, serial)
         const entity = (hass.entities || {})[entityId];
         if (!entity?.device_id) return null;
         const device = (hass.devices || {})[entity.device_id];
@@ -1086,7 +1096,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
 }
 
 
-const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.7.1";
+const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.8.0";
 // ---------- Knob constants ----------
 const $ce06635095588d37$var$KNOB_MIN = 5;
 const $ce06635095588d37$var$KNOB_MAX = 120;
@@ -1103,8 +1113,16 @@ const $ce06635095588d37$var$KNOB_PRESETS = [
     60,
     120
 ];
-// Integration domain for custom services (v2+)
-const $ce06635095588d37$var$DOMAIN = 'gardena_smart_system';
+// Integration domains: thecem's integration owns the legacy domain,
+// kayloehmann v2.x registers as 'gardena_smart_system_ng'.
+// (kayloehmann v1.x also used the legacy domain; its support was dropped in
+// v0.8.0 — v1 predates that integration's HACS inclusion.)
+const $ce06635095588d37$var$LEGACY_DOMAIN = 'gardena_smart_system';
+const $ce06635095588d37$var$NG_DOMAIN = 'gardena_smart_system_ng';
+const $ce06635095588d37$var$ALL_DOMAINS = [
+    $ce06635095588d37$var$LEGACY_DOMAIN,
+    $ce06635095588d37$var$NG_DOMAIN
+];
 // ---------- Mower activity mapping ----------
 const $ce06635095588d37$var$MOWER_ACTIVITY_MAP = {
     'OK_CUTTING': 'mower_cutting',
@@ -1262,11 +1280,11 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     }
     set hass(hass) {
         this._hass = hass;
-        // Auto-detect backend adapter
-        if (!this._backend && hass.services?.[$ce06635095588d37$var$DOMAIN]) {
-            // valve_open is a domain-level service only registered by thecem's integration
-            if (hass.services[$ce06635095588d37$var$DOMAIN].valve_open) this._backend = new (0, $f88a84c408bb0ce9$export$40967b6313899a18)();
-            else this._backend = new (0, $e9db53adf75333c7$export$15679f44c07c43cc)();
+        // Auto-detect backend adapter: each supported integration has its own
+        // domain, so the registered service domain identifies the backend.
+        if (!this._backend) {
+            if (hass.services?.[$ce06635095588d37$var$NG_DOMAIN]) this._backend = new (0, $e9db53adf75333c7$export$15679f44c07c43cc)();
+            else if (hass.services?.[$ce06635095588d37$var$LEGACY_DOMAIN]) this._backend = new (0, $f88a84c408bb0ce9$export$40967b6313899a18)();
         }
         // Detect patched integration via backend
         if (this._isPatchedIntegration === undefined && this._backend && this._entities?.valves?.length) this._isPatchedIntegration = this._backend.isPatchedIntegration(hass, this._entities);
@@ -1320,6 +1338,8 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         };
         // Collect scheduler-component candidates in first pass
         const schedulerCandidates = [];
+        // Match the detected backend's domain; before detection, accept either
+        const activeDomain = this._backend?.domain;
         for(const entityId in allEntities){
             const entity = allEntities[entityId];
             // Collect switch.schedule_* entities for scheduler-component matching
@@ -1332,7 +1352,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 });
                 continue;
             }
-            if (entity.platform !== $ce06635095588d37$var$DOMAIN) continue;
+            if (activeDomain ? entity.platform !== activeDomain : !$ce06635095588d37$var$ALL_DOMAINS.includes(entity.platform)) continue;
             const domain = entityId.split('.')[0];
             const state = hass.states[entityId];
             if (entity.device_id) found.deviceIds.add(entity.device_id);
@@ -1340,6 +1360,11 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             else if (domain === 'switch') found.sockets.push(entityId);
             else if (domain === 'lawn_mower') found.mowers.push(entityId);
             else if (domain === 'binary_sensor' && state?.attributes?.device_class === 'connectivity') {
+                // kayloehmann v2.x adds hub-level connectivity diagnostics (cloud
+                // websocket / optional local gateway). They describe the hub, not a
+                // device — never use them as device or global connection state, or an
+                // unused local channel would render the whole card "offline".
+                if (entity.translation_key === 'hub_websocket_connected' || entity.translation_key === 'hub_local_connected') continue;
                 found.deviceConnections[entity.device_id] = entityId;
                 if (!found.connection) found.connection = entityId;
             } else if (domain === 'sensor') {
@@ -1408,7 +1433,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         const device = (this._hass.devices || {})[entity.device_id];
         if (!device?.identifiers) return null;
         for (const [domain, id] of device.identifiers){
-            if (domain === $ce06635095588d37$var$DOMAIN) return id;
+            if ($ce06635095588d37$var$ALL_DOMAINS.includes(domain)) return id;
         }
         return null;
     }
@@ -3274,12 +3299,10 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                     label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_mower_entities"),
                     selector: {
                         entity: {
-                            filter: [
-                                {
+                            filter: $ce06635095588d37$var$ALL_DOMAINS.map((integration)=>({
                                     domain: "lawn_mower",
-                                    integration: "gardena_smart_system"
-                                }
-                            ],
+                                    integration: integration
+                                })),
                             multiple: true
                         }
                     }
@@ -3302,12 +3325,10 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                     label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_valve_entities"),
                     selector: {
                         entity: {
-                            filter: [
-                                {
+                            filter: $ce06635095588d37$var$ALL_DOMAINS.map((integration)=>({
                                     domain: "valve",
-                                    integration: "gardena_smart_system"
-                                }
-                            ],
+                                    integration: integration
+                                })),
                             multiple: true
                         }
                     }
@@ -3317,12 +3338,10 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                     label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_socket_entities"),
                     selector: {
                         entity: {
-                            filter: [
-                                {
+                            filter: $ce06635095588d37$var$ALL_DOMAINS.map((integration)=>({
                                     domain: "switch",
-                                    integration: "gardena_smart_system"
-                                }
-                            ],
+                                    integration: integration
+                                })),
                             multiple: true
                         }
                     }
@@ -3331,7 +3350,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         };
     }
     static getStubConfig(hass) {
-        const allEntities = Object.values(hass.entities).filter((e)=>e.platform === "gardena_smart_system");
+        const allEntities = Object.values(hass.entities).filter((e)=>$ce06635095588d37$var$ALL_DOMAINS.includes(e.platform));
         const byDomain = (domain)=>allEntities.filter((e)=>e.entity_id.startsWith(domain + '.')).map((e)=>e.entity_id);
         return {
             default_duration: 30,
