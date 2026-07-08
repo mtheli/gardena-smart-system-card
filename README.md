@@ -54,8 +54,8 @@ This card requires one of the following Gardena Smart System integrations:
 
 | Integration | Repository | Notes |
 |-------------|-----------|-------|
-| **hass-gardena-smart-system** | [py-smart-gardena/hass-gardena-smart-system](https://github.com/py-smart-gardena/hass-gardena-smart-system) | Recommended. Requires v2.0+. Provides full device control via custom services. |
-| **ha-gardena-smart-system** | [kayloehmann/ha-gardena-smart-system](https://github.com/kayloehmann/ha-gardena-smart-system) | Alternative backend. Requires v2.x (`gardena_smart_system_ng`); its local gateway access mode (v2.1.0+) works transparently. Card versions up to v0.7.1 supported v1.x instead. Uses standard HA service calls. |
+| **hass-gardena-smart-system** | [py-smart-gardena/hass-gardena-smart-system](https://github.com/py-smart-gardena/hass-gardena-smart-system) | Requires v2.0+ (tested up to 3.0.2). Provides full device control via custom services. |
+| **ha-gardena-smart-system** | [kayloehmann/ha-gardena-smart-system](https://github.com/kayloehmann/ha-gardena-smart-system) | Requires v2.x (`gardena_smart_system_ng`); its local gateway access mode (v2.1.0+) works transparently. Card versions up to v0.7.1 supported v1.x instead. Uses standard HA service calls. |
 
 The card auto-detects which backend is installed and adapts accordingly.
 
