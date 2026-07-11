@@ -1096,7 +1096,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
 }
 
 
-const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.8.0";
+const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.8.1";
 // ---------- Knob constants ----------
 const $ce06635095588d37$var$KNOB_MIN = 5;
 const $ce06635095588d37$var$KNOB_MAX = 120;
@@ -3367,7 +3367,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
 const $9b0ec10db8f5b2c0$var$SUB_CARDS = [
     {
         type: 'gardena-smart-mower-card',
-        name: 'Gardena Smart System - Mower',
+        name: 'Gardena Smart System Card: Mower',
         description: 'Mower section from the Gardena Smart System card.',
         sections: [
             'mower'
@@ -3382,7 +3382,7 @@ const $9b0ec10db8f5b2c0$var$SUB_CARDS = [
     },
     {
         type: 'gardena-smart-valves-card',
-        name: 'Gardena Smart System - Valves',
+        name: 'Gardena Smart System Card: Valves',
         description: 'Valve zones section from the Gardena Smart System card.',
         sections: [
             'valves'
@@ -3399,7 +3399,7 @@ const $9b0ec10db8f5b2c0$var$SUB_CARDS = [
     },
     {
         type: 'gardena-smart-socket-card',
-        name: 'Gardena Smart System - Socket',
+        name: 'Gardena Smart System Card: Socket',
         description: 'Power socket section from the Gardena Smart System card.',
         sections: [
             'socket'
@@ -3415,7 +3415,7 @@ const $9b0ec10db8f5b2c0$var$SUB_CARDS = [
     },
     {
         type: 'gardena-smart-history-card',
-        name: 'Gardena Smart System - History',
+        name: 'Gardena Smart System Card: History',
         description: 'History chart from the Gardena Smart System card.',
         sections: [
             'history'

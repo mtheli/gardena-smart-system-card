@@ -3,7 +3,7 @@ import { GardenaSmartSystemCard } from './gardena_smart_system_card.js';
 const SUB_CARDS = [
   {
     type: 'gardena-smart-mower-card',
-    name: 'Gardena Smart System - Mower',
+    name: 'Gardena Smart System Card: Mower',
     description: 'Mower section from the Gardena Smart System card.',
     sections: ['mower'],
     configFields: ['title', 'show_header', 'show_schedules', 'mower_entities'],
@@ -11,7 +11,7 @@ const SUB_CARDS = [
   },
   {
     type: 'gardena-smart-valves-card',
-    name: 'Gardena Smart System - Valves',
+    name: 'Gardena Smart System Card: Valves',
     description: 'Valve zones section from the Gardena Smart System card.',
     sections: ['valves'],
     configFields: ['title', 'show_header', 'show_schedules', 'default_duration', 'valve_columns', 'valve_entities'],
@@ -19,7 +19,7 @@ const SUB_CARDS = [
   },
   {
     type: 'gardena-smart-socket-card',
-    name: 'Gardena Smart System - Socket',
+    name: 'Gardena Smart System Card: Socket',
     description: 'Power socket section from the Gardena Smart System card.',
     sections: ['socket'],
     configFields: ['title', 'show_header', 'show_schedules', 'default_duration', 'socket_entities'],
@@ -27,7 +27,7 @@ const SUB_CARDS = [
   },
   {
     type: 'gardena-smart-history-card',
-    name: 'Gardena Smart System - History',
+    name: 'Gardena Smart System Card: History',
     description: 'History chart from the Gardena Smart System card.',
     sections: ['history'],
     configFields: ['title', 'show_header', 'valve_entities', 'socket_entities'],
