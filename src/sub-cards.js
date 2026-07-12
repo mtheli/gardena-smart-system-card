@@ -1,4 +1,4 @@
-import { GardenaSmartSystemCard } from './gardena_smart_system_card.js';
+import { GardenaSmartSystemCard, ALL_DOMAINS } from './gardena_smart_system_card.js';
 
 const SUB_CARDS = [
   {
@@ -7,6 +7,7 @@ const SUB_CARDS = [
     description: 'Mower section from the Gardena Smart System card.',
     sections: ['mower'],
     configFields: ['title', 'show_header', 'show_schedules', 'mower_entities'],
+    suggestDomains: ['lawn_mower'],
     size: 3,
   },
   {
@@ -15,6 +16,7 @@ const SUB_CARDS = [
     description: 'Valve zones section from the Gardena Smart System card.',
     sections: ['valves'],
     configFields: ['title', 'show_header', 'show_schedules', 'default_duration', 'valve_columns', 'valve_entities'],
+    suggestDomains: ['valve'],
     size: 4,
   },
   {
@@ -23,6 +25,7 @@ const SUB_CARDS = [
     description: 'Power socket section from the Gardena Smart System card.',
     sections: ['socket'],
     configFields: ['title', 'show_header', 'show_schedules', 'default_duration', 'socket_entities'],
+    suggestDomains: ['switch'],
     size: 2,
   },
   {
@@ -66,8 +69,12 @@ function createSubCardClass(def) {
 
 export function registerSubCards() {
   for (const def of SUB_CARDS) {
+    // Keep a local reference: customElements.get(def.type) may return an
+    // older copy of the card that won the registration race and lacks the
+    // statics the suggestion callback needs.
+    const SubCard = createSubCardClass(def);
     if (!customElements.get(def.type)) {
-      customElements.define(def.type, createSubCardClass(def));
+      customElements.define(def.type, SubCard);
     }
     window.customCards = window.customCards || [];
     window.customCards.push({
@@ -75,6 +82,19 @@ export function registerSubCards() {
       name: def.name,
       description: def.description,
       preview: true,
+      // Card picker suggestion (HA 2026.6+): each sub-card only suggests
+      // itself for Gardena entities of its own domain (history has none).
+      getEntitySuggestion: (hass, entityId) => {
+        const entity = hass.entities?.[entityId];
+        if (!entity || !ALL_DOMAINS.includes(entity.platform)) return null;
+        if (!def.suggestDomains?.includes(entityId.split('.')[0])) return null;
+        return {
+          config: {
+            type: `custom:${def.type}`,
+            ...SubCard.getStubConfig(hass),
+          },
+        };
+      },
     });
   }
 }

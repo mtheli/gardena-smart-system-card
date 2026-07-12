@@ -1096,7 +1096,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
 }
 
 
-const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.8.1";
+const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.9.0";
 // ---------- Knob constants ----------
 const $ce06635095588d37$var$KNOB_MIN = 5;
 const $ce06635095588d37$var$KNOB_MAX = 120;
@@ -1119,7 +1119,7 @@ const $ce06635095588d37$var$KNOB_PRESETS = [
 // v0.8.0 — v1 predates that integration's HACS inclusion.)
 const $ce06635095588d37$var$LEGACY_DOMAIN = 'gardena_smart_system';
 const $ce06635095588d37$var$NG_DOMAIN = 'gardena_smart_system_ng';
-const $ce06635095588d37$var$ALL_DOMAINS = [
+const $ce06635095588d37$export$ca1603d2318473a8 = [
     $ce06635095588d37$var$LEGACY_DOMAIN,
     $ce06635095588d37$var$NG_DOMAIN
 ];
@@ -1352,7 +1352,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                 });
                 continue;
             }
-            if (activeDomain ? entity.platform !== activeDomain : !$ce06635095588d37$var$ALL_DOMAINS.includes(entity.platform)) continue;
+            if (activeDomain ? entity.platform !== activeDomain : !$ce06635095588d37$export$ca1603d2318473a8.includes(entity.platform)) continue;
             const domain = entityId.split('.')[0];
             const state = hass.states[entityId];
             if (entity.device_id) found.deviceIds.add(entity.device_id);
@@ -1433,7 +1433,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         const device = (this._hass.devices || {})[entity.device_id];
         if (!device?.identifiers) return null;
         for (const [domain, id] of device.identifiers){
-            if ($ce06635095588d37$var$ALL_DOMAINS.includes(domain)) return id;
+            if ($ce06635095588d37$export$ca1603d2318473a8.includes(domain)) return id;
         }
         return null;
     }
@@ -3299,7 +3299,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                     label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_mower_entities"),
                     selector: {
                         entity: {
-                            filter: $ce06635095588d37$var$ALL_DOMAINS.map((integration)=>({
+                            filter: $ce06635095588d37$export$ca1603d2318473a8.map((integration)=>({
                                     domain: "lawn_mower",
                                     integration: integration
                                 })),
@@ -3325,7 +3325,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                     label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_valve_entities"),
                     selector: {
                         entity: {
-                            filter: $ce06635095588d37$var$ALL_DOMAINS.map((integration)=>({
+                            filter: $ce06635095588d37$export$ca1603d2318473a8.map((integration)=>({
                                     domain: "valve",
                                     integration: integration
                                 })),
@@ -3338,7 +3338,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                     label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_socket_entities"),
                     selector: {
                         entity: {
-                            filter: $ce06635095588d37$var$ALL_DOMAINS.map((integration)=>({
+                            filter: $ce06635095588d37$export$ca1603d2318473a8.map((integration)=>({
                                     domain: "switch",
                                     integration: integration
                                 })),
@@ -3350,7 +3350,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         };
     }
     static getStubConfig(hass) {
-        const allEntities = Object.values(hass.entities).filter((e)=>$ce06635095588d37$var$ALL_DOMAINS.includes(e.platform));
+        const allEntities = Object.values(hass.entities).filter((e)=>$ce06635095588d37$export$ca1603d2318473a8.includes(e.platform));
         const byDomain = (domain)=>allEntities.filter((e)=>e.entity_id.startsWith(domain + '.')).map((e)=>e.entity_id);
         return {
             default_duration: 30,
@@ -3378,6 +3378,9 @@ const $9b0ec10db8f5b2c0$var$SUB_CARDS = [
             'show_schedules',
             'mower_entities'
         ],
+        suggestDomains: [
+            'lawn_mower'
+        ],
         size: 3
     },
     {
@@ -3395,6 +3398,9 @@ const $9b0ec10db8f5b2c0$var$SUB_CARDS = [
             'valve_columns',
             'valve_entities'
         ],
+        suggestDomains: [
+            'valve'
+        ],
         size: 4
     },
     {
@@ -3410,6 +3416,9 @@ const $9b0ec10db8f5b2c0$var$SUB_CARDS = [
             'show_schedules',
             'default_duration',
             'socket_entities'
+        ],
+        suggestDomains: [
+            'switch'
         ],
         size: 2
     },
@@ -3457,13 +3466,30 @@ function $9b0ec10db8f5b2c0$var$createSubCardClass(def) {
 }
 function $9b0ec10db8f5b2c0$export$e0977bf6e2c8a92() {
     for (const def of $9b0ec10db8f5b2c0$var$SUB_CARDS){
-        if (!customElements.get(def.type)) customElements.define(def.type, $9b0ec10db8f5b2c0$var$createSubCardClass(def));
+        // Keep a local reference: customElements.get(def.type) may return an
+        // older copy of the card that won the registration race and lacks the
+        // statics the suggestion callback needs.
+        const SubCard = $9b0ec10db8f5b2c0$var$createSubCardClass(def);
+        if (!customElements.get(def.type)) customElements.define(def.type, SubCard);
         window.customCards = window.customCards || [];
         window.customCards.push({
             type: def.type,
             name: def.name,
             description: def.description,
-            preview: true
+            preview: true,
+            // Card picker suggestion (HA 2026.6+): each sub-card only suggests
+            // itself for Gardena entities of its own domain (history has none).
+            getEntitySuggestion: (hass, entityId)=>{
+                const entity = hass.entities?.[entityId];
+                if (!entity || !(0, $ce06635095588d37$export$ca1603d2318473a8).includes(entity.platform)) return null;
+                if (!def.suggestDomains?.includes(entityId.split('.')[0])) return null;
+                return {
+                    config: {
+                        type: `custom:${def.type}`,
+                        ...SubCard.getStubConfig(hass)
+                    }
+                };
+            }
         });
     }
 }
@@ -3475,7 +3501,19 @@ window.customCards.push({
     type: "gardena-smart-system-card",
     name: "Gardena Smart System Card",
     description: "Custom card for the Gardena Smart System integration with mower, irrigation, and sensor support.",
-    preview: true
+    preview: true,
+    // Card picker suggestion (HA 2026.6+): suggest the full card for any
+    // entity belonging to a supported Gardena integration.
+    getEntitySuggestion: (hass, entityId)=>{
+        const entity = hass.entities?.[entityId];
+        if (!entity || !(0, $ce06635095588d37$export$ca1603d2318473a8).includes(entity.platform)) return null;
+        return {
+            config: {
+                type: "custom:gardena-smart-system-card",
+                ...(0, $ce06635095588d37$export$4db43f2ac07d900b).getStubConfig(hass)
+            }
+        };
+    }
 });
 (0, $9b0ec10db8f5b2c0$export$e0977bf6e2c8a92)();
 console.info(`%c GARDENA-SMART-SYSTEM-CARD %c v${(0, $ce06635095588d37$export$d5e7ce6d07daf10f)} `, "color:#fff;background:#1c1c1c;padding:2px 6px;border-radius:4px 0 0 4px;font-weight:700", "color:#1c1c1c;background:#4caf50;padding:2px 6px;border-radius:0 4px 4px 0;font-weight:700");

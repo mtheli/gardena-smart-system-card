@@ -11,7 +11,7 @@ import { t } from './translations.js';
 import { ThecemBackend } from './backends/thecem.js';
 import { KayloehmannBackend } from './backends/kayloehmann.js';
 
-export const CARD_VERSION = "0.8.1";
+export const CARD_VERSION = "0.9.0";
 
 // ---------- Knob constants ----------
 const KNOB_MIN = 5;
@@ -31,7 +31,7 @@ const KNOB_PRESETS = [10, 30, 60, 120];
 // v0.8.0 — v1 predates that integration's HACS inclusion.)
 const LEGACY_DOMAIN = 'gardena_smart_system';
 const NG_DOMAIN = 'gardena_smart_system_ng';
-const ALL_DOMAINS = [LEGACY_DOMAIN, NG_DOMAIN];
+export const ALL_DOMAINS = [LEGACY_DOMAIN, NG_DOMAIN];
 
 // ---------- Mower activity mapping ----------
 const MOWER_ACTIVITY_MAP = {
