@@ -11,7 +11,7 @@ import { t } from './translations.js';
 import { ThecemBackend } from './backends/thecem.js';
 import { KayloehmannBackend } from './backends/kayloehmann.js';
 
-export const CARD_VERSION = "0.9.0";
+export const CARD_VERSION = "0.9.1";
 
 // ---------- Knob constants ----------
 const KNOB_MIN = 5;
@@ -2114,6 +2114,7 @@ export class GardenaSmartSystemCard extends LitElement {
             entity: {
               filter: ALL_DOMAINS.map(integration => ({ domain: "lawn_mower", integration })),
               multiple: true,
+              reorder: true,
             },
           },
         },
@@ -2132,6 +2133,7 @@ export class GardenaSmartSystemCard extends LitElement {
             entity: {
               filter: ALL_DOMAINS.map(integration => ({ domain: "valve", integration })),
               multiple: true,
+              reorder: true,
             },
           },
         },
@@ -2142,6 +2144,7 @@ export class GardenaSmartSystemCard extends LitElement {
             entity: {
               filter: ALL_DOMAINS.map(integration => ({ domain: "switch", integration })),
               multiple: true,
+              reorder: true,
             },
           },
         },

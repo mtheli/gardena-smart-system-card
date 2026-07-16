@@ -128,9 +128,11 @@ The card is configured via the UI — just add it and all Gardena entities are a
 | show_scheduler_schedules | string | mixed        | Scheduler display: `mixed` or `separate`            |
 | default_duration| number   | 30                | Default duration in minutes for valves/sockets      |
 | valve_columns   | number   | 3                 | Number of valve columns per row (1–3)               |
-| mower_entities  | string[] | all               | Mowers to display (leave empty for all)             |
-| valve_entities  | string[] | all               | Valve zones to display (leave empty for all)        |
-| socket_entities | string[] | all               | Power sockets to display (leave empty for all)      |
+| mower_entities  | string[] | all               | Mowers to display, in display order (leave empty for all) |
+| valve_entities  | string[] | all               | Valve zones to display, in display order (leave empty for all) |
+| socket_entities | string[] | all               | Power sockets to display, in display order (leave empty for all) |
+
+The entity lists control the display order: entries are shown in the order they appear in the list. In the visual editor you can reorder them via drag and drop (requires Home Assistant 2025.8 or newer).
 
 ### YAML Examples
 

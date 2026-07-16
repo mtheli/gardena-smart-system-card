@@ -1096,7 +1096,7 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
 }
 
 
-const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.9.0";
+const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.9.1";
 // ---------- Knob constants ----------
 const $ce06635095588d37$var$KNOB_MIN = 5;
 const $ce06635095588d37$var$KNOB_MAX = 120;
@@ -3303,7 +3303,8 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                                     domain: "lawn_mower",
                                     integration: integration
                                 })),
-                            multiple: true
+                            multiple: true,
+                            reorder: true
                         }
                     }
                 },
@@ -3329,7 +3330,8 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                                     domain: "valve",
                                     integration: integration
                                 })),
-                            multiple: true
+                            multiple: true,
+                            reorder: true
                         }
                     }
                 },
@@ -3342,7 +3344,8 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
                                     domain: "switch",
                                     integration: integration
                                 })),
-                            multiple: true
+                            multiple: true,
+                            reorder: true
                         }
                     }
                 }
