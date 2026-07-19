@@ -11,7 +11,12 @@ import { t } from './translations.js';
 import { ThecemBackend } from './backends/thecem.js';
 import { KayloehmannBackend } from './backends/kayloehmann.js';
 
-export const CARD_VERSION = "0.9.1";
+export const CARD_VERSION = "0.10.0";
+// BUILD_DATE is stamped into src/build-info.js by scripts/gen_build_info.mjs,
+// which the "build"/"watch" scripts run first (the file is generated and
+// gitignored). Shown in the console banner so it is obvious whether a freshly
+// built bundle actually loaded.
+export { BUILD_DATE } from './build-info.js';
 
 // ---------- Knob constants ----------
 const KNOB_MIN = 5;
@@ -32,6 +37,23 @@ const KNOB_PRESETS = [10, 30, 60, 120];
 const LEGACY_DOMAIN = 'gardena_smart_system';
 const NG_DOMAIN = 'gardena_smart_system_ng';
 export const ALL_DOMAINS = [LEGACY_DOMAIN, NG_DOMAIN];
+
+// Entity name with the device-name prefix stripped ("Garten Bewässerung
+// Tröpfchen" → "Tröpfchen") — shared between card tiles and the editor.
+export function entityNameWithoutDevice(hass, entityId, fallback) {
+  const state = hass.states[entityId];
+  const name = state?.attributes?.friendly_name || fallback;
+  const entityReg = (hass.entities || {})[entityId];
+  if (entityReg?.device_id) {
+    const device = (hass.devices || {})[entityReg.device_id];
+    const devName = device?.name_by_user || device?.name;
+    if (devName && name.startsWith(devName)) {
+      const suffix = name.substring(devName.length).replace(/^[\s\-–]+/, '').trim();
+      if (suffix) return suffix;
+    }
+  }
+  return name;
+}
 
 // ---------- Mower activity mapping ----------
 const MOWER_ACTIVITY_MAP = {
@@ -323,18 +345,7 @@ export class GardenaSmartSystemCard extends LitElement {
   }
 
   _entityNameWithoutDevice(entityId, fallback) {
-    const state = this._hass.states[entityId];
-    const name = state?.attributes?.friendly_name || fallback;
-    const entityReg = (this._hass.entities || {})[entityId];
-    if (entityReg?.device_id) {
-      const device = (this._hass.devices || {})[entityReg.device_id];
-      const devName = device?.name_by_user || device?.name;
-      if (devName && name.startsWith(devName)) {
-        const suffix = name.substring(devName.length).replace(/^[\s\-–]+/, '').trim();
-        if (suffix) return suffix;
-      }
-    }
-    return name;
+    return entityNameWithoutDevice(this._hass, entityId, fallback);
   }
 
   _getGardenaDeviceId(entityId) {
@@ -986,7 +997,10 @@ export class GardenaSmartSystemCard extends LitElement {
             (isOffline && !isActive) || this._isPatchedIntegration === false,
             () => this._toggleValve(entityId, isActive))}
         </div>
-        <div class="valve-name" @click="${() => this._fireMoreInfo(entityId)}">${shortName}</div>
+        <div class="valve-name-row">
+          <div class="valve-name" @click="${() => this._fireMoreInfo(entityId)}">${shortName}</div>
+          ${this._renderValveSensors(entityId)}
+        </div>
         <div class="valve-status">
           ${isOffline && !isActive
             ? this._t('state_offline')
@@ -997,6 +1011,56 @@ export class GardenaSmartSystemCard extends LitElement {
         </div>
         ${this._renderValveScheduleMini(entityId)}
         ${this._renderSchedulerValveMini(entityId)}
+      </div>
+    `;
+  }
+
+  // ---------- Per-valve sensor chips (valve_sensors config) ----------
+  _sensorChipIcon(state) {
+    switch (state?.attributes?.device_class) {
+      case 'humidity':
+      case 'moisture': return 'mdi:water-percent';
+      case 'temperature': return 'mdi:thermometer';
+      case 'illuminance': return 'mdi:brightness-5';
+      case 'battery': return 'mdi:battery';
+      default: return 'mdi:gauge';
+    }
+  }
+
+  _sensorChipClass(state) {
+    switch (state?.attributes?.device_class) {
+      case 'humidity':
+      case 'moisture': return 'vs-humidity';
+      case 'temperature': return 'vs-temperature';
+      case 'illuminance': return 'vs-illuminance';
+      default: return '';
+    }
+  }
+
+  _renderValveSensors(entityId) {
+    const sensorIds = this.config?.valve_sensors?.[entityId];
+    if (!Array.isArray(sensorIds) || sensorIds.length === 0) return '';
+    return html`
+      <div class="valve-sensors">
+        ${sensorIds.map(id => {
+          const st = this._hass.states[id];
+          const unavailable = !st || st.state === 'unavailable' || st.state === 'unknown';
+          let value = '–';
+          if (!unavailable) {
+            try {
+              value = this._hass.formatEntityState(st);
+            } catch {
+              const unit = st.attributes.unit_of_measurement;
+              value = unit ? `${st.state} ${unit}` : st.state;
+            }
+          }
+          return html`
+            <span class="valve-sensor ${this._sensorChipClass(st)} ${unavailable ? 'unavailable' : ''}"
+                  title="${st?.attributes?.friendly_name || id}"
+                  @click="${(e) => { e.stopPropagation(); this._fireMoreInfo(id); }}">
+              <ha-icon icon="${this._sensorChipIcon(st)}"></ha-icon>${value}
+            </span>`;
+        })}
       </div>
     `;
   }
@@ -2046,110 +2110,9 @@ export class GardenaSmartSystemCard extends LitElement {
     return unsafeCSS(styles);
   }
 
-  // ---------- Config form ----------
-  static getConfigForm() {
-    return {
-      schema: [
-        {
-          name: "title",
-          label: t(null, "config_title"),
-          selector: { text: {} },
-        },
-        {
-          name: "sections",
-          label: t(null, "config_sections"),
-          selector: {
-            select: {
-              multiple: true,
-              options: [
-                { value: "mower", label: t(null, "section_mower") },
-                { value: "valves", label: t(null, "section_valves") },
-                { value: "socket", label: t(null, "section_socket") },
-                { value: "history", label: t(null, "section_history") },
-              ],
-            },
-          },
-        },
-        {
-          name: "show_header",
-          label: t(null, "config_show_header"),
-          selector: { boolean: {} },
-          default: true,
-        },
-        {
-          name: "show_history",
-          label: t(null, "config_show_history"),
-          selector: { boolean: {} },
-          default: true,
-        },
-        {
-          name: "show_schedules",
-          label: t(null, "config_show_schedules"),
-          selector: { boolean: {} },
-          default: true,
-        },
-        {
-          name: "show_scheduler_schedules",
-          label: t(null, "config_show_scheduler_schedules"),
-          selector: {
-            select: {
-              options: [
-                { value: "mixed", label: t(null, "scheduler_mode_mixed") },
-                { value: "separate", label: t(null, "scheduler_mode_separate") },
-              ],
-            },
-          },
-        },
-        {
-          name: "default_duration",
-          label: t(null, "config_default_duration"),
-          selector: {
-            number: { min: 5, max: 120, step: 5, unit_of_measurement: "min", mode: "slider" },
-          },
-        },
-        {
-          name: "mower_entities",
-          label: t(null, "config_mower_entities"),
-          selector: {
-            entity: {
-              filter: ALL_DOMAINS.map(integration => ({ domain: "lawn_mower", integration })),
-              multiple: true,
-              reorder: true,
-            },
-          },
-        },
-        {
-          name: "valve_columns",
-          label: t(null, "config_valve_columns"),
-          selector: {
-            number: { min: 1, max: 3, step: 1, mode: "slider" },
-          },
-          default: 3,
-        },
-        {
-          name: "valve_entities",
-          label: t(null, "config_valve_entities"),
-          selector: {
-            entity: {
-              filter: ALL_DOMAINS.map(integration => ({ domain: "valve", integration })),
-              multiple: true,
-              reorder: true,
-            },
-          },
-        },
-        {
-          name: "socket_entities",
-          label: t(null, "config_socket_entities"),
-          selector: {
-            entity: {
-              filter: ALL_DOMAINS.map(integration => ({ domain: "switch", integration })),
-              multiple: true,
-              reorder: true,
-            },
-          },
-        },
-      ],
-    };
+  // ---------- Config editor ----------
+  static getConfigElement() {
+    return document.createElement('gardena-smart-system-card-editor');
   }
 
   static getStubConfig(hass) {

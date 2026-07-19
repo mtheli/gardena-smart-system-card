@@ -1,6 +1,6 @@
 {
   "name": "gardena_smart_system_card",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "Custom Lovelace card for the Gardena Smart System integration",
   "source": "src/index.js",
   "module": "dist/gardena_smart_system_card.js",
@@ -10,8 +10,8 @@
     }
   },
   "scripts": {
-    "watch": "parcel watch",
-    "build": "parcel build src/index.js --dist-dir dist --no-source-maps",
+    "watch": "node scripts/gen_build_info.mjs && parcel watch",
+    "build": "node scripts/gen_build_info.mjs && parcel build src/index.js --dist-dir dist --no-source-maps",
     "check:translations": "node scripts/check-translations.js"
   },
   "devDependencies": {

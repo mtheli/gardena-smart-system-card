@@ -6,6 +6,10 @@
   "config_backend_thecem": "hass-gardena-smart-system (thecem)",
   "config_backend_kayloehmann": "ha-gardena-smart-system (kayloehmann)",
 
+  "config_group_general": "General",
+  "config_valve_sensors": "Sensor assignment",
+  "config_valve_sensors_add": "Add assignment",
+  "config_group_schedules": "Schedules",
   "config_title": "Title (Optional)",
   "config_select_device": "Please select a Gardena Smart System device in the card configuration.",
   "config_no_device": "Please select a device.",

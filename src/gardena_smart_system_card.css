@@ -339,11 +339,17 @@ ha-card.single-section .valves-grid {
 .valve.active .valve-zone-label {
     color: var(--gs-green-300);
 }
+.valve-name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
 .valve-name {
     font-size: 13px;
     font-weight: 500;
     color: var(--primary-text-color);
-    margin-bottom: 4px;
     line-height: 1.3;
     cursor: pointer;
 }
@@ -376,6 +382,47 @@ ha-card.single-section .valves-grid {
     background: var(--gs-green-400);
     border-radius: 2px;
     transition: width 1s linear;
+}
+
+/* Per-valve sensor readings — right-aligned next to the zone name */
+.valve-sensors {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    margin-left: auto;
+    position: relative;
+}
+.valve-sensor {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    color: var(--gs-text-dim);
+    cursor: pointer;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.valve-sensor:hover {
+    color: var(--primary-text-color);
+}
+.valve-sensor ha-icon {
+    --mdc-icon-size: 13px;
+    color: var(--gs-text-dimmest);
+}
+.valve-sensor.vs-humidity ha-icon {
+    color: #2196F3;
+}
+.valve-sensor.vs-temperature ha-icon {
+    color: var(--gs-amber);
+}
+.valve-sensor.vs-illuminance ha-icon {
+    color: #F9A825;
+}
+.valve.active .valve-sensor {
+    color: var(--gs-green-400);
+}
+.valve-sensor.unavailable {
+    opacity: 0.5;
 }
 
 /* ── Toggle Switch ── */

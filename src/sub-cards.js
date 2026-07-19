@@ -15,7 +15,7 @@ const SUB_CARDS = [
     name: 'Gardena Smart System Card: Valves',
     description: 'Valve zones section from the Gardena Smart System card.',
     sections: ['valves'],
-    configFields: ['title', 'show_header', 'show_schedules', 'default_duration', 'valve_columns', 'valve_entities'],
+    configFields: ['title', 'show_header', 'show_schedules', 'default_duration', 'valve_columns', 'valve_entities', 'valve_sensors'],
     suggestDomains: ['valve'],
     size: 4,
   },
@@ -44,11 +44,10 @@ function createSubCardClass(def) {
       super.setConfig({ ...config, sections: def.sections });
     }
 
-    static getConfigForm() {
-      const fullForm = GardenaSmartSystemCard.getConfigForm();
-      return {
-        schema: fullForm.schema.filter(f => def.configFields.includes(f.name)),
-      };
+    static getConfigElement() {
+      const editor = document.createElement('gardena-smart-system-card-editor');
+      editor.fields = def.configFields;
+      return editor;
     }
 
     static getStubConfig(hass) {

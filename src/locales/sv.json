@@ -6,6 +6,10 @@
   "config_backend_thecem": "hass-gardena-smart-system (thecem)",
   "config_backend_kayloehmann": "ha-gardena-smart-system (kayloehmann)",
 
+  "config_group_general": "Allmänt",
+  "config_valve_sensors": "Sensortilldelning",
+  "config_valve_sensors_add": "Lägg till tilldelning",
+  "config_group_schedules": "Scheman",
   "config_title": "Titel (valfritt)",
   "config_select_device": "Välj en Gardena Smart System-enhet i kortets konfiguration.",
   "config_no_device": "Välj en enhet.",

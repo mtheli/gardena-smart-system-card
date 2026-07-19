@@ -1,3 +1,6 @@
 node_modules/
 .parcel-cache/
 .claude/
+
+# Generated at build time (build timestamp shown in console banner)
+src/build-info.js

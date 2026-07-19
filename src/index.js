@@ -1,8 +1,12 @@
-import { GardenaSmartSystemCard, CARD_VERSION, ALL_DOMAINS } from "./gardena_smart_system_card.js";
+import { GardenaSmartSystemCard, CARD_VERSION, BUILD_DATE, ALL_DOMAINS } from "./gardena_smart_system_card.js";
+import { GardenaSmartSystemCardEditor } from "./gardena_smart_system_card_editor.js";
 import { registerSubCards } from "./sub-cards.js";
 
 if (!customElements.get("gardena-smart-system-card")) {
   customElements.define("gardena-smart-system-card", GardenaSmartSystemCard);
+}
+if (!customElements.get("gardena-smart-system-card-editor")) {
+  customElements.define("gardena-smart-system-card-editor", GardenaSmartSystemCardEditor);
 }
 
 window.customCards = window.customCards || [];
@@ -28,7 +32,7 @@ window.customCards.push({
 registerSubCards();
 
 console.info(
-  `%c GARDENA-SMART-SYSTEM-CARD %c v${CARD_VERSION} `,
+  `%c GARDENA-SMART-SYSTEM-CARD %c v${CARD_VERSION} · ${BUILD_DATE} `,
   "color:#fff;background:#1c1c1c;padding:2px 6px;border-radius:4px 0 0 4px;font-weight:700",
   "color:#1c1c1c;background:#4caf50;padding:2px 6px;border-radius:0 4px 4px 0;font-weight:700",
 );

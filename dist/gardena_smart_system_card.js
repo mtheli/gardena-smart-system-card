@@ -625,19 +625,19 @@ const $528e4332d1e3099e$export$f5c524615a7708d6 = {
 
 
 var $4cf6573eae743e82$exports = {};
-$4cf6573eae743e82$exports = "ha-card {\n  font-family: var(--paper-font-body1_-_font-family, var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif));\n  color: var(--primary-text-color, #fff);\n  display: block;\n  overflow: visible;\n  container-type: inline-size;\n}\n\n:host {\n  --gs-text-dim: var(--secondary-text-color, #ffffff80);\n  --gs-text-dimmer: var(--disabled-text-color, #ffffff59);\n  --gs-text-dimmest: var(--disabled-text-color, #ffffff40);\n  --gs-border: var(--divider-color, #ffffff0a);\n  --gs-track: var(--divider-color, #ffffff0f);\n  --gs-card-bg: var(--ha-card-background, var(--card-background-color, #1c1c1c));\n  --gs-elevated: color-mix(in srgb, var(--primary-text-color, #fff) 6%, var(--gs-card-bg));\n  --gs-green-500: #00a86b;\n  --gs-green-400: #1dbf7b;\n  --gs-green-300: #5dcaa5;\n  --gs-green-200: #9fe1cb;\n  --gs-green-100: color-mix(in srgb, #1dbf7b 10%, var(--gs-card-bg));\n  --gs-green-600: #008756;\n  --gs-green-700: #006b44;\n  --gs-amber: #ef9f27;\n  --gs-amber-bg: color-mix(in srgb, #ef9f27 8%, var(--gs-card-bg));\n  --gs-red: #e53935;\n  --gs-red-bg: color-mix(in srgb, #e53935 8%, var(--gs-card-bg));\n  --gs-surface: color-mix(in srgb, var(--primary-text-color, #fff) 4%, var(--gs-card-bg));\n  --gs-surface-hover: color-mix(in srgb, var(--primary-text-color, #fff) 8%, var(--gs-card-bg));\n  --gs-radius-sm: 6px;\n  --gs-radius-md: 10px;\n  --gs-radius-lg: 14px;\n  --gs-radius-xl: 20px;\n}\n\n.card-header {\n  border-bottom: 1px solid var(--gs-border);\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 1.5rem;\n  display: flex;\n}\n\n.header-title {\n  color: var(--primary-text-color);\n  font-size: 16px;\n  font-weight: 600;\n  line-height: 1.2;\n}\n\n.header-right {\n  flex-shrink: 0;\n  align-items: center;\n  gap: 0;\n  margin-right: -8px;\n  display: flex;\n}\n\n.ws-icon, .header-menu {\n  cursor: pointer;\n  border-radius: 50%;\n  justify-content: center;\n  align-items: center;\n  width: 28px;\n  height: 28px;\n  transition: background .2s, opacity .2s;\n  display: inline-flex;\n}\n\n.ws-icon:hover, .header-menu:hover {\n  background: var(--gs-surface-hover);\n}\n\n.ws-icon svg, .header-menu svg {\n  width: 18px;\n  height: 18px;\n}\n\n.ws-icon.online svg {\n  fill: var(--gs-green-400);\n}\n\n.ws-icon.offline svg {\n  fill: var(--gs-text-dimmer);\n}\n\n.header-menu svg {\n  fill: var(--gs-text-dim);\n}\n\n.content {\n  padding: 0;\n}\n\nha-card.single-section .mower-section, ha-card.single-section .valves-section, ha-card.single-section .socket-section {\n  margin: 0;\n  padding: 0;\n}\n\nha-card.single-section .mower-card, ha-card.single-section .valve, ha-card.single-section .socket-card {\n  border-radius: 0 0 var(--ha-card-border-radius, 12px) var(--ha-card-border-radius, 12px);\n  border: none;\n}\n\nha-card.single-section .valve:before {\n  border-radius: 0 0 var(--ha-card-border-radius, 12px) var(--ha-card-border-radius, 12px);\n}\n\nha-card.single-section.no-header .mower-card, ha-card.single-section.no-header .valve, ha-card.single-section.no-header .socket-card {\n  border-radius: var(--ha-card-border-radius, 12px);\n}\n\nha-card.single-section .valves-grid {\n  gap: 0;\n}\n\n.knob-section {\n  justify-content: center;\n  align-items: center;\n  gap: 2rem;\n  padding: 1.5rem 1.5rem 1rem;\n  display: flex;\n}\n\n.knob-container {\n  cursor: pointer;\n  flex-shrink: 0;\n  width: 140px;\n  height: 140px;\n  position: relative;\n}\n\n.knob-track {\n  position: absolute;\n  inset: 0;\n}\n\n.knob-track svg {\n  width: 100%;\n  height: 100%;\n}\n\n.knob-arc-bg {\n  fill: none;\n  stroke: var(--gs-surface);\n  stroke-width: 8px;\n  stroke-linecap: round;\n}\n\n.knob-arc-fill {\n  fill: none;\n  stroke: var(--gs-green-400);\n  stroke-width: 8px;\n  stroke-linecap: round;\n  filter: drop-shadow(0 0 6px #1dbf7b40);\n  transition: stroke-dashoffset .15s ease-out;\n}\n\n.knob-handle {\n  background: var(--gs-card-bg);\n  border: 2px solid var(--gs-green-400);\n  cursor: grab;\n  z-index: 2;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  transition: box-shadow .2s;\n  position: absolute;\n  transform: translate(-50%, -50%);\n  box-shadow: 0 2px 8px #0000001f, 0 1px 2px #00000014;\n}\n\n.knob-handle:active {\n  cursor: grabbing;\n  box-shadow: 0 0 0 6px #1dbf7b26, 0 2px 8px #0000001f;\n}\n\n.knob-handle:after {\n  content: \"\";\n  background: var(--gs-green-400);\n  border-radius: 50%;\n  width: 8px;\n  height: 8px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.knob-center {\n  text-align: center;\n  pointer-events: none;\n  z-index: 1;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.knob-value {\n  color: var(--primary-text-color);\n  font-size: 28px;\n  font-weight: 500;\n  line-height: 1;\n}\n\n.knob-unit {\n  color: var(--gs-text-dim);\n  letter-spacing: .5px;\n  margin-top: 2px;\n  font-size: 12px;\n}\n\n.knob-info {\n  flex-direction: column;\n  gap: 6px;\n  display: flex;\n}\n\n.knob-preset {\n  border-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-border);\n  background: var(--gs-card-bg);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  gap: 8px;\n  padding: 7px 14px;\n  font-family: inherit;\n  font-size: 13px;\n  font-weight: 400;\n  transition: all .2s;\n  display: flex;\n}\n\n.knob-preset:hover {\n  background: var(--gs-surface);\n  color: var(--primary-text-color);\n  border-color: var(--gs-surface-hover);\n}\n\n.knob-preset.active {\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  border-color: var(--gs-green-300);\n}\n\n.knob-preset-dot {\n  background: var(--gs-text-dimmest);\n  border-radius: 50%;\n  flex-shrink: 0;\n  width: 5px;\n  height: 5px;\n  transition: background .2s;\n}\n\n.knob-preset.active .knob-preset-dot {\n  background: var(--gs-green-500);\n}\n\n.section-label {\n  color: var(--gs-text-dimmest);\n  text-transform: uppercase;\n  letter-spacing: .8px;\n  align-items: center;\n  gap: 8px;\n  margin-bottom: 10px;\n  font-size: 11px;\n  font-weight: 500;\n  display: flex;\n}\n\n.section-status {\n  color: var(--gs-green-400);\n  cursor: pointer;\n  align-items: center;\n  margin-left: auto;\n  display: inline-flex;\n}\n\n.section-status svg {\n  fill: currentColor;\n  width: 14px;\n  height: 14px;\n}\n\n.section-status.offline {\n  color: var(--gs-text-dimmer);\n}\n\n.valves-section {\n  padding: 0 1.5rem 1.5rem;\n}\n\n.valves-grid {\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 8px;\n  display: grid;\n}\n\n.valves-grid.count-1 {\n  grid-template-columns: 1fr;\n}\n\n.valves-grid.count-2 {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n\n.valves-grid:not(.count-1):not(.count-2) .valve {\n  padding: 8px;\n}\n\n.valve {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  padding: 12px;\n  transition: all .3s cubic-bezier(.16, 1, .3, 1);\n  animation: .4s cubic-bezier(.16, 1, .3, 1) both valveIn;\n  position: relative;\n  overflow: visible;\n  container-type: inline-size;\n}\n\n.valve:before {\n  content: \"\";\n  pointer-events: none;\n  border-radius: inherit;\n  background: linear-gradient(to top, #1dbf7b14, #0000);\n  height: 0%;\n  transition: height .6s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n}\n\n.valve.active {\n  background: var(--gs-green-100);\n  border-color: var(--gs-green-300);\n}\n\n.valve.active:before {\n  height: 100%;\n}\n\n.valve-header {\n  align-items: center;\n  gap: 6px;\n  margin-bottom: 8px;\n  display: flex;\n}\n\n.valve-zone-label {\n  color: var(--gs-text-dimmest);\n  letter-spacing: .6px;\n  text-transform: uppercase;\n  white-space: nowrap;\n  font-size: 10px;\n  font-weight: 600;\n}\n\n.valve.active .valve-zone-label {\n  color: var(--gs-green-300);\n}\n\n.valve-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  margin-bottom: 4px;\n  font-size: 13px;\n  font-weight: 500;\n  line-height: 1.3;\n}\n\n.valve-status {\n  color: var(--gs-text-dimmest);\n  align-items: center;\n  gap: 4px;\n  min-height: 16px;\n  font-size: 11px;\n  display: flex;\n}\n\n.valve.active .valve-status {\n  color: var(--gs-green-400);\n}\n\n.valve-progress {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 6%, transparent);\n  border-radius: 2px;\n  height: 3px;\n  margin-top: 8px;\n  display: none;\n  overflow: hidden;\n}\n\n.valve.active .valve-progress {\n  display: block;\n}\n\n.valve-progress-fill {\n  background: var(--gs-green-400);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.toggle {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));\n  cursor: pointer;\n  appearance: none;\n  border: none;\n  border-radius: 10px;\n  outline: none;\n  flex-shrink: 0;\n  width: 36px;\n  height: 20px;\n  padding: 0;\n  transition: background .25s;\n  position: relative;\n}\n\n.toggle:after {\n  content: \"\";\n  background: #fff;\n  border-radius: 50%;\n  width: 16px;\n  height: 16px;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  top: 2px;\n  left: 2px;\n  box-shadow: 0 1px 3px #00000026;\n}\n\n.toggle.on {\n  background: var(--gs-green-400);\n}\n\n.toggle.on:after {\n  transform: translateX(16px);\n}\n\n.toggle.socket-toggle-on {\n  background: var(--gs-amber);\n}\n\n.toggle.disabled, .toggle:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.pill {\n  background: var(--gs-card-bg);\n  border: 1px solid color-mix(in srgb, var(--primary-text-color, #fff) 15%, transparent);\n  border-radius: 22px;\n  flex-shrink: 0;\n  align-items: center;\n  margin-left: auto;\n  padding: 3px;\n  transition: all .35s;\n  display: inline-flex;\n}\n\n.valve.active .pill {\n  background: color-mix(in srgb, #1dbf7b 6%, var(--gs-card-bg));\n  border-color: #1dbf7b33;\n}\n\n.pill-dur-wrap {\n  position: relative;\n}\n\n.pill-dur {\n  height: 22px;\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  font-size: 11px;\n  font-weight: 500;\n  font-family: var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif);\n  background: none;\n  border: none;\n  border-radius: 11px;\n  align-items: center;\n  gap: 1px;\n  padding: 0 4px 0 8px;\n  transition: all .2s;\n  display: flex;\n}\n\n.pill-dur:hover {\n  background: var(--gs-surface);\n}\n\n.pill-dur.locked {\n  cursor: default;\n  opacity: .5;\n}\n\n.pill-dur.locked:hover {\n  background: none;\n}\n\n.valve.active .pill-dur {\n  color: var(--gs-green-700);\n}\n\n.pill-dur svg {\n  fill: currentColor;\n  opacity: .4;\n  width: 12px;\n  height: 12px;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n}\n\n.pill-dur.open svg {\n  opacity: .7;\n  transform: rotate(180deg);\n}\n\n.pill-tog {\n  cursor: pointer;\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));\n  border-radius: 11px;\n  flex-shrink: 0;\n  width: 38px;\n  height: 22px;\n  transition: background .3s cubic-bezier(.16, 1, .3, 1);\n  position: relative;\n}\n\n.pill-tog.on {\n  background: var(--gs-green-400);\n}\n\n.pill-tog.amber {\n  background: var(--gs-amber);\n}\n\n.pill-tog:after {\n  content: \"\";\n  background: #fff;\n  border-radius: 50%;\n  width: 16px;\n  height: 16px;\n  transition: transform .3s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  top: 3px;\n  left: 3px;\n  box-shadow: 0 1px 3px #00000026;\n}\n\n.pill-tog.on:after {\n  transform: translateX(16px);\n}\n\n.pill-tog.disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.pill-pop {\n  background: var(--gs-card-bg);\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 12%, transparent);\n  z-index: 100;\n  border-radius: 12px;\n  flex-wrap: wrap;\n  gap: 4px;\n  width: max-content;\n  max-width: 210px;\n  padding: 6px;\n  display: none;\n  position: absolute;\n  top: calc(100% + 6px);\n  right: 0;\n  box-shadow: 0 4px 12px #0000001f;\n}\n\n.pill-pop.show {\n  display: flex;\n}\n\n.valve.pill-open, .mower-card.pill-open, .socket-card.pill-open {\n  z-index: 50;\n}\n\n.pop-chip {\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  background: none;\n  border-radius: 10px;\n  padding: 5px 8px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 500;\n  line-height: 1;\n  transition: all .15s;\n}\n\n.pop-chip:hover {\n  background: var(--gs-surface);\n  border-color: color-mix(in srgb, var(--primary-text-color, #fff) 14%, transparent);\n}\n\n.pop-chip.sel {\n  background: var(--gs-green-100);\n  color: var(--gs-green-600);\n  border-color: var(--gs-green-300);\n}\n\n.pop-custom {\n  border-top: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  align-items: center;\n  gap: 4px;\n  width: 100%;\n  margin-top: 2px;\n  padding-top: 6px;\n  display: flex;\n}\n\n.pop-input {\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  min-width: 0;\n  height: 26px;\n  color: var(--primary-text-color);\n  background: var(--gs-card-bg);\n  -moz-appearance: textfield;\n  border-radius: 8px;\n  outline: none;\n  flex: 1;\n  padding: 0 8px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 500;\n  line-height: 1;\n}\n\n.pop-input::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\n\n.pop-input::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\n\n.pop-input::placeholder {\n  color: var(--gs-text-dim);\n}\n\n.pop-input:focus {\n  border-color: var(--gs-green-300);\n}\n\n.pop-input-unit {\n  color: var(--gs-text-dim);\n  flex-shrink: 0;\n  margin-left: -2px;\n  font-family: inherit;\n  font-size: 9px;\n}\n\n.pop-ok {\n  background: var(--gs-green-400);\n  color: #fff;\n  cursor: pointer;\n  letter-spacing: .3px;\n  border: none;\n  border-radius: 8px;\n  flex-shrink: 0;\n  height: 26px;\n  padding: 0 10px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 600;\n  transition: all .15s;\n}\n\n.pop-ok:hover {\n  background: var(--gs-green-500);\n}\n\n.pop-ok:active {\n  transform: scale(.95);\n}\n\n.valve.offline, .socket-card.offline {\n  opacity: .5;\n}\n\n.water-icon {\n  width: 8px;\n  height: 10px;\n  display: inline-block;\n  position: relative;\n}\n\n.water-icon:before {\n  content: \"\";\n  background: var(--gs-green-400);\n  border-radius: 50% 50% 50% 0;\n  width: 8px;\n  height: 8px;\n  animation: 1.5s ease-in-out infinite dropPulse;\n  position: absolute;\n  bottom: 0;\n  transform: rotate(-45deg);\n}\n\n.countdown-text {\n  animation: 2s ease-in-out infinite countPulse;\n}\n\n.mower-section {\n  margin-top: .25rem;\n  padding: 0 1.5rem 1rem;\n}\n\n.mower-card {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  padding: 14px;\n  transition: all .3s cubic-bezier(.16, 1, .3, 1);\n  animation: .4s cubic-bezier(.16, 1, .3, 1) both valveIn;\n  position: relative;\n}\n\n.mower-card.active {\n  background: var(--gs-green-100);\n  border-color: var(--gs-green-300);\n}\n\n.mower-card.paused {\n  background: var(--gs-amber-bg);\n  border-color: #ef9f274d;\n}\n\n.mower-card.error {\n  background: var(--gs-red-bg);\n  border-color: #e539354d;\n}\n\n.mower-card.offline {\n  opacity: .5;\n}\n\n.mower-header {\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 12px;\n  display: flex;\n}\n\n.mower-icon {\n  border-radius: var(--gs-radius-sm);\n  background: var(--gs-surface-hover);\n  width: 36px;\n  height: 36px;\n  color: var(--gs-text-dimmest);\n  flex-shrink: 0;\n  justify-content: center;\n  align-items: center;\n  transition: all .3s;\n  display: flex;\n  position: relative;\n  overflow: hidden;\n}\n\n.mower-card.active .mower-icon {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.mower-card.paused .mower-icon {\n  background: color-mix(in srgb, #ef9f27 15%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.mower-card.error .mower-icon {\n  background: color-mix(in srgb, #e53935 15%, var(--gs-card-bg));\n  color: var(--gs-red);\n}\n\n.mower-drive {\n  z-index: 1;\n  align-items: center;\n  display: inline-flex;\n  position: relative;\n}\n\n.mower-icon svg {\n  fill: currentColor;\n  width: 20px;\n  height: 20px;\n}\n\n.mower-icon.mowing .mower-drive {\n  animation: 3s linear infinite mowerDrive;\n}\n\n.grass-particles {\n  pointer-events: none;\n  width: 4px;\n  height: 4px;\n  position: absolute;\n  bottom: 2px;\n  left: -2px;\n}\n\n.grass-particles:before, .grass-particles:after {\n  content: \"\";\n  border-radius: 50%;\n  position: absolute;\n}\n\n.grass-particles:before {\n  background: #66bb6a;\n  width: 3px;\n  height: 3px;\n  animation: .8s ease-out infinite particleA;\n}\n\n.grass-particles:after {\n  background: #43a047;\n  width: 2px;\n  height: 2px;\n  animation: .8s ease-out .2s infinite particleB;\n}\n\n.mower-info {\n  flex: 1;\n  min-width: 0;\n}\n\n.mower-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.mower-activity {\n  color: var(--gs-text-dimmest);\n  align-items: center;\n  gap: 6px;\n  margin-top: 1px;\n  font-size: 11px;\n  transition: color .3s;\n  display: flex;\n}\n\n.mower-card.active .mower-activity {\n  color: var(--gs-green-200);\n}\n\n.mower-card.paused .mower-activity {\n  color: var(--gs-amber);\n}\n\n.mower-card.error .mower-activity {\n  color: var(--gs-red);\n}\n\n.mow-dot {\n  background: var(--gs-green-400);\n  border-radius: 50%;\n  width: 6px;\n  height: 6px;\n  animation: 1s ease-in-out infinite mowPulse;\n  display: inline-block;\n}\n\n.mower-battery-chip {\n  background: var(--gs-surface-hover);\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n  border-radius: 12px;\n  flex-shrink: 0;\n  align-items: center;\n  gap: 4px;\n  padding: 3px 8px;\n  font-size: 11px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.mower-battery-chip.low {\n  background: color-mix(in srgb, #e53935 12%, var(--gs-card-bg));\n  color: var(--gs-red);\n}\n\n.mower-battery-chip.replace {\n  background: color-mix(in srgb, #e53935 18%, var(--gs-card-bg));\n  color: var(--gs-red);\n  animation: 2s ease-in-out infinite battery-replace-pulse;\n}\n\n@keyframes battery-replace-pulse {\n  0%, 100% {\n    opacity: 1;\n  }\n\n  50% {\n    opacity: .5;\n  }\n}\n\n.mower-battery-chip.charging {\n  background: color-mix(in srgb, #1dbf7b 12%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.mower-battery-chip svg {\n  flex-shrink: 0;\n}\n\n.section-signal {\n  color: var(--gs-green-400);\n  cursor: pointer;\n  align-items: center;\n  margin-left: auto;\n  display: inline-flex;\n}\n\n.section-signal ha-icon {\n  --mdc-icon-size: 18px;\n  line-height: 0;\n}\n\n.card-header .section-signal ha-icon {\n  --mdc-icon-size: 16px;\n}\n\n.mower-progress {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  border-radius: 2px;\n  height: 4px;\n  margin-bottom: 12px;\n  overflow: hidden;\n}\n\n.mower-progress-fill {\n  background: var(--gs-green-400);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.mower-remaining {\n  font-variant-numeric: tabular-nums;\n  opacity: .8;\n}\n\n.mower-error-banner {\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-red);\n  background: #e539351f;\n  margin-bottom: 12px;\n  padding: 8px 10px;\n  font-size: 11px;\n  line-height: 1.4;\n}\n\n.mower-actions {\n  flex-wrap: wrap;\n  gap: 6px;\n  display: flex;\n}\n\n.mower-btn {\n  border-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-border);\n  background: var(--gs-card-bg);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  padding: 7px 14px;\n  font-family: inherit;\n  font-size: 12px;\n  font-weight: 500;\n  transition: all .2s;\n  display: inline-flex;\n}\n\n.mower-btn:hover {\n  background: var(--gs-surface);\n  color: var(--primary-text-color);\n  border-color: var(--gs-surface-hover);\n}\n\n.mower-btn.primary {\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  border-color: var(--gs-green-300);\n}\n\n.mower-btn.primary:hover {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n}\n\n.mower-btn:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.mower-btn-wrap {\n  align-items: stretch;\n  display: inline-flex;\n  position: relative;\n}\n\n.mower-btn-wrap .mower-btn {\n  border-right: none;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.mower-dur-wrap {\n  position: relative;\n}\n\n.mower-dur-btn {\n  border-top-right-radius: var(--gs-radius-md);\n  border-bottom-right-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-green-300);\n  border-left: .5px solid color-mix(in srgb, var(--gs-green-300) 40%, transparent);\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  gap: 2px;\n  padding: 7px 8px;\n  font-family: inherit;\n  font-size: 11px;\n  font-weight: 500;\n  transition: all .2s;\n  display: inline-flex;\n}\n\n.mower-dur-btn:hover {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n}\n\n.mower-dur-btn:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.mower-dur-btn svg {\n  opacity: .5;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n}\n\n.mower-dur-btn.open svg {\n  opacity: .8;\n  transform: rotate(180deg);\n}\n\n.socket-section {\n  margin-top: .25rem;\n  padding: 0 1.5rem 1rem;\n}\n\n.socket-card {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  flex-wrap: wrap;\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 14px;\n  transition: all .3s;\n  display: flex;\n}\n\n.socket-card.active {\n  background: var(--gs-amber-bg);\n  border-color: #ef9f274d;\n}\n\n.socket-left {\n  align-items: center;\n  gap: 12px;\n  min-width: 0;\n  display: flex;\n}\n\n.socket-icon {\n  border-radius: var(--gs-radius-sm);\n  background: var(--gs-surface-hover);\n  width: 36px;\n  height: 36px;\n  color: var(--gs-text-dimmest);\n  flex-shrink: 0;\n  justify-content: center;\n  align-items: center;\n  transition: all .3s;\n  display: flex;\n}\n\n.socket-card.active .socket-icon {\n  background: color-mix(in srgb, #ef9f27 15%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.socket-info {\n  min-width: 0;\n}\n\n.socket-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.socket-status {\n  color: var(--gs-text-dimmest);\n  margin-top: 1px;\n  font-size: 11px;\n  transition: color .3s;\n}\n\n.socket-card.active .socket-status {\n  color: var(--gs-amber);\n}\n\n.socket-right {\n  flex-shrink: 0;\n  align-items: center;\n  gap: 12px;\n  display: flex;\n}\n\n.socket-timer {\n  font-size: 12px;\n  font-family: var(--gs-font-mono, \"SF Mono\", \"Cascadia Code\", \"Consolas\", monospace);\n  color: var(--gs-text-dimmest);\n  text-align: right;\n  white-space: nowrap;\n}\n\n.socket-progress-wrap {\n  width: 100%;\n  margin-top: 8px;\n  padding: 0;\n}\n\n.socket-progress-track {\n  background: color-mix(in srgb, var(--primary-text-color, #000) 6%, transparent);\n  border-radius: 2px;\n  height: 3px;\n  overflow: hidden;\n}\n\n.socket-progress-fill {\n  background: var(--gs-amber);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.unavailable {\n  text-align: center;\n  color: var(--gs-text-dim);\n  padding: 20px;\n  font-size: 14px;\n}\n\n.version-warning {\n  background: color-mix(in srgb, #ef9f27 10%, var(--gs-card-bg));\n  border-radius: var(--gs-radius-md);\n  text-align: left;\n  color: var(--primary-text-color);\n  border: .5px solid #ef9f274d;\n  padding: 16px;\n  font-size: 13px;\n  line-height: 1.5;\n}\n\n.patch-warning {\n  background: color-mix(in srgb, #ef9f27 8%, var(--gs-card-bg));\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-text-dim);\n  border: .5px solid #ef9f2740;\n  margin: 0 1.5rem 8px;\n  padding: 10px 14px;\n  font-size: 12px;\n  line-height: 1.4;\n}\n\n.patch-warning strong {\n  color: var(--gs-amber);\n  margin-bottom: 2px;\n  font-size: 12px;\n  display: block;\n}\n\n.schedule-missing {\n  background: color-mix(in srgb, var(--info-color, #039be5) 8%, var(--gs-card-bg));\n  border: .5px solid color-mix(in srgb, var(--info-color, #039be5) 25%, transparent);\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-text-dim);\n  margin: 0 1.5rem 8px;\n  padding: 10px 14px;\n  font-size: 12px;\n  line-height: 1.4;\n}\n\n.schedule-missing strong {\n  color: var(--info-color, #039be5);\n  margin-bottom: 2px;\n  font-size: 12px;\n  display: block;\n}\n\n.history-section {\n  border-top: .5px solid var(--gs-border);\n  margin-top: 12px;\n  padding: 4px 1.5rem 1rem;\n}\n\n.history-header {\n  justify-content: space-between;\n  align-items: baseline;\n  margin-bottom: 14px;\n  display: flex;\n}\n\n.history-period {\n  color: var(--gs-text-dim);\n  font-size: 12px;\n}\n\n.history-total {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  font-size: 12px;\n}\n\n.chart-container {\n  gap: 0;\n  display: flex;\n}\n\n.chart-y-axis {\n  flex-shrink: 0;\n  height: 124px;\n  margin-bottom: 26px;\n  padding-right: 10px;\n  position: relative;\n}\n\n.chart-y-label {\n  color: var(--gs-text-dimmest);\n  font-variant-numeric: tabular-nums;\n  font-size: 10px;\n  line-height: 1;\n  position: absolute;\n  left: 0;\n  transform: translateY(-50%);\n}\n\n.chart-main {\n  flex: 1;\n  min-width: 0;\n  height: 124px;\n  margin-bottom: 26px;\n  position: relative;\n}\n\n.chart-gridlines {\n  pointer-events: none;\n  flex-direction: column;\n  justify-content: space-between;\n  display: flex;\n  position: absolute;\n  inset: 0;\n}\n\n.chart-gridline {\n  border-top: .5px solid var(--gs-border);\n  height: 0;\n}\n\n.chart-gridline:last-child {\n  border-top: .5px solid color-mix(in srgb, var(--primary-text-color, #000) 14%, transparent);\n}\n\n.chart-bars {\n  justify-content: space-around;\n  align-items: stretch;\n  padding: 0 4px;\n  display: flex;\n  position: absolute;\n  inset: 0;\n}\n\n.chart-bar-group {\n  flex-direction: column;\n  flex: 1;\n  justify-content: flex-end;\n  align-items: center;\n  max-width: 64px;\n  padding: 0 6px;\n  display: flex;\n  position: relative;\n}\n\n.chart-stack {\n  border-radius: 3px 3px 0 0;\n  flex-direction: column-reverse;\n  width: 100%;\n  display: flex;\n  overflow: hidden;\n}\n\n.chart-segment {\n  width: 100%;\n  min-height: 0;\n}\n\n.chart-segment + .chart-segment {\n  border-bottom: .5px solid #ffffff4d;\n}\n\n.chart-day-label {\n  color: var(--gs-text-dim);\n  white-space: nowrap;\n  margin-top: 4px;\n  font-size: 11px;\n  position: absolute;\n  top: 100%;\n}\n\n.chart-bar-group.today .chart-day-label {\n  color: var(--primary-text-color);\n  font-weight: 500;\n}\n\n.chart-bar-group:hover .chart-stack {\n  filter: brightness(1.08);\n}\n\n.chart-tooltip {\n  background: var(--gs-card-bg, var(--card-background-color, #fff));\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #000) 14%, transparent);\n  border-radius: var(--gs-radius-md);\n  color: var(--primary-text-color);\n  white-space: nowrap;\n  z-index: 10;\n  pointer-events: none;\n  padding: 8px 12px;\n  font-size: 11px;\n  display: none;\n  position: absolute;\n  bottom: calc(100% + 8px);\n  left: 50%;\n  transform: translateX(-50%);\n  box-shadow: 0 4px 16px #0000001f;\n}\n\n.chart-bar-group:hover .chart-tooltip {\n  display: block;\n}\n\n.tooltip-title {\n  border-bottom: .5px solid var(--gs-border);\n  margin-bottom: 4px;\n  padding-bottom: 4px;\n  font-size: 12px;\n  font-weight: 500;\n}\n\n.tooltip-line {\n  align-items: center;\n  gap: 6px;\n  padding: 2px 0;\n  display: flex;\n}\n\n.tooltip-dot {\n  border-radius: 2px;\n  flex-shrink: 0;\n  width: 6px;\n  height: 6px;\n}\n\n.tooltip-mins {\n  font-variant-numeric: tabular-nums;\n  margin-left: auto;\n  padding-left: 12px;\n  font-weight: 500;\n}\n\n.tooltip-total {\n  border-top: .5px solid var(--gs-border);\n  justify-content: space-between;\n  margin-top: 4px;\n  padding-top: 4px;\n  font-weight: 500;\n  display: flex;\n}\n\n.chart-legend {\n  flex-wrap: wrap;\n  gap: 4px 14px;\n  margin-top: 12px;\n  display: flex;\n}\n\n.legend-item {\n  color: var(--gs-text-dim);\n  align-items: center;\n  gap: 5px;\n  font-size: 11px;\n  display: flex;\n}\n\n.legend-dot {\n  border-radius: 2px;\n  flex-shrink: 0;\n  width: 8px;\n  height: 8px;\n}\n\n.scheduler-label {\n  text-transform: uppercase;\n  letter-spacing: .5px;\n  color: var(--gs-text-dimmer);\n  margin-top: 6px;\n  margin-bottom: 2px;\n  font-size: 9px;\n  font-weight: 600;\n}\n\n.schedule-strip {\n  border-top: 1px solid var(--gs-border);\n  flex-direction: column;\n  gap: 6px;\n  margin-top: 10px;\n  padding-top: 10px;\n  display: flex;\n}\n\n.schedule-row {\n  align-items: center;\n  gap: 8px;\n  display: flex;\n}\n\n.schedule-time {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  align-items: center;\n  gap: 4px;\n  min-width: 80px;\n  font-size: 11px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.schedule-icon {\n  fill: currentColor;\n  opacity: .6;\n  flex-shrink: 0;\n  width: 12px;\n  height: 12px;\n}\n\n.schedule-days {\n  gap: 3px;\n  display: flex;\n}\n\n.schedule-day {\n  text-transform: uppercase;\n  letter-spacing: .3px;\n  border-radius: 4px;\n  justify-content: center;\n  align-items: center;\n  width: 20px;\n  height: 18px;\n  font-size: 9px;\n  font-weight: 600;\n  display: flex;\n}\n\n.schedule-day.active {\n  background: color-mix(in srgb, var(--gs-green-400) 20%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.schedule-day.inactive {\n  background: var(--gs-surface);\n  color: var(--gs-text-dimmest);\n}\n\n.schedule-day.paused {\n  background: color-mix(in srgb, var(--gs-amber) 12%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.schedule-row.now-active, .valve-schedule-row.now-active, .socket-schedule-mini.now-active {\n  background: color-mix(in srgb, var(--gs-green-400) 10%, transparent);\n  border-radius: var(--gs-radius-sm);\n  padding: 4px 6px;\n}\n\n.schedule-row.now-active .schedule-time, .valve-schedule-row.now-active .valve-schedule-time, .socket-schedule-mini.now-active .schedule-time {\n  color: var(--gs-green-400);\n}\n\n.schedule-row.now-active .schedule-icon, .valve-schedule-row.now-active .schedule-icon, .socket-schedule-mini.now-active .schedule-icon {\n  opacity: 1;\n}\n\n.schedule-icon-wrap {\n  flex-shrink: 0;\n  display: inline-flex;\n  position: relative;\n}\n\n.schedule-paused .schedule-icon {\n  color: var(--gs-amber);\n  opacity: .8;\n}\n\n.schedule-paused .schedule-icon-wrap:after {\n  content: \"\";\n  background: linear-gradient(to top right,\n        transparent calc(50% - .5px),\n        var(--gs-amber) calc(50% - .5px),\n        var(--gs-amber) calc(50% + .5px),\n        transparent calc(50% + .5px));\n  opacity: .7;\n  pointer-events: none;\n  width: 14px;\n  height: 14px;\n  position: absolute;\n  top: -1px;\n  left: -1px;\n}\n\n.schedule-pause-badge {\n  color: var(--gs-amber);\n  background: color-mix(in srgb, var(--gs-amber) 10%, var(--gs-card-bg));\n  white-space: nowrap;\n  border-radius: 4px;\n  align-items: center;\n  gap: 3px;\n  margin-left: auto;\n  padding: 2px 7px;\n  font-size: 10px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.valve-schedule-mini {\n  border-top: 1px solid var(--gs-border);\n  flex-direction: column;\n  gap: 4px;\n  margin-top: 8px;\n  padding-top: 8px;\n  display: flex;\n}\n\n.valve-schedule-row {\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 6px;\n  display: flex;\n}\n\n.valve-schedule-time {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  text-align: center;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  font-size: 11px;\n  display: inline-flex;\n}\n\n.valve-schedule-mini .schedule-days {\n  justify-content: center;\n  gap: 3px;\n}\n\n.valve-schedule-mini .schedule-day {\n  border-radius: 4px;\n  width: 20px;\n  height: 18px;\n  font-size: 9px;\n}\n\n@container (width <= 120px) {\n  .valve-header {\n    flex-wrap: wrap;\n  }\n\n  .pill {\n    border-radius: 14px;\n    flex-direction: column;\n    gap: 3px;\n    padding: 3px;\n  }\n}\n\n@container (width <= 150px) {\n  .valve-header {\n    margin-bottom: 6px;\n  }\n\n  .valve-name {\n    font-size: 12px;\n  }\n\n  .valve-schedule-time {\n    font-size: 10px;\n  }\n\n  .valve-schedule-mini .schedule-day {\n    border-radius: 3px;\n    width: 16px;\n    height: 14px;\n    font-size: 8px;\n  }\n\n  .valve-schedule-row {\n    flex-flow: row;\n    justify-content: center;\n    gap: 3px;\n  }\n\n  .valve-schedule-time {\n    white-space: nowrap;\n  }\n\n  .valve-schedule-mini .schedule-days {\n    gap: 1px;\n  }\n\n  .valve-schedule-mini .schedule-day {\n    border-radius: 50%;\n    width: 5px;\n    height: 5px;\n    padding: 0;\n    font-size: 0;\n    overflow: hidden;\n  }\n\n  .valve-schedule-mini .schedule-day.active {\n    background: var(--gs-green-400);\n  }\n\n  .valve-schedule-mini .schedule-day.inactive {\n    background: var(--gs-track);\n  }\n\n  .valve-schedule-mini .schedule-day.paused {\n    background: var(--gs-amber);\n  }\n}\n\n.socket-schedules-wrap {\n  border-top: 1px solid var(--gs-border);\n  margin-top: 8px;\n  padding-top: 8px;\n}\n\n.socket-schedule-mini {\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  margin-top: 8px;\n  display: flex;\n}\n\n.socket-schedule-mini:first-child, .socket-schedules-wrap > .scheduler-label:first-child + .socket-schedule-mini, .socket-schedules-wrap > .socket-schedule-mini:first-child {\n  margin-top: 0;\n}\n\n.socket-schedule-mini .schedule-time {\n  min-width: auto;\n}\n\n.socket-schedule-mini .schedule-days {\n  flex-wrap: nowrap;\n}\n\n@keyframes valveIn {\n  from {\n    opacity: 0;\n    transform: translateY(8px);\n  }\n\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n\n@keyframes dropPulse {\n  0%, 100% {\n    opacity: .6;\n    transform: rotate(-45deg) scale(1);\n  }\n\n  50% {\n    opacity: 1;\n    transform: rotate(-45deg) scale(1.15);\n  }\n}\n\n@keyframes countPulse {\n  0%, 100% {\n    opacity: 1;\n  }\n\n  50% {\n    opacity: .55;\n  }\n}\n\n@keyframes mowerDrive {\n  0% {\n    transform: translateX(-130%);\n  }\n\n  100% {\n    transform: translateX(130%);\n  }\n}\n\n@keyframes particleA {\n  0% {\n    opacity: .9;\n    transform: translate(0) scale(1);\n  }\n\n  100% {\n    opacity: 0;\n    transform: translate(-8px, -10px) scale(.3);\n  }\n}\n\n@keyframes particleB {\n  0% {\n    opacity: .8;\n    transform: translate(0) scale(1);\n  }\n\n  100% {\n    opacity: 0;\n    transform: translate(-5px, -12px) scale(.2);\n  }\n}\n\n@keyframes mowPulse {\n  0%, 100% {\n    opacity: 1;\n    transform: scale(1);\n  }\n\n  50% {\n    opacity: .5;\n    transform: scale(1.3);\n  }\n}\n\n@container (width <= 400px) {\n  .valves-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  .valves-grid.count-1 {\n    grid-template-columns: 1fr;\n  }\n\n  .knob-section {\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .knob-info {\n    flex-flow: wrap;\n    justify-content: center;\n  }\n\n  .mower-actions {\n    flex-direction: column;\n  }\n\n  .mower-btn {\n    justify-content: center;\n  }\n}\n\n@container (width <= 300px) {\n  .mower-section, .valve-section, .socket-section {\n    padding-left: 1rem;\n    padding-right: 1rem;\n  }\n\n  .card-header {\n    padding: 12px 1rem;\n  }\n\n  .valves-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .mower-header {\n    gap: 8px;\n  }\n\n  .mower-name {\n    font-size: 12px;\n  }\n\n  .mower-activity {\n    flex-wrap: wrap;\n    font-size: 10px;\n  }\n\n  .mower-battery-chip {\n    padding: 2px 6px;\n    font-size: 10px;\n  }\n\n  .mower-btn {\n    padding: 6px 10px;\n    font-size: 11px;\n  }\n\n  .schedule-row {\n    flex-wrap: wrap;\n    gap: 4px;\n  }\n\n  .schedule-time {\n    min-width: unset;\n    font-size: 10px;\n  }\n\n  .schedule-day {\n    width: 16px;\n    height: 14px;\n    font-size: 8px;\n  }\n\n  .schedule-days {\n    gap: 2px;\n  }\n\n  .socket-schedule-mini {\n    flex-wrap: wrap;\n    gap: 4px;\n  }\n}\n";
+$4cf6573eae743e82$exports = "ha-card {\n  font-family: var(--paper-font-body1_-_font-family, var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif));\n  color: var(--primary-text-color, #fff);\n  display: block;\n  overflow: visible;\n  container-type: inline-size;\n}\n\n:host {\n  --gs-text-dim: var(--secondary-text-color, #ffffff80);\n  --gs-text-dimmer: var(--disabled-text-color, #ffffff59);\n  --gs-text-dimmest: var(--disabled-text-color, #ffffff40);\n  --gs-border: var(--divider-color, #ffffff0a);\n  --gs-track: var(--divider-color, #ffffff0f);\n  --gs-card-bg: var(--ha-card-background, var(--card-background-color, #1c1c1c));\n  --gs-elevated: color-mix(in srgb, var(--primary-text-color, #fff) 6%, var(--gs-card-bg));\n  --gs-green-500: #00a86b;\n  --gs-green-400: #1dbf7b;\n  --gs-green-300: #5dcaa5;\n  --gs-green-200: #9fe1cb;\n  --gs-green-100: color-mix(in srgb, #1dbf7b 10%, var(--gs-card-bg));\n  --gs-green-600: #008756;\n  --gs-green-700: #006b44;\n  --gs-amber: #ef9f27;\n  --gs-amber-bg: color-mix(in srgb, #ef9f27 8%, var(--gs-card-bg));\n  --gs-red: #e53935;\n  --gs-red-bg: color-mix(in srgb, #e53935 8%, var(--gs-card-bg));\n  --gs-surface: color-mix(in srgb, var(--primary-text-color, #fff) 4%, var(--gs-card-bg));\n  --gs-surface-hover: color-mix(in srgb, var(--primary-text-color, #fff) 8%, var(--gs-card-bg));\n  --gs-radius-sm: 6px;\n  --gs-radius-md: 10px;\n  --gs-radius-lg: 14px;\n  --gs-radius-xl: 20px;\n}\n\n.card-header {\n  border-bottom: 1px solid var(--gs-border);\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 1.5rem;\n  display: flex;\n}\n\n.header-title {\n  color: var(--primary-text-color);\n  font-size: 16px;\n  font-weight: 600;\n  line-height: 1.2;\n}\n\n.header-right {\n  flex-shrink: 0;\n  align-items: center;\n  gap: 0;\n  margin-right: -8px;\n  display: flex;\n}\n\n.ws-icon, .header-menu {\n  cursor: pointer;\n  border-radius: 50%;\n  justify-content: center;\n  align-items: center;\n  width: 28px;\n  height: 28px;\n  transition: background .2s, opacity .2s;\n  display: inline-flex;\n}\n\n.ws-icon:hover, .header-menu:hover {\n  background: var(--gs-surface-hover);\n}\n\n.ws-icon svg, .header-menu svg {\n  width: 18px;\n  height: 18px;\n}\n\n.ws-icon.online svg {\n  fill: var(--gs-green-400);\n}\n\n.ws-icon.offline svg {\n  fill: var(--gs-text-dimmer);\n}\n\n.header-menu svg {\n  fill: var(--gs-text-dim);\n}\n\n.content {\n  padding: 0;\n}\n\nha-card.single-section .mower-section, ha-card.single-section .valves-section, ha-card.single-section .socket-section {\n  margin: 0;\n  padding: 0;\n}\n\nha-card.single-section .mower-card, ha-card.single-section .valve, ha-card.single-section .socket-card {\n  border-radius: 0 0 var(--ha-card-border-radius, 12px) var(--ha-card-border-radius, 12px);\n  border: none;\n}\n\nha-card.single-section .valve:before {\n  border-radius: 0 0 var(--ha-card-border-radius, 12px) var(--ha-card-border-radius, 12px);\n}\n\nha-card.single-section.no-header .mower-card, ha-card.single-section.no-header .valve, ha-card.single-section.no-header .socket-card {\n  border-radius: var(--ha-card-border-radius, 12px);\n}\n\nha-card.single-section .valves-grid {\n  gap: 0;\n}\n\n.knob-section {\n  justify-content: center;\n  align-items: center;\n  gap: 2rem;\n  padding: 1.5rem 1.5rem 1rem;\n  display: flex;\n}\n\n.knob-container {\n  cursor: pointer;\n  flex-shrink: 0;\n  width: 140px;\n  height: 140px;\n  position: relative;\n}\n\n.knob-track {\n  position: absolute;\n  inset: 0;\n}\n\n.knob-track svg {\n  width: 100%;\n  height: 100%;\n}\n\n.knob-arc-bg {\n  fill: none;\n  stroke: var(--gs-surface);\n  stroke-width: 8px;\n  stroke-linecap: round;\n}\n\n.knob-arc-fill {\n  fill: none;\n  stroke: var(--gs-green-400);\n  stroke-width: 8px;\n  stroke-linecap: round;\n  filter: drop-shadow(0 0 6px #1dbf7b40);\n  transition: stroke-dashoffset .15s ease-out;\n}\n\n.knob-handle {\n  background: var(--gs-card-bg);\n  border: 2px solid var(--gs-green-400);\n  cursor: grab;\n  z-index: 2;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  transition: box-shadow .2s;\n  position: absolute;\n  transform: translate(-50%, -50%);\n  box-shadow: 0 2px 8px #0000001f, 0 1px 2px #00000014;\n}\n\n.knob-handle:active {\n  cursor: grabbing;\n  box-shadow: 0 0 0 6px #1dbf7b26, 0 2px 8px #0000001f;\n}\n\n.knob-handle:after {\n  content: \"\";\n  background: var(--gs-green-400);\n  border-radius: 50%;\n  width: 8px;\n  height: 8px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.knob-center {\n  text-align: center;\n  pointer-events: none;\n  z-index: 1;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.knob-value {\n  color: var(--primary-text-color);\n  font-size: 28px;\n  font-weight: 500;\n  line-height: 1;\n}\n\n.knob-unit {\n  color: var(--gs-text-dim);\n  letter-spacing: .5px;\n  margin-top: 2px;\n  font-size: 12px;\n}\n\n.knob-info {\n  flex-direction: column;\n  gap: 6px;\n  display: flex;\n}\n\n.knob-preset {\n  border-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-border);\n  background: var(--gs-card-bg);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  gap: 8px;\n  padding: 7px 14px;\n  font-family: inherit;\n  font-size: 13px;\n  font-weight: 400;\n  transition: all .2s;\n  display: flex;\n}\n\n.knob-preset:hover {\n  background: var(--gs-surface);\n  color: var(--primary-text-color);\n  border-color: var(--gs-surface-hover);\n}\n\n.knob-preset.active {\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  border-color: var(--gs-green-300);\n}\n\n.knob-preset-dot {\n  background: var(--gs-text-dimmest);\n  border-radius: 50%;\n  flex-shrink: 0;\n  width: 5px;\n  height: 5px;\n  transition: background .2s;\n}\n\n.knob-preset.active .knob-preset-dot {\n  background: var(--gs-green-500);\n}\n\n.section-label {\n  color: var(--gs-text-dimmest);\n  text-transform: uppercase;\n  letter-spacing: .8px;\n  align-items: center;\n  gap: 8px;\n  margin-bottom: 10px;\n  font-size: 11px;\n  font-weight: 500;\n  display: flex;\n}\n\n.section-status {\n  color: var(--gs-green-400);\n  cursor: pointer;\n  align-items: center;\n  margin-left: auto;\n  display: inline-flex;\n}\n\n.section-status svg {\n  fill: currentColor;\n  width: 14px;\n  height: 14px;\n}\n\n.section-status.offline {\n  color: var(--gs-text-dimmer);\n}\n\n.valves-section {\n  padding: 0 1.5rem 1.5rem;\n}\n\n.valves-grid {\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 8px;\n  display: grid;\n}\n\n.valves-grid.count-1 {\n  grid-template-columns: 1fr;\n}\n\n.valves-grid.count-2 {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n\n.valves-grid:not(.count-1):not(.count-2) .valve {\n  padding: 8px;\n}\n\n.valve {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  padding: 12px;\n  transition: all .3s cubic-bezier(.16, 1, .3, 1);\n  animation: .4s cubic-bezier(.16, 1, .3, 1) both valveIn;\n  position: relative;\n  overflow: visible;\n  container-type: inline-size;\n}\n\n.valve:before {\n  content: \"\";\n  pointer-events: none;\n  border-radius: inherit;\n  background: linear-gradient(to top, #1dbf7b14, #0000);\n  height: 0%;\n  transition: height .6s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n}\n\n.valve.active {\n  background: var(--gs-green-100);\n  border-color: var(--gs-green-300);\n}\n\n.valve.active:before {\n  height: 100%;\n}\n\n.valve-header {\n  align-items: center;\n  gap: 6px;\n  margin-bottom: 8px;\n  display: flex;\n}\n\n.valve-zone-label {\n  color: var(--gs-text-dimmest);\n  letter-spacing: .6px;\n  text-transform: uppercase;\n  white-space: nowrap;\n  font-size: 10px;\n  font-weight: 600;\n}\n\n.valve.active .valve-zone-label {\n  color: var(--gs-green-300);\n}\n\n.valve-name-row {\n  flex-wrap: wrap;\n  align-items: baseline;\n  gap: 4px 8px;\n  margin-bottom: 4px;\n  display: flex;\n}\n\n.valve-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 500;\n  line-height: 1.3;\n}\n\n.valve-status {\n  color: var(--gs-text-dimmest);\n  align-items: center;\n  gap: 4px;\n  min-height: 16px;\n  font-size: 11px;\n  display: flex;\n}\n\n.valve.active .valve-status {\n  color: var(--gs-green-400);\n}\n\n.valve-progress {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 6%, transparent);\n  border-radius: 2px;\n  height: 3px;\n  margin-top: 8px;\n  display: none;\n  overflow: hidden;\n}\n\n.valve.active .valve-progress {\n  display: block;\n}\n\n.valve-progress-fill {\n  background: var(--gs-green-400);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.valve-sensors {\n  flex-wrap: wrap;\n  gap: 4px 10px;\n  margin-left: auto;\n  display: inline-flex;\n  position: relative;\n}\n\n.valve-sensor {\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n  align-items: center;\n  gap: 3px;\n  font-size: 11px;\n  display: inline-flex;\n}\n\n.valve-sensor:hover {\n  color: var(--primary-text-color);\n}\n\n.valve-sensor ha-icon {\n  --mdc-icon-size: 13px;\n  color: var(--gs-text-dimmest);\n}\n\n.valve-sensor.vs-humidity ha-icon {\n  color: #2196f3;\n}\n\n.valve-sensor.vs-temperature ha-icon {\n  color: var(--gs-amber);\n}\n\n.valve-sensor.vs-illuminance ha-icon {\n  color: #f9a825;\n}\n\n.valve.active .valve-sensor {\n  color: var(--gs-green-400);\n}\n\n.valve-sensor.unavailable {\n  opacity: .5;\n}\n\n.toggle {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));\n  cursor: pointer;\n  appearance: none;\n  border: none;\n  border-radius: 10px;\n  outline: none;\n  flex-shrink: 0;\n  width: 36px;\n  height: 20px;\n  padding: 0;\n  transition: background .25s;\n  position: relative;\n}\n\n.toggle:after {\n  content: \"\";\n  background: #fff;\n  border-radius: 50%;\n  width: 16px;\n  height: 16px;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  top: 2px;\n  left: 2px;\n  box-shadow: 0 1px 3px #00000026;\n}\n\n.toggle.on {\n  background: var(--gs-green-400);\n}\n\n.toggle.on:after {\n  transform: translateX(16px);\n}\n\n.toggle.socket-toggle-on {\n  background: var(--gs-amber);\n}\n\n.toggle.disabled, .toggle:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.pill {\n  background: var(--gs-card-bg);\n  border: 1px solid color-mix(in srgb, var(--primary-text-color, #fff) 15%, transparent);\n  border-radius: 22px;\n  flex-shrink: 0;\n  align-items: center;\n  margin-left: auto;\n  padding: 3px;\n  transition: all .35s;\n  display: inline-flex;\n}\n\n.valve.active .pill {\n  background: color-mix(in srgb, #1dbf7b 6%, var(--gs-card-bg));\n  border-color: #1dbf7b33;\n}\n\n.pill-dur-wrap {\n  position: relative;\n}\n\n.pill-dur {\n  height: 22px;\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  font-size: 11px;\n  font-weight: 500;\n  font-family: var(--ha-font-family-body, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif);\n  background: none;\n  border: none;\n  border-radius: 11px;\n  align-items: center;\n  gap: 1px;\n  padding: 0 4px 0 8px;\n  transition: all .2s;\n  display: flex;\n}\n\n.pill-dur:hover {\n  background: var(--gs-surface);\n}\n\n.pill-dur.locked {\n  cursor: default;\n  opacity: .5;\n}\n\n.pill-dur.locked:hover {\n  background: none;\n}\n\n.valve.active .pill-dur {\n  color: var(--gs-green-700);\n}\n\n.pill-dur svg {\n  fill: currentColor;\n  opacity: .4;\n  width: 12px;\n  height: 12px;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n}\n\n.pill-dur.open svg {\n  opacity: .7;\n  transform: rotate(180deg);\n}\n\n.pill-tog {\n  cursor: pointer;\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 14%, var(--gs-card-bg));\n  border-radius: 11px;\n  flex-shrink: 0;\n  width: 38px;\n  height: 22px;\n  transition: background .3s cubic-bezier(.16, 1, .3, 1);\n  position: relative;\n}\n\n.pill-tog.on {\n  background: var(--gs-green-400);\n}\n\n.pill-tog.amber {\n  background: var(--gs-amber);\n}\n\n.pill-tog:after {\n  content: \"\";\n  background: #fff;\n  border-radius: 50%;\n  width: 16px;\n  height: 16px;\n  transition: transform .3s cubic-bezier(.16, 1, .3, 1);\n  position: absolute;\n  top: 3px;\n  left: 3px;\n  box-shadow: 0 1px 3px #00000026;\n}\n\n.pill-tog.on:after {\n  transform: translateX(16px);\n}\n\n.pill-tog.disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.pill-pop {\n  background: var(--gs-card-bg);\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 12%, transparent);\n  z-index: 100;\n  border-radius: 12px;\n  flex-wrap: wrap;\n  gap: 4px;\n  width: max-content;\n  max-width: 210px;\n  padding: 6px;\n  display: none;\n  position: absolute;\n  top: calc(100% + 6px);\n  right: 0;\n  box-shadow: 0 4px 12px #0000001f;\n}\n\n.pill-pop.show {\n  display: flex;\n}\n\n.valve.pill-open, .mower-card.pill-open, .socket-card.pill-open {\n  z-index: 50;\n}\n\n.pop-chip {\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  background: none;\n  border-radius: 10px;\n  padding: 5px 8px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 500;\n  line-height: 1;\n  transition: all .15s;\n}\n\n.pop-chip:hover {\n  background: var(--gs-surface);\n  border-color: color-mix(in srgb, var(--primary-text-color, #fff) 14%, transparent);\n}\n\n.pop-chip.sel {\n  background: var(--gs-green-100);\n  color: var(--gs-green-600);\n  border-color: var(--gs-green-300);\n}\n\n.pop-custom {\n  border-top: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  align-items: center;\n  gap: 4px;\n  width: 100%;\n  margin-top: 2px;\n  padding-top: 6px;\n  display: flex;\n}\n\n.pop-input {\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  min-width: 0;\n  height: 26px;\n  color: var(--primary-text-color);\n  background: var(--gs-card-bg);\n  -moz-appearance: textfield;\n  border-radius: 8px;\n  outline: none;\n  flex: 1;\n  padding: 0 8px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 500;\n  line-height: 1;\n}\n\n.pop-input::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\n\n.pop-input::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\n\n.pop-input::placeholder {\n  color: var(--gs-text-dim);\n}\n\n.pop-input:focus {\n  border-color: var(--gs-green-300);\n}\n\n.pop-input-unit {\n  color: var(--gs-text-dim);\n  flex-shrink: 0;\n  margin-left: -2px;\n  font-family: inherit;\n  font-size: 9px;\n}\n\n.pop-ok {\n  background: var(--gs-green-400);\n  color: #fff;\n  cursor: pointer;\n  letter-spacing: .3px;\n  border: none;\n  border-radius: 8px;\n  flex-shrink: 0;\n  height: 26px;\n  padding: 0 10px;\n  font-family: inherit;\n  font-size: 10px;\n  font-weight: 600;\n  transition: all .15s;\n}\n\n.pop-ok:hover {\n  background: var(--gs-green-500);\n}\n\n.pop-ok:active {\n  transform: scale(.95);\n}\n\n.valve.offline, .socket-card.offline {\n  opacity: .5;\n}\n\n.water-icon {\n  width: 8px;\n  height: 10px;\n  display: inline-block;\n  position: relative;\n}\n\n.water-icon:before {\n  content: \"\";\n  background: var(--gs-green-400);\n  border-radius: 50% 50% 50% 0;\n  width: 8px;\n  height: 8px;\n  animation: 1.5s ease-in-out infinite dropPulse;\n  position: absolute;\n  bottom: 0;\n  transform: rotate(-45deg);\n}\n\n.countdown-text {\n  animation: 2s ease-in-out infinite countPulse;\n}\n\n.mower-section {\n  margin-top: .25rem;\n  padding: 0 1.5rem 1rem;\n}\n\n.mower-card {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  padding: 14px;\n  transition: all .3s cubic-bezier(.16, 1, .3, 1);\n  animation: .4s cubic-bezier(.16, 1, .3, 1) both valveIn;\n  position: relative;\n}\n\n.mower-card.active {\n  background: var(--gs-green-100);\n  border-color: var(--gs-green-300);\n}\n\n.mower-card.paused {\n  background: var(--gs-amber-bg);\n  border-color: #ef9f274d;\n}\n\n.mower-card.error {\n  background: var(--gs-red-bg);\n  border-color: #e539354d;\n}\n\n.mower-card.offline {\n  opacity: .5;\n}\n\n.mower-header {\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 12px;\n  display: flex;\n}\n\n.mower-icon {\n  border-radius: var(--gs-radius-sm);\n  background: var(--gs-surface-hover);\n  width: 36px;\n  height: 36px;\n  color: var(--gs-text-dimmest);\n  flex-shrink: 0;\n  justify-content: center;\n  align-items: center;\n  transition: all .3s;\n  display: flex;\n  position: relative;\n  overflow: hidden;\n}\n\n.mower-card.active .mower-icon {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.mower-card.paused .mower-icon {\n  background: color-mix(in srgb, #ef9f27 15%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.mower-card.error .mower-icon {\n  background: color-mix(in srgb, #e53935 15%, var(--gs-card-bg));\n  color: var(--gs-red);\n}\n\n.mower-drive {\n  z-index: 1;\n  align-items: center;\n  display: inline-flex;\n  position: relative;\n}\n\n.mower-icon svg {\n  fill: currentColor;\n  width: 20px;\n  height: 20px;\n}\n\n.mower-icon.mowing .mower-drive {\n  animation: 3s linear infinite mowerDrive;\n}\n\n.grass-particles {\n  pointer-events: none;\n  width: 4px;\n  height: 4px;\n  position: absolute;\n  bottom: 2px;\n  left: -2px;\n}\n\n.grass-particles:before, .grass-particles:after {\n  content: \"\";\n  border-radius: 50%;\n  position: absolute;\n}\n\n.grass-particles:before {\n  background: #66bb6a;\n  width: 3px;\n  height: 3px;\n  animation: .8s ease-out infinite particleA;\n}\n\n.grass-particles:after {\n  background: #43a047;\n  width: 2px;\n  height: 2px;\n  animation: .8s ease-out .2s infinite particleB;\n}\n\n.mower-info {\n  flex: 1;\n  min-width: 0;\n}\n\n.mower-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.mower-activity {\n  color: var(--gs-text-dimmest);\n  align-items: center;\n  gap: 6px;\n  margin-top: 1px;\n  font-size: 11px;\n  transition: color .3s;\n  display: flex;\n}\n\n.mower-card.active .mower-activity {\n  color: var(--gs-green-200);\n}\n\n.mower-card.paused .mower-activity {\n  color: var(--gs-amber);\n}\n\n.mower-card.error .mower-activity {\n  color: var(--gs-red);\n}\n\n.mow-dot {\n  background: var(--gs-green-400);\n  border-radius: 50%;\n  width: 6px;\n  height: 6px;\n  animation: 1s ease-in-out infinite mowPulse;\n  display: inline-block;\n}\n\n.mower-battery-chip {\n  background: var(--gs-surface-hover);\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n  border-radius: 12px;\n  flex-shrink: 0;\n  align-items: center;\n  gap: 4px;\n  padding: 3px 8px;\n  font-size: 11px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.mower-battery-chip.low {\n  background: color-mix(in srgb, #e53935 12%, var(--gs-card-bg));\n  color: var(--gs-red);\n}\n\n.mower-battery-chip.replace {\n  background: color-mix(in srgb, #e53935 18%, var(--gs-card-bg));\n  color: var(--gs-red);\n  animation: 2s ease-in-out infinite battery-replace-pulse;\n}\n\n@keyframes battery-replace-pulse {\n  0%, 100% {\n    opacity: 1;\n  }\n\n  50% {\n    opacity: .5;\n  }\n}\n\n.mower-battery-chip.charging {\n  background: color-mix(in srgb, #1dbf7b 12%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.mower-battery-chip svg {\n  flex-shrink: 0;\n}\n\n.section-signal {\n  color: var(--gs-green-400);\n  cursor: pointer;\n  align-items: center;\n  margin-left: auto;\n  display: inline-flex;\n}\n\n.section-signal ha-icon {\n  --mdc-icon-size: 18px;\n  line-height: 0;\n}\n\n.card-header .section-signal ha-icon {\n  --mdc-icon-size: 16px;\n}\n\n.mower-progress {\n  background: color-mix(in srgb, var(--primary-text-color, #fff) 8%, transparent);\n  border-radius: 2px;\n  height: 4px;\n  margin-bottom: 12px;\n  overflow: hidden;\n}\n\n.mower-progress-fill {\n  background: var(--gs-green-400);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.mower-remaining {\n  font-variant-numeric: tabular-nums;\n  opacity: .8;\n}\n\n.mower-error-banner {\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-red);\n  background: #e539351f;\n  margin-bottom: 12px;\n  padding: 8px 10px;\n  font-size: 11px;\n  line-height: 1.4;\n}\n\n.mower-actions {\n  flex-wrap: wrap;\n  gap: 6px;\n  display: flex;\n}\n\n.mower-btn {\n  border-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-border);\n  background: var(--gs-card-bg);\n  color: var(--gs-text-dim);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  padding: 7px 14px;\n  font-family: inherit;\n  font-size: 12px;\n  font-weight: 500;\n  transition: all .2s;\n  display: inline-flex;\n}\n\n.mower-btn:hover {\n  background: var(--gs-surface);\n  color: var(--primary-text-color);\n  border-color: var(--gs-surface-hover);\n}\n\n.mower-btn.primary {\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  border-color: var(--gs-green-300);\n}\n\n.mower-btn.primary:hover {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n}\n\n.mower-btn:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.mower-btn-wrap {\n  align-items: stretch;\n  display: inline-flex;\n  position: relative;\n}\n\n.mower-btn-wrap .mower-btn {\n  border-right: none;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.mower-dur-wrap {\n  position: relative;\n}\n\n.mower-dur-btn {\n  border-top-right-radius: var(--gs-radius-md);\n  border-bottom-right-radius: var(--gs-radius-md);\n  border: .5px solid var(--gs-green-300);\n  border-left: .5px solid color-mix(in srgb, var(--gs-green-300) 40%, transparent);\n  background: var(--gs-green-100);\n  color: var(--gs-green-400);\n  cursor: pointer;\n  white-space: nowrap;\n  align-items: center;\n  gap: 2px;\n  padding: 7px 8px;\n  font-family: inherit;\n  font-size: 11px;\n  font-weight: 500;\n  transition: all .2s;\n  display: inline-flex;\n}\n\n.mower-dur-btn:hover {\n  background: color-mix(in srgb, #1dbf7b 15%, var(--gs-card-bg));\n}\n\n.mower-dur-btn:disabled {\n  opacity: .3;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n\n.mower-dur-btn svg {\n  opacity: .5;\n  transition: transform .25s cubic-bezier(.16, 1, .3, 1);\n}\n\n.mower-dur-btn.open svg {\n  opacity: .8;\n  transform: rotate(180deg);\n}\n\n.socket-section {\n  margin-top: .25rem;\n  padding: 0 1.5rem 1rem;\n}\n\n.socket-card {\n  background: var(--gs-surface);\n  border-radius: var(--gs-radius-md);\n  border: .5px solid #0000;\n  flex-wrap: wrap;\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 14px;\n  transition: all .3s;\n  display: flex;\n}\n\n.socket-card.active {\n  background: var(--gs-amber-bg);\n  border-color: #ef9f274d;\n}\n\n.socket-left {\n  align-items: center;\n  gap: 12px;\n  min-width: 0;\n  display: flex;\n}\n\n.socket-icon {\n  border-radius: var(--gs-radius-sm);\n  background: var(--gs-surface-hover);\n  width: 36px;\n  height: 36px;\n  color: var(--gs-text-dimmest);\n  flex-shrink: 0;\n  justify-content: center;\n  align-items: center;\n  transition: all .3s;\n  display: flex;\n}\n\n.socket-card.active .socket-icon {\n  background: color-mix(in srgb, #ef9f27 15%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.socket-info {\n  min-width: 0;\n}\n\n.socket-name {\n  color: var(--primary-text-color);\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.socket-status {\n  color: var(--gs-text-dimmest);\n  margin-top: 1px;\n  font-size: 11px;\n  transition: color .3s;\n}\n\n.socket-card.active .socket-status {\n  color: var(--gs-amber);\n}\n\n.socket-right {\n  flex-shrink: 0;\n  align-items: center;\n  gap: 12px;\n  display: flex;\n}\n\n.socket-timer {\n  font-size: 12px;\n  font-family: var(--gs-font-mono, \"SF Mono\", \"Cascadia Code\", \"Consolas\", monospace);\n  color: var(--gs-text-dimmest);\n  text-align: right;\n  white-space: nowrap;\n}\n\n.socket-progress-wrap {\n  width: 100%;\n  margin-top: 8px;\n  padding: 0;\n}\n\n.socket-progress-track {\n  background: color-mix(in srgb, var(--primary-text-color, #000) 6%, transparent);\n  border-radius: 2px;\n  height: 3px;\n  overflow: hidden;\n}\n\n.socket-progress-fill {\n  background: var(--gs-amber);\n  border-radius: 2px;\n  height: 100%;\n  transition: width 1s linear;\n}\n\n.unavailable {\n  text-align: center;\n  color: var(--gs-text-dim);\n  padding: 20px;\n  font-size: 14px;\n}\n\n.version-warning {\n  background: color-mix(in srgb, #ef9f27 10%, var(--gs-card-bg));\n  border-radius: var(--gs-radius-md);\n  text-align: left;\n  color: var(--primary-text-color);\n  border: .5px solid #ef9f274d;\n  padding: 16px;\n  font-size: 13px;\n  line-height: 1.5;\n}\n\n.patch-warning {\n  background: color-mix(in srgb, #ef9f27 8%, var(--gs-card-bg));\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-text-dim);\n  border: .5px solid #ef9f2740;\n  margin: 0 1.5rem 8px;\n  padding: 10px 14px;\n  font-size: 12px;\n  line-height: 1.4;\n}\n\n.patch-warning strong {\n  color: var(--gs-amber);\n  margin-bottom: 2px;\n  font-size: 12px;\n  display: block;\n}\n\n.schedule-missing {\n  background: color-mix(in srgb, var(--info-color, #039be5) 8%, var(--gs-card-bg));\n  border: .5px solid color-mix(in srgb, var(--info-color, #039be5) 25%, transparent);\n  border-radius: var(--gs-radius-sm);\n  color: var(--gs-text-dim);\n  margin: 0 1.5rem 8px;\n  padding: 10px 14px;\n  font-size: 12px;\n  line-height: 1.4;\n}\n\n.schedule-missing strong {\n  color: var(--info-color, #039be5);\n  margin-bottom: 2px;\n  font-size: 12px;\n  display: block;\n}\n\n.history-section {\n  border-top: .5px solid var(--gs-border);\n  margin-top: 12px;\n  padding: 4px 1.5rem 1rem;\n}\n\n.history-header {\n  justify-content: space-between;\n  align-items: baseline;\n  margin-bottom: 14px;\n  display: flex;\n}\n\n.history-period {\n  color: var(--gs-text-dim);\n  font-size: 12px;\n}\n\n.history-total {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  font-size: 12px;\n}\n\n.chart-container {\n  gap: 0;\n  display: flex;\n}\n\n.chart-y-axis {\n  flex-shrink: 0;\n  height: 124px;\n  margin-bottom: 26px;\n  padding-right: 10px;\n  position: relative;\n}\n\n.chart-y-label {\n  color: var(--gs-text-dimmest);\n  font-variant-numeric: tabular-nums;\n  font-size: 10px;\n  line-height: 1;\n  position: absolute;\n  left: 0;\n  transform: translateY(-50%);\n}\n\n.chart-main {\n  flex: 1;\n  min-width: 0;\n  height: 124px;\n  margin-bottom: 26px;\n  position: relative;\n}\n\n.chart-gridlines {\n  pointer-events: none;\n  flex-direction: column;\n  justify-content: space-between;\n  display: flex;\n  position: absolute;\n  inset: 0;\n}\n\n.chart-gridline {\n  border-top: .5px solid var(--gs-border);\n  height: 0;\n}\n\n.chart-gridline:last-child {\n  border-top: .5px solid color-mix(in srgb, var(--primary-text-color, #000) 14%, transparent);\n}\n\n.chart-bars {\n  justify-content: space-around;\n  align-items: stretch;\n  padding: 0 4px;\n  display: flex;\n  position: absolute;\n  inset: 0;\n}\n\n.chart-bar-group {\n  flex-direction: column;\n  flex: 1;\n  justify-content: flex-end;\n  align-items: center;\n  max-width: 64px;\n  padding: 0 6px;\n  display: flex;\n  position: relative;\n}\n\n.chart-stack {\n  border-radius: 3px 3px 0 0;\n  flex-direction: column-reverse;\n  width: 100%;\n  display: flex;\n  overflow: hidden;\n}\n\n.chart-segment {\n  width: 100%;\n  min-height: 0;\n}\n\n.chart-segment + .chart-segment {\n  border-bottom: .5px solid #ffffff4d;\n}\n\n.chart-day-label {\n  color: var(--gs-text-dim);\n  white-space: nowrap;\n  margin-top: 4px;\n  font-size: 11px;\n  position: absolute;\n  top: 100%;\n}\n\n.chart-bar-group.today .chart-day-label {\n  color: var(--primary-text-color);\n  font-weight: 500;\n}\n\n.chart-bar-group:hover .chart-stack {\n  filter: brightness(1.08);\n}\n\n.chart-tooltip {\n  background: var(--gs-card-bg, var(--card-background-color, #fff));\n  border: .5px solid color-mix(in srgb, var(--primary-text-color, #000) 14%, transparent);\n  border-radius: var(--gs-radius-md);\n  color: var(--primary-text-color);\n  white-space: nowrap;\n  z-index: 10;\n  pointer-events: none;\n  padding: 8px 12px;\n  font-size: 11px;\n  display: none;\n  position: absolute;\n  bottom: calc(100% + 8px);\n  left: 50%;\n  transform: translateX(-50%);\n  box-shadow: 0 4px 16px #0000001f;\n}\n\n.chart-bar-group:hover .chart-tooltip {\n  display: block;\n}\n\n.tooltip-title {\n  border-bottom: .5px solid var(--gs-border);\n  margin-bottom: 4px;\n  padding-bottom: 4px;\n  font-size: 12px;\n  font-weight: 500;\n}\n\n.tooltip-line {\n  align-items: center;\n  gap: 6px;\n  padding: 2px 0;\n  display: flex;\n}\n\n.tooltip-dot {\n  border-radius: 2px;\n  flex-shrink: 0;\n  width: 6px;\n  height: 6px;\n}\n\n.tooltip-mins {\n  font-variant-numeric: tabular-nums;\n  margin-left: auto;\n  padding-left: 12px;\n  font-weight: 500;\n}\n\n.tooltip-total {\n  border-top: .5px solid var(--gs-border);\n  justify-content: space-between;\n  margin-top: 4px;\n  padding-top: 4px;\n  font-weight: 500;\n  display: flex;\n}\n\n.chart-legend {\n  flex-wrap: wrap;\n  gap: 4px 14px;\n  margin-top: 12px;\n  display: flex;\n}\n\n.legend-item {\n  color: var(--gs-text-dim);\n  align-items: center;\n  gap: 5px;\n  font-size: 11px;\n  display: flex;\n}\n\n.legend-dot {\n  border-radius: 2px;\n  flex-shrink: 0;\n  width: 8px;\n  height: 8px;\n}\n\n.scheduler-label {\n  text-transform: uppercase;\n  letter-spacing: .5px;\n  color: var(--gs-text-dimmer);\n  margin-top: 6px;\n  margin-bottom: 2px;\n  font-size: 9px;\n  font-weight: 600;\n}\n\n.schedule-strip {\n  border-top: 1px solid var(--gs-border);\n  flex-direction: column;\n  gap: 6px;\n  margin-top: 10px;\n  padding-top: 10px;\n  display: flex;\n}\n\n.schedule-row {\n  align-items: center;\n  gap: 8px;\n  display: flex;\n}\n\n.schedule-time {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  align-items: center;\n  gap: 4px;\n  min-width: 80px;\n  font-size: 11px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.schedule-icon {\n  fill: currentColor;\n  opacity: .6;\n  flex-shrink: 0;\n  width: 12px;\n  height: 12px;\n}\n\n.schedule-days {\n  gap: 3px;\n  display: flex;\n}\n\n.schedule-day {\n  text-transform: uppercase;\n  letter-spacing: .3px;\n  border-radius: 4px;\n  justify-content: center;\n  align-items: center;\n  width: 20px;\n  height: 18px;\n  font-size: 9px;\n  font-weight: 600;\n  display: flex;\n}\n\n.schedule-day.active {\n  background: color-mix(in srgb, var(--gs-green-400) 20%, var(--gs-card-bg));\n  color: var(--gs-green-400);\n}\n\n.schedule-day.inactive {\n  background: var(--gs-surface);\n  color: var(--gs-text-dimmest);\n}\n\n.schedule-day.paused {\n  background: color-mix(in srgb, var(--gs-amber) 12%, var(--gs-card-bg));\n  color: var(--gs-amber);\n}\n\n.schedule-row.now-active, .valve-schedule-row.now-active, .socket-schedule-mini.now-active {\n  background: color-mix(in srgb, var(--gs-green-400) 10%, transparent);\n  border-radius: var(--gs-radius-sm);\n  padding: 4px 6px;\n}\n\n.schedule-row.now-active .schedule-time, .valve-schedule-row.now-active .valve-schedule-time, .socket-schedule-mini.now-active .schedule-time {\n  color: var(--gs-green-400);\n}\n\n.schedule-row.now-active .schedule-icon, .valve-schedule-row.now-active .schedule-icon, .socket-schedule-mini.now-active .schedule-icon {\n  opacity: 1;\n}\n\n.schedule-icon-wrap {\n  flex-shrink: 0;\n  display: inline-flex;\n  position: relative;\n}\n\n.schedule-paused .schedule-icon {\n  color: var(--gs-amber);\n  opacity: .8;\n}\n\n.schedule-paused .schedule-icon-wrap:after {\n  content: \"\";\n  background: linear-gradient(to top right,\n        transparent calc(50% - .5px),\n        var(--gs-amber) calc(50% - .5px),\n        var(--gs-amber) calc(50% + .5px),\n        transparent calc(50% + .5px));\n  opacity: .7;\n  pointer-events: none;\n  width: 14px;\n  height: 14px;\n  position: absolute;\n  top: -1px;\n  left: -1px;\n}\n\n.schedule-pause-badge {\n  color: var(--gs-amber);\n  background: color-mix(in srgb, var(--gs-amber) 10%, var(--gs-card-bg));\n  white-space: nowrap;\n  border-radius: 4px;\n  align-items: center;\n  gap: 3px;\n  margin-left: auto;\n  padding: 2px 7px;\n  font-size: 10px;\n  font-weight: 500;\n  display: inline-flex;\n}\n\n.valve-schedule-mini {\n  border-top: 1px solid var(--gs-border);\n  flex-direction: column;\n  gap: 4px;\n  margin-top: 8px;\n  padding-top: 8px;\n  display: flex;\n}\n\n.valve-schedule-row {\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 6px;\n  display: flex;\n}\n\n.valve-schedule-time {\n  color: var(--gs-text-dim);\n  font-variant-numeric: tabular-nums;\n  text-align: center;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  font-size: 11px;\n  display: inline-flex;\n}\n\n.valve-schedule-mini .schedule-days {\n  justify-content: center;\n  gap: 3px;\n}\n\n.valve-schedule-mini .schedule-day {\n  border-radius: 4px;\n  width: 20px;\n  height: 18px;\n  font-size: 9px;\n}\n\n@container (width <= 120px) {\n  .valve-header {\n    flex-wrap: wrap;\n  }\n\n  .pill {\n    border-radius: 14px;\n    flex-direction: column;\n    gap: 3px;\n    padding: 3px;\n  }\n}\n\n@container (width <= 150px) {\n  .valve-header {\n    margin-bottom: 6px;\n  }\n\n  .valve-name {\n    font-size: 12px;\n  }\n\n  .valve-schedule-time {\n    font-size: 10px;\n  }\n\n  .valve-schedule-mini .schedule-day {\n    border-radius: 3px;\n    width: 16px;\n    height: 14px;\n    font-size: 8px;\n  }\n\n  .valve-schedule-row {\n    flex-flow: row;\n    justify-content: center;\n    gap: 3px;\n  }\n\n  .valve-schedule-time {\n    white-space: nowrap;\n  }\n\n  .valve-schedule-mini .schedule-days {\n    gap: 1px;\n  }\n\n  .valve-schedule-mini .schedule-day {\n    border-radius: 50%;\n    width: 5px;\n    height: 5px;\n    padding: 0;\n    font-size: 0;\n    overflow: hidden;\n  }\n\n  .valve-schedule-mini .schedule-day.active {\n    background: var(--gs-green-400);\n  }\n\n  .valve-schedule-mini .schedule-day.inactive {\n    background: var(--gs-track);\n  }\n\n  .valve-schedule-mini .schedule-day.paused {\n    background: var(--gs-amber);\n  }\n}\n\n.socket-schedules-wrap {\n  border-top: 1px solid var(--gs-border);\n  margin-top: 8px;\n  padding-top: 8px;\n}\n\n.socket-schedule-mini {\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  margin-top: 8px;\n  display: flex;\n}\n\n.socket-schedule-mini:first-child, .socket-schedules-wrap > .scheduler-label:first-child + .socket-schedule-mini, .socket-schedules-wrap > .socket-schedule-mini:first-child {\n  margin-top: 0;\n}\n\n.socket-schedule-mini .schedule-time {\n  min-width: auto;\n}\n\n.socket-schedule-mini .schedule-days {\n  flex-wrap: nowrap;\n}\n\n@keyframes valveIn {\n  from {\n    opacity: 0;\n    transform: translateY(8px);\n  }\n\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n\n@keyframes dropPulse {\n  0%, 100% {\n    opacity: .6;\n    transform: rotate(-45deg) scale(1);\n  }\n\n  50% {\n    opacity: 1;\n    transform: rotate(-45deg) scale(1.15);\n  }\n}\n\n@keyframes countPulse {\n  0%, 100% {\n    opacity: 1;\n  }\n\n  50% {\n    opacity: .55;\n  }\n}\n\n@keyframes mowerDrive {\n  0% {\n    transform: translateX(-130%);\n  }\n\n  100% {\n    transform: translateX(130%);\n  }\n}\n\n@keyframes particleA {\n  0% {\n    opacity: .9;\n    transform: translate(0) scale(1);\n  }\n\n  100% {\n    opacity: 0;\n    transform: translate(-8px, -10px) scale(.3);\n  }\n}\n\n@keyframes particleB {\n  0% {\n    opacity: .8;\n    transform: translate(0) scale(1);\n  }\n\n  100% {\n    opacity: 0;\n    transform: translate(-5px, -12px) scale(.2);\n  }\n}\n\n@keyframes mowPulse {\n  0%, 100% {\n    opacity: 1;\n    transform: scale(1);\n  }\n\n  50% {\n    opacity: .5;\n    transform: scale(1.3);\n  }\n}\n\n@container (width <= 400px) {\n  .valves-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  .valves-grid.count-1 {\n    grid-template-columns: 1fr;\n  }\n\n  .knob-section {\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .knob-info {\n    flex-flow: wrap;\n    justify-content: center;\n  }\n\n  .mower-actions {\n    flex-direction: column;\n  }\n\n  .mower-btn {\n    justify-content: center;\n  }\n}\n\n@container (width <= 300px) {\n  .mower-section, .valve-section, .socket-section {\n    padding-left: 1rem;\n    padding-right: 1rem;\n  }\n\n  .card-header {\n    padding: 12px 1rem;\n  }\n\n  .valves-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .mower-header {\n    gap: 8px;\n  }\n\n  .mower-name {\n    font-size: 12px;\n  }\n\n  .mower-activity {\n    flex-wrap: wrap;\n    font-size: 10px;\n  }\n\n  .mower-battery-chip {\n    padding: 2px 6px;\n    font-size: 10px;\n  }\n\n  .mower-btn {\n    padding: 6px 10px;\n    font-size: 11px;\n  }\n\n  .schedule-row {\n    flex-wrap: wrap;\n    gap: 4px;\n  }\n\n  .schedule-time {\n    min-width: unset;\n    font-size: 10px;\n  }\n\n  .schedule-day {\n    width: 16px;\n    height: 14px;\n    font-size: 8px;\n  }\n\n  .schedule-days {\n    gap: 2px;\n  }\n\n  .socket-schedule-mini {\n    flex-wrap: wrap;\n    gap: 4px;\n  }\n}\n";
 
 
 var $76eee68ef692a3c3$exports = {};
-$76eee68ef692a3c3$exports = JSON.parse("{\"default_title\":\"Gardena Smart System\",\"config_backend\":\"Backend Integration\",\"config_backend_auto\":\"Auto-detect\",\"config_backend_thecem\":\"hass-gardena-smart-system (thecem)\",\"config_backend_kayloehmann\":\"ha-gardena-smart-system (kayloehmann)\",\"config_title\":\"Title (Optional)\",\"config_select_device\":\"Please select a Gardena Smart System device in the card configuration.\",\"config_no_device\":\"Please select a device.\",\"config_sections\":\"Sections to display (leave empty for all)\",\"config_show_header\":\"Show header\",\"config_show_duration\":\"Show duration picker\",\"config_default_duration\":\"Default duration (minutes)\",\"config_valve_columns\":\"Valve columns per row\",\"config_valve_entities\":\"Valve zones to display (leave empty for all)\",\"config_socket_entities\":\"Power sockets to display (leave empty for all)\",\"state_online\":\"Online\",\"state_offline\":\"Offline\",\"state_unavailable\":\"Unavailable\",\"section_valves\":\"Valve Zones\",\"section_socket\":\"Power Socket\",\"knob_unit_minutes\":\"Minutes\",\"valve_zone\":\"Zone\",\"valve_ready\":\"Ready\",\"valve_watering\":\"Watering\",\"valve_watering_scheduled\":\"Watering (schedule)\",\"valve_watering_manual\":\"Watering (manual)\",\"valve_open\":\"Open\",\"valve_closed\":\"Closed\",\"socket_off\":\"Off\",\"socket_active\":\"Active\",\"socket_active_scheduled\":\"Active (schedule)\",\"socket_active_manual\":\"Active (always on)\",\"socket_active_timed\":\"Active (manual)\",\"section_mower\":\"Mower\",\"config_mower_entities\":\"Mowers to display (leave empty for all)\",\"mower_cutting\":\"Mowing\",\"mower_cutting_manual\":\"Mowing (manual)\",\"mower_cutting_scheduled\":\"Mowing (schedule)\",\"mower_searching\":\"Returning to dock\",\"mower_leaving\":\"Leaving dock\",\"mower_next_action\":\"Starting next action\",\"mower_paused\":\"Paused\",\"mower_paused_cs\":\"Paused (in dock)\",\"mower_charging\":\"Charging\",\"mower_parked_timer\":\"Parked (schedule)\",\"mower_parked_manual\":\"Parked (manual)\",\"mower_parked_auto\":\"Parked (auto timer)\",\"mower_parked_frost\":\"Parked (frost)\",\"mower_stopped_garden\":\"Stopped in garden\",\"mower_searching_sat\":\"Searching for satellites\",\"mower_error\":\"Error\",\"mower_error_prefix\":\"Error\",\"error_trapped\":\"Mower is stuck\",\"error_lifted\":\"Mower was lifted\",\"error_outside\":\"Outside working area\",\"error_collision\":\"Collision detected\",\"error_upside_down\":\"Mower is upside down\",\"error_low_battery\":\"Battery too low\",\"error_temp_stopped\":\"Temporarily stopped\",\"error_cs_blocked\":\"Charging station blocked\",\"mower_mowing\":\"Mowing\",\"mower_docked\":\"Docked\",\"mower_start\":\"Start\",\"mower_resume_schedule\":\"Resume schedule\",\"mower_pause\":\"Pause\",\"mower_resume\":\"Resume\",\"mower_park_next\":\"Park until next\",\"mower_park\":\"Park\",\"ws_connected\":\"Connected\",\"ws_disconnected\":\"Disconnected\",\"version_required_title\":\"No supported integration found\",\"version_required_message\":\"This card requires a supported Gardena Smart System integration. Please install hass-gardena-smart-system (thecem) or ha-gardena-smart-system (kayloehmann) via HACS.\",\"patch_warning_title\":\"Patched integration required\",\"patch_warning_message\":\"Controls are disabled. Please install the patched integration from mtheli/hass-gardena-smart-system to enable device control.\",\"section_history\":\"History\",\"config_show_history\":\"Show history chart\",\"day_today\":\"Today\",\"day_sun\":\"Sun\",\"day_mon\":\"Mon\",\"day_tue\":\"Tue\",\"day_wed\":\"Wed\",\"day_thu\":\"Thu\",\"day_fri\":\"Fri\",\"day_sat\":\"Sat\",\"history_total_label\":\"Total\",\"chip_battery\":\"Battery\",\"config_show_schedules\":\"Show schedules\",\"schedule_tooltip\":\"Schedule from Gardena App\",\"schedule_tooltip_paused\":\"Schedule paused (Gardena App)\",\"schedule_tooltip_active\":\"Schedule active (Gardena App)\",\"scheduler_tooltip_paused\":\"Schedule paused (Scheduler)\",\"scheduler_tooltip_active\":\"Schedule active (Scheduler)\",\"schedule_paused\":\"Paused\",\"schedule_paused_until\":\"Paused until\",\"schedule_day_mo\":\"Mo\",\"schedule_day_tu\":\"Tu\",\"schedule_day_we\":\"We\",\"schedule_day_th\":\"Th\",\"schedule_day_fr\":\"Fr\",\"schedule_day_sa\":\"Sa\",\"schedule_day_su\":\"Su\",\"config_show_scheduler_schedules\":\"Scheduler integration display\",\"scheduler_mode_mixed\":\"Mixed (in schedule list)\",\"scheduler_mode_separate\":\"Separate section\",\"gardena_section_label\":\"Gardena\",\"scheduler_section_label\":\"Scheduler\",\"scheduler_tooltip\":\"Schedule from scheduler-component\",\"schedule_missing_title\":\"Schedule integration not installed\",\"schedule_missing_message\":\"Install Gardena Smart Schedule via HACS to display schedules from the Gardena App.\",\"sensor_temperature\":\"Temperature\",\"sensor_humidity\":\"Humidity\",\"sensor_light\":\"Light\",\"sensor_soil_temperature\":\"Soil Temp\",\"sensor_soil_humidity\":\"Soil Humidity\"}");
+$76eee68ef692a3c3$exports = JSON.parse("{\"default_title\":\"Gardena Smart System\",\"config_backend\":\"Backend Integration\",\"config_backend_auto\":\"Auto-detect\",\"config_backend_thecem\":\"hass-gardena-smart-system (thecem)\",\"config_backend_kayloehmann\":\"ha-gardena-smart-system (kayloehmann)\",\"config_group_general\":\"General\",\"config_valve_sensors\":\"Sensor assignment\",\"config_valve_sensors_add\":\"Add assignment\",\"config_group_schedules\":\"Schedules\",\"config_title\":\"Title (Optional)\",\"config_select_device\":\"Please select a Gardena Smart System device in the card configuration.\",\"config_no_device\":\"Please select a device.\",\"config_sections\":\"Sections to display (leave empty for all)\",\"config_show_header\":\"Show header\",\"config_show_duration\":\"Show duration picker\",\"config_default_duration\":\"Default duration (minutes)\",\"config_valve_columns\":\"Valve columns per row\",\"config_valve_entities\":\"Valve zones to display (leave empty for all)\",\"config_socket_entities\":\"Power sockets to display (leave empty for all)\",\"state_online\":\"Online\",\"state_offline\":\"Offline\",\"state_unavailable\":\"Unavailable\",\"section_valves\":\"Valve Zones\",\"section_socket\":\"Power Socket\",\"knob_unit_minutes\":\"Minutes\",\"valve_zone\":\"Zone\",\"valve_ready\":\"Ready\",\"valve_watering\":\"Watering\",\"valve_watering_scheduled\":\"Watering (schedule)\",\"valve_watering_manual\":\"Watering (manual)\",\"valve_open\":\"Open\",\"valve_closed\":\"Closed\",\"socket_off\":\"Off\",\"socket_active\":\"Active\",\"socket_active_scheduled\":\"Active (schedule)\",\"socket_active_manual\":\"Active (always on)\",\"socket_active_timed\":\"Active (manual)\",\"section_mower\":\"Mower\",\"config_mower_entities\":\"Mowers to display (leave empty for all)\",\"mower_cutting\":\"Mowing\",\"mower_cutting_manual\":\"Mowing (manual)\",\"mower_cutting_scheduled\":\"Mowing (schedule)\",\"mower_searching\":\"Returning to dock\",\"mower_leaving\":\"Leaving dock\",\"mower_next_action\":\"Starting next action\",\"mower_paused\":\"Paused\",\"mower_paused_cs\":\"Paused (in dock)\",\"mower_charging\":\"Charging\",\"mower_parked_timer\":\"Parked (schedule)\",\"mower_parked_manual\":\"Parked (manual)\",\"mower_parked_auto\":\"Parked (auto timer)\",\"mower_parked_frost\":\"Parked (frost)\",\"mower_stopped_garden\":\"Stopped in garden\",\"mower_searching_sat\":\"Searching for satellites\",\"mower_error\":\"Error\",\"mower_error_prefix\":\"Error\",\"error_trapped\":\"Mower is stuck\",\"error_lifted\":\"Mower was lifted\",\"error_outside\":\"Outside working area\",\"error_collision\":\"Collision detected\",\"error_upside_down\":\"Mower is upside down\",\"error_low_battery\":\"Battery too low\",\"error_temp_stopped\":\"Temporarily stopped\",\"error_cs_blocked\":\"Charging station blocked\",\"mower_mowing\":\"Mowing\",\"mower_docked\":\"Docked\",\"mower_start\":\"Start\",\"mower_resume_schedule\":\"Resume schedule\",\"mower_pause\":\"Pause\",\"mower_resume\":\"Resume\",\"mower_park_next\":\"Park until next\",\"mower_park\":\"Park\",\"ws_connected\":\"Connected\",\"ws_disconnected\":\"Disconnected\",\"version_required_title\":\"No supported integration found\",\"version_required_message\":\"This card requires a supported Gardena Smart System integration. Please install hass-gardena-smart-system (thecem) or ha-gardena-smart-system (kayloehmann) via HACS.\",\"patch_warning_title\":\"Patched integration required\",\"patch_warning_message\":\"Controls are disabled. Please install the patched integration from mtheli/hass-gardena-smart-system to enable device control.\",\"section_history\":\"History\",\"config_show_history\":\"Show history chart\",\"day_today\":\"Today\",\"day_sun\":\"Sun\",\"day_mon\":\"Mon\",\"day_tue\":\"Tue\",\"day_wed\":\"Wed\",\"day_thu\":\"Thu\",\"day_fri\":\"Fri\",\"day_sat\":\"Sat\",\"history_total_label\":\"Total\",\"chip_battery\":\"Battery\",\"config_show_schedules\":\"Show schedules\",\"schedule_tooltip\":\"Schedule from Gardena App\",\"schedule_tooltip_paused\":\"Schedule paused (Gardena App)\",\"schedule_tooltip_active\":\"Schedule active (Gardena App)\",\"scheduler_tooltip_paused\":\"Schedule paused (Scheduler)\",\"scheduler_tooltip_active\":\"Schedule active (Scheduler)\",\"schedule_paused\":\"Paused\",\"schedule_paused_until\":\"Paused until\",\"schedule_day_mo\":\"Mo\",\"schedule_day_tu\":\"Tu\",\"schedule_day_we\":\"We\",\"schedule_day_th\":\"Th\",\"schedule_day_fr\":\"Fr\",\"schedule_day_sa\":\"Sa\",\"schedule_day_su\":\"Su\",\"config_show_scheduler_schedules\":\"Scheduler integration display\",\"scheduler_mode_mixed\":\"Mixed (in schedule list)\",\"scheduler_mode_separate\":\"Separate section\",\"gardena_section_label\":\"Gardena\",\"scheduler_section_label\":\"Scheduler\",\"scheduler_tooltip\":\"Schedule from scheduler-component\",\"schedule_missing_title\":\"Schedule integration not installed\",\"schedule_missing_message\":\"Install Gardena Smart Schedule via HACS to display schedules from the Gardena App.\",\"sensor_temperature\":\"Temperature\",\"sensor_humidity\":\"Humidity\",\"sensor_light\":\"Light\",\"sensor_soil_temperature\":\"Soil Temp\",\"sensor_soil_humidity\":\"Soil Humidity\"}");
 
 
 var $238d401f28c1db46$exports = {};
-$238d401f28c1db46$exports = JSON.parse('{"default_title":"Gardena Smart System","config_backend":"Backend-Integration","config_backend_auto":"Automatisch erkennen","config_backend_thecem":"hass-gardena-smart-system (thecem)","config_backend_kayloehmann":"ha-gardena-smart-system (kayloehmann)","config_title":"Titel (Optional)","config_select_device":"Bitte w\xe4hle ein Gardena Smart System Ger\xe4t in der Kartenkonfiguration.","config_no_device":"Bitte w\xe4hle ein Ger\xe4t.","config_sections":"Anzuzeigende Bereiche (leer = alle)","config_show_header":"Header anzeigen","config_show_duration":"Zeitauswahl anzeigen","config_default_duration":"Standard-Laufzeit (Minuten)","config_valve_columns":"Ventile pro Zeile","config_valve_entities":"Anzuzeigende Ventilzonen (leer = alle)","config_socket_entities":"Anzuzeigende Steckdosen (leer = alle)","state_online":"Online","state_offline":"Offline","state_unavailable":"Nicht verf\xfcgbar","section_valves":"Ventilzonen","section_socket":"Steckdose","knob_unit_minutes":"Minuten","valve_zone":"Zone","valve_ready":"Bereit","valve_watering":"Bew\xe4sserung","valve_watering_scheduled":"Bew\xe4sserung (Zeitplan)","valve_watering_manual":"Bew\xe4sserung (manuell)","valve_open":"Offen","valve_closed":"Geschlossen","socket_off":"Aus","socket_active":"Aktiv","socket_active_scheduled":"Aktiv (Zeitplan)","socket_active_manual":"Aktiv (Dauerbetrieb)","socket_active_timed":"Aktiv (manuell)","section_mower":"M\xe4her","config_mower_entities":"Anzuzeigende M\xe4her (leer = alle)","mower_cutting":"M\xe4ht","mower_cutting_manual":"M\xe4ht (manuell)","mower_cutting_scheduled":"M\xe4ht (Zeitplan)","mower_searching":"R\xfcckkehr zur Station","mower_leaving":"Verl\xe4sst Station","mower_next_action":"N\xe4chste Aktion","mower_paused":"Pausiert","mower_paused_cs":"Pausiert (in Station)","mower_charging":"L\xe4dt","mower_parked_timer":"Geparkt (Zeitplan)","mower_parked_manual":"Geparkt (manuell)","mower_parked_auto":"Geparkt (Autotimer)","mower_parked_frost":"Geparkt (Frost)","mower_stopped_garden":"Gestoppt im Garten","mower_searching_sat":"Satellitensuche","mower_error":"Fehler","mower_error_prefix":"Fehler","error_trapped":"M\xe4her steckt fest","error_lifted":"M\xe4her wurde angehoben","error_outside":"Au\xdferhalb des Arbeitsbereichs","error_collision":"Kollision erkannt","error_upside_down":"M\xe4her umgedreht","error_low_battery":"Akku zu schwach","error_temp_stopped":"Vor\xfcbergehend gestoppt","error_cs_blocked":"Ladestation blockiert","mower_mowing":"M\xe4ht","mower_docked":"In Station","mower_start":"Starten","mower_resume_schedule":"Zeitplan fortsetzen","mower_pause":"Pause","mower_resume":"Fortsetzen","mower_park_next":"Parken bis n\xe4chster","mower_park":"Parken","ws_connected":"Verbunden","ws_disconnected":"Getrennt","version_required_title":"Keine unterst\xfctzte Integration gefunden","version_required_message":"Diese Karte ben\xf6tigt eine unterst\xfctzte Gardena Smart System Integration. Bitte hass-gardena-smart-system (thecem) oder ha-gardena-smart-system (kayloehmann) \xfcber HACS installieren.","patch_warning_title":"Gepatchte Integration erforderlich","patch_warning_message":"Steuerung deaktiviert. Bitte die gepatchte Integration von mtheli/hass-gardena-smart-system installieren, um Ger\xe4te steuern zu k\xf6nnen.","section_history":"Historie","config_show_history":"Verlaufsdiagramm anzeigen","day_today":"Heute","day_sun":"So","day_mon":"Mo","day_tue":"Di","day_wed":"Mi","day_thu":"Do","day_fri":"Fr","day_sat":"Sa","history_total_label":"Gesamt","chip_battery":"Akku","config_show_schedules":"Zeitpl\xe4ne anzeigen","schedule_tooltip":"Zeitplan aus der Gardena App","schedule_tooltip_paused":"Zeitplan pausiert (Gardena App)","schedule_tooltip_active":"Zeitplan aktiv (Gardena App)","scheduler_tooltip_paused":"Zeitplan pausiert (Scheduler)","scheduler_tooltip_active":"Zeitplan aktiv (Scheduler)","schedule_paused":"Pausiert","schedule_paused_until":"Pausiert bis","schedule_day_mo":"Mo","schedule_day_tu":"Di","schedule_day_we":"Mi","schedule_day_th":"Do","schedule_day_fr":"Fr","schedule_day_sa":"Sa","schedule_day_su":"So","config_show_scheduler_schedules":"Scheduler-Integration Anzeige","scheduler_mode_mixed":"Gemischt (in Zeitplanliste)","scheduler_mode_separate":"Eigene Sektion","gardena_section_label":"Gardena","scheduler_section_label":"Scheduler","scheduler_tooltip":"Zeitplan aus scheduler-component","schedule_missing_title":"Schedule-Integration nicht installiert","schedule_missing_message":"Installiere Gardena Smart Schedule \xfcber HACS, um Zeitpl\xe4ne aus der Gardena App anzuzeigen.","sensor_temperature":"Temperatur","sensor_humidity":"Feuchtigkeit","sensor_light":"Licht","sensor_soil_temperature":"Bodentemp.","sensor_soil_humidity":"Bodenfeuchtigkeit"}');
+$238d401f28c1db46$exports = JSON.parse('{"default_title":"Gardena Smart System","config_backend":"Backend-Integration","config_backend_auto":"Automatisch erkennen","config_backend_thecem":"hass-gardena-smart-system (thecem)","config_backend_kayloehmann":"ha-gardena-smart-system (kayloehmann)","config_group_general":"Allgemein","config_valve_sensors":"Sensor-Zuordnung","config_valve_sensors_add":"Zuordnung hinzuf\xfcgen","config_group_schedules":"Zeitpl\xe4ne","config_title":"Titel (Optional)","config_select_device":"Bitte w\xe4hle ein Gardena Smart System Ger\xe4t in der Kartenkonfiguration.","config_no_device":"Bitte w\xe4hle ein Ger\xe4t.","config_sections":"Anzuzeigende Bereiche (leer = alle)","config_show_header":"Header anzeigen","config_show_duration":"Zeitauswahl anzeigen","config_default_duration":"Standard-Laufzeit (Minuten)","config_valve_columns":"Ventile pro Zeile","config_valve_entities":"Anzuzeigende Ventilzonen (leer = alle)","config_socket_entities":"Anzuzeigende Steckdosen (leer = alle)","state_online":"Online","state_offline":"Offline","state_unavailable":"Nicht verf\xfcgbar","section_valves":"Ventilzonen","section_socket":"Steckdose","knob_unit_minutes":"Minuten","valve_zone":"Zone","valve_ready":"Bereit","valve_watering":"Bew\xe4sserung","valve_watering_scheduled":"Bew\xe4sserung (Zeitplan)","valve_watering_manual":"Bew\xe4sserung (manuell)","valve_open":"Offen","valve_closed":"Geschlossen","socket_off":"Aus","socket_active":"Aktiv","socket_active_scheduled":"Aktiv (Zeitplan)","socket_active_manual":"Aktiv (Dauerbetrieb)","socket_active_timed":"Aktiv (manuell)","section_mower":"M\xe4her","config_mower_entities":"Anzuzeigende M\xe4her (leer = alle)","mower_cutting":"M\xe4ht","mower_cutting_manual":"M\xe4ht (manuell)","mower_cutting_scheduled":"M\xe4ht (Zeitplan)","mower_searching":"R\xfcckkehr zur Station","mower_leaving":"Verl\xe4sst Station","mower_next_action":"N\xe4chste Aktion","mower_paused":"Pausiert","mower_paused_cs":"Pausiert (in Station)","mower_charging":"L\xe4dt","mower_parked_timer":"Geparkt (Zeitplan)","mower_parked_manual":"Geparkt (manuell)","mower_parked_auto":"Geparkt (Autotimer)","mower_parked_frost":"Geparkt (Frost)","mower_stopped_garden":"Gestoppt im Garten","mower_searching_sat":"Satellitensuche","mower_error":"Fehler","mower_error_prefix":"Fehler","error_trapped":"M\xe4her steckt fest","error_lifted":"M\xe4her wurde angehoben","error_outside":"Au\xdferhalb des Arbeitsbereichs","error_collision":"Kollision erkannt","error_upside_down":"M\xe4her umgedreht","error_low_battery":"Akku zu schwach","error_temp_stopped":"Vor\xfcbergehend gestoppt","error_cs_blocked":"Ladestation blockiert","mower_mowing":"M\xe4ht","mower_docked":"In Station","mower_start":"Starten","mower_resume_schedule":"Zeitplan fortsetzen","mower_pause":"Pause","mower_resume":"Fortsetzen","mower_park_next":"Parken bis n\xe4chster","mower_park":"Parken","ws_connected":"Verbunden","ws_disconnected":"Getrennt","version_required_title":"Keine unterst\xfctzte Integration gefunden","version_required_message":"Diese Karte ben\xf6tigt eine unterst\xfctzte Gardena Smart System Integration. Bitte hass-gardena-smart-system (thecem) oder ha-gardena-smart-system (kayloehmann) \xfcber HACS installieren.","patch_warning_title":"Gepatchte Integration erforderlich","patch_warning_message":"Steuerung deaktiviert. Bitte die gepatchte Integration von mtheli/hass-gardena-smart-system installieren, um Ger\xe4te steuern zu k\xf6nnen.","section_history":"Historie","config_show_history":"Verlaufsdiagramm anzeigen","day_today":"Heute","day_sun":"So","day_mon":"Mo","day_tue":"Di","day_wed":"Mi","day_thu":"Do","day_fri":"Fr","day_sat":"Sa","history_total_label":"Gesamt","chip_battery":"Akku","config_show_schedules":"Zeitpl\xe4ne anzeigen","schedule_tooltip":"Zeitplan aus der Gardena App","schedule_tooltip_paused":"Zeitplan pausiert (Gardena App)","schedule_tooltip_active":"Zeitplan aktiv (Gardena App)","scheduler_tooltip_paused":"Zeitplan pausiert (Scheduler)","scheduler_tooltip_active":"Zeitplan aktiv (Scheduler)","schedule_paused":"Pausiert","schedule_paused_until":"Pausiert bis","schedule_day_mo":"Mo","schedule_day_tu":"Di","schedule_day_we":"Mi","schedule_day_th":"Do","schedule_day_fr":"Fr","schedule_day_sa":"Sa","schedule_day_su":"So","config_show_scheduler_schedules":"Scheduler-Integration Anzeige","scheduler_mode_mixed":"Gemischt (in Zeitplanliste)","scheduler_mode_separate":"Eigene Sektion","gardena_section_label":"Gardena","scheduler_section_label":"Scheduler","scheduler_tooltip":"Zeitplan aus scheduler-component","schedule_missing_title":"Schedule-Integration nicht installiert","schedule_missing_message":"Installiere Gardena Smart Schedule \xfcber HACS, um Zeitpl\xe4ne aus der Gardena App anzuzeigen.","sensor_temperature":"Temperatur","sensor_humidity":"Feuchtigkeit","sensor_light":"Licht","sensor_soil_temperature":"Bodentemp.","sensor_soil_humidity":"Bodenfeuchtigkeit"}');
 
 
 var $a9eba5a2ce1e6d75$exports = {};
-$a9eba5a2ce1e6d75$exports = JSON.parse('{"default_title":"Gardena Smart System","config_backend":"Backend-integration","config_backend_auto":"Identifiera automatiskt","config_backend_thecem":"hass-gardena-smart-system (thecem)","config_backend_kayloehmann":"ha-gardena-smart-system (kayloehmann)","config_title":"Titel (valfritt)","config_select_device":"V\xe4lj en Gardena Smart System-enhet i kortets konfiguration.","config_no_device":"V\xe4lj en enhet.","config_sections":"Avsnitt att visa (l\xe4mna tomt f\xf6r alla)","config_show_header":"Visa rubrik","config_show_duration":"Visa tidv\xe4ljare","config_default_duration":"Standardtid (minuter)","config_valve_columns":"Ventilkolumner per rad","config_valve_entities":"Ventilzoner att visa (l\xe4mna tomt f\xf6r alla)","config_socket_entities":"Eluttag att visa (l\xe4mna tomt f\xf6r alla)","state_online":"Online","state_offline":"Offline","state_unavailable":"Ej tillg\xe4nglig","section_valves":"Ventilzoner","section_socket":"Eluttag","knob_unit_minutes":"Minuter","valve_zone":"Zon","valve_ready":"Redo","valve_watering":"Bevattnar","valve_watering_scheduled":"Bevattnar (schema)","valve_watering_manual":"Bevattnar (manuellt)","valve_open":"\xd6ppen","valve_closed":"St\xe4ngd","socket_off":"Av","socket_active":"Aktiv","socket_active_scheduled":"Aktiv (schema)","socket_active_manual":"Aktiv (alltid p\xe5)","socket_active_timed":"Aktiv (manuellt)","section_mower":"Gr\xe4sklippare","config_mower_entities":"Gr\xe4sklippare att visa (l\xe4mna tomt f\xf6r alla)","mower_cutting":"Klipper","mower_cutting_manual":"Klipper (manuellt)","mower_cutting_scheduled":"Klipper (schema)","mower_searching":"\xc5terv\xe4nder till docka","mower_leaving":"L\xe4mnar docka","mower_next_action":"Startar n\xe4sta \xe5tg\xe4rd","mower_paused":"Pausad","mower_paused_cs":"Pausad (i docka)","mower_charging":"Laddar","mower_parked_timer":"Parkerad (schema)","mower_parked_manual":"Parkerad (manuellt)","mower_parked_auto":"Parkerad (autotimer)","mower_parked_frost":"Parkerad (frost)","mower_stopped_garden":"Stoppad i tr\xe4dg\xe5rden","mower_searching_sat":"S\xf6ker efter satelliter","mower_error":"Fel","mower_error_prefix":"Fel","error_trapped":"Gr\xe4sklipparen har fastnat","error_lifted":"Gr\xe4sklipparen lyftes upp","error_outside":"Utanf\xf6r arbetsomr\xe5det","error_collision":"Kollision uppt\xe4ckt","error_upside_down":"Gr\xe4sklipparen \xe4r upp och ned","error_low_battery":"Batteriet \xe4r f\xf6r l\xe5gt","error_temp_stopped":"Tillf\xe4lligt stoppad","error_cs_blocked":"Laddningsstationen blockerad","mower_mowing":"Klipper","mower_docked":"Dockad","mower_start":"Starta","mower_resume_schedule":"\xc5teruppta schema","mower_pause":"Pausa","mower_resume":"\xc5teruppta","mower_park_next":"Parkera till n\xe4sta","mower_park":"Parkera","ws_connected":"Ansluten","ws_disconnected":"Fr\xe5nkopplad","version_required_title":"Ingen kompatibel integration hittades","version_required_message":"Det h\xe4r kortet kr\xe4ver en kompatibel Gardena Smart System-integration. Installera hass-gardena-smart-system (thecem) eller ha-gardena-smart-system (kayloehmann) via HACS.","patch_warning_title":"Patchad integration kr\xe4vs","patch_warning_message":"Styrning \xe4r inaktiverad. Installera den patchade integrationen fr\xe5n mtheli/hass-gardena-smart-system f\xf6r att aktivera enhetsstyrning.","section_history":"Historik","config_show_history":"Visa historikdiagram","day_today":"Idag","day_sun":"S\xf6n","day_mon":"M\xe5n","day_tue":"Tis","day_wed":"Ons","day_thu":"Tor","day_fri":"Fre","day_sat":"L\xf6r","history_total_label":"Totalt","chip_battery":"Batteri","config_show_schedules":"Visa scheman","schedule_tooltip":"Schema fr\xe5n Gardena-appen","schedule_tooltip_paused":"Schema pausat (Gardena-appen)","schedule_tooltip_active":"Schema aktivt (Gardena-appen)","scheduler_tooltip_paused":"Schema pausat (Scheduler)","scheduler_tooltip_active":"Schema aktivt (Scheduler)","schedule_paused":"Pausat","schedule_paused_until":"Pausat till","schedule_day_mo":"M\xe5","schedule_day_tu":"Ti","schedule_day_we":"On","schedule_day_th":"To","schedule_day_fr":"Fr","schedule_day_sa":"L\xf6","schedule_day_su":"S\xf6","config_show_scheduler_schedules":"Visning av Scheduler-integration","scheduler_mode_mixed":"Blandat (i schemalistan)","scheduler_mode_separate":"Separat avsnitt","gardena_section_label":"Gardena","scheduler_section_label":"Scheduler","scheduler_tooltip":"Schema fr\xe5n scheduler-component","schedule_missing_title":"Schemaintegration saknas","schedule_missing_message":"Installera Gardena Smart Schedule via HACS f\xf6r att visa scheman fr\xe5n Gardena-appen.","sensor_temperature":"Temperatur","sensor_humidity":"Luftfuktighet","sensor_light":"Ljus","sensor_soil_temperature":"Jordtemperatur","sensor_soil_humidity":"Jordfuktighet"}');
+$a9eba5a2ce1e6d75$exports = JSON.parse('{"default_title":"Gardena Smart System","config_backend":"Backend-integration","config_backend_auto":"Identifiera automatiskt","config_backend_thecem":"hass-gardena-smart-system (thecem)","config_backend_kayloehmann":"ha-gardena-smart-system (kayloehmann)","config_group_general":"Allm\xe4nt","config_valve_sensors":"Sensortilldelning","config_valve_sensors_add":"L\xe4gg till tilldelning","config_group_schedules":"Scheman","config_title":"Titel (valfritt)","config_select_device":"V\xe4lj en Gardena Smart System-enhet i kortets konfiguration.","config_no_device":"V\xe4lj en enhet.","config_sections":"Avsnitt att visa (l\xe4mna tomt f\xf6r alla)","config_show_header":"Visa rubrik","config_show_duration":"Visa tidv\xe4ljare","config_default_duration":"Standardtid (minuter)","config_valve_columns":"Ventilkolumner per rad","config_valve_entities":"Ventilzoner att visa (l\xe4mna tomt f\xf6r alla)","config_socket_entities":"Eluttag att visa (l\xe4mna tomt f\xf6r alla)","state_online":"Online","state_offline":"Offline","state_unavailable":"Ej tillg\xe4nglig","section_valves":"Ventilzoner","section_socket":"Eluttag","knob_unit_minutes":"Minuter","valve_zone":"Zon","valve_ready":"Redo","valve_watering":"Bevattnar","valve_watering_scheduled":"Bevattnar (schema)","valve_watering_manual":"Bevattnar (manuellt)","valve_open":"\xd6ppen","valve_closed":"St\xe4ngd","socket_off":"Av","socket_active":"Aktiv","socket_active_scheduled":"Aktiv (schema)","socket_active_manual":"Aktiv (alltid p\xe5)","socket_active_timed":"Aktiv (manuellt)","section_mower":"Gr\xe4sklippare","config_mower_entities":"Gr\xe4sklippare att visa (l\xe4mna tomt f\xf6r alla)","mower_cutting":"Klipper","mower_cutting_manual":"Klipper (manuellt)","mower_cutting_scheduled":"Klipper (schema)","mower_searching":"\xc5terv\xe4nder till docka","mower_leaving":"L\xe4mnar docka","mower_next_action":"Startar n\xe4sta \xe5tg\xe4rd","mower_paused":"Pausad","mower_paused_cs":"Pausad (i docka)","mower_charging":"Laddar","mower_parked_timer":"Parkerad (schema)","mower_parked_manual":"Parkerad (manuellt)","mower_parked_auto":"Parkerad (autotimer)","mower_parked_frost":"Parkerad (frost)","mower_stopped_garden":"Stoppad i tr\xe4dg\xe5rden","mower_searching_sat":"S\xf6ker efter satelliter","mower_error":"Fel","mower_error_prefix":"Fel","error_trapped":"Gr\xe4sklipparen har fastnat","error_lifted":"Gr\xe4sklipparen lyftes upp","error_outside":"Utanf\xf6r arbetsomr\xe5det","error_collision":"Kollision uppt\xe4ckt","error_upside_down":"Gr\xe4sklipparen \xe4r upp och ned","error_low_battery":"Batteriet \xe4r f\xf6r l\xe5gt","error_temp_stopped":"Tillf\xe4lligt stoppad","error_cs_blocked":"Laddningsstationen blockerad","mower_mowing":"Klipper","mower_docked":"Dockad","mower_start":"Starta","mower_resume_schedule":"\xc5teruppta schema","mower_pause":"Pausa","mower_resume":"\xc5teruppta","mower_park_next":"Parkera till n\xe4sta","mower_park":"Parkera","ws_connected":"Ansluten","ws_disconnected":"Fr\xe5nkopplad","version_required_title":"Ingen kompatibel integration hittades","version_required_message":"Det h\xe4r kortet kr\xe4ver en kompatibel Gardena Smart System-integration. Installera hass-gardena-smart-system (thecem) eller ha-gardena-smart-system (kayloehmann) via HACS.","patch_warning_title":"Patchad integration kr\xe4vs","patch_warning_message":"Styrning \xe4r inaktiverad. Installera den patchade integrationen fr\xe5n mtheli/hass-gardena-smart-system f\xf6r att aktivera enhetsstyrning.","section_history":"Historik","config_show_history":"Visa historikdiagram","day_today":"Idag","day_sun":"S\xf6n","day_mon":"M\xe5n","day_tue":"Tis","day_wed":"Ons","day_thu":"Tor","day_fri":"Fre","day_sat":"L\xf6r","history_total_label":"Totalt","chip_battery":"Batteri","config_show_schedules":"Visa scheman","schedule_tooltip":"Schema fr\xe5n Gardena-appen","schedule_tooltip_paused":"Schema pausat (Gardena-appen)","schedule_tooltip_active":"Schema aktivt (Gardena-appen)","scheduler_tooltip_paused":"Schema pausat (Scheduler)","scheduler_tooltip_active":"Schema aktivt (Scheduler)","schedule_paused":"Pausat","schedule_paused_until":"Pausat till","schedule_day_mo":"M\xe5","schedule_day_tu":"Ti","schedule_day_we":"On","schedule_day_th":"To","schedule_day_fr":"Fr","schedule_day_sa":"L\xf6","schedule_day_su":"S\xf6","config_show_scheduler_schedules":"Visning av Scheduler-integration","scheduler_mode_mixed":"Blandat (i schemalistan)","scheduler_mode_separate":"Separat avsnitt","gardena_section_label":"Gardena","scheduler_section_label":"Scheduler","scheduler_tooltip":"Schema fr\xe5n scheduler-component","schedule_missing_title":"Schemaintegration saknas","schedule_missing_message":"Installera Gardena Smart Schedule via HACS f\xf6r att visa scheman fr\xe5n Gardena-appen.","sensor_temperature":"Temperatur","sensor_humidity":"Luftfuktighet","sensor_light":"Ljus","sensor_soil_temperature":"Jordtemperatur","sensor_soil_humidity":"Jordfuktighet"}');
 
 
 const $d8078e452c66bdbe$var$LOCALES = {
@@ -1096,7 +1096,11 @@ class $e9db53adf75333c7$export$15679f44c07c43cc {
 }
 
 
-const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.9.1";
+// AUTO-GENERATED by scripts/gen_build_info.mjs at build time. Do not edit or commit.
+const $de15c9db4b7b9358$export$17b81730949de002 = "2026-07-19T18:35Z";
+
+
+const $ce06635095588d37$export$d5e7ce6d07daf10f = "0.10.0";
 // ---------- Knob constants ----------
 const $ce06635095588d37$var$KNOB_MIN = 5;
 const $ce06635095588d37$var$KNOB_MAX = 120;
@@ -1123,6 +1127,20 @@ const $ce06635095588d37$export$ca1603d2318473a8 = [
     $ce06635095588d37$var$LEGACY_DOMAIN,
     $ce06635095588d37$var$NG_DOMAIN
 ];
+function $ce06635095588d37$export$ccfe21b3bda3e3be(hass, entityId, fallback) {
+    const state = hass.states[entityId];
+    const name = state?.attributes?.friendly_name || fallback;
+    const entityReg = (hass.entities || {})[entityId];
+    if (entityReg?.device_id) {
+        const device = (hass.devices || {})[entityReg.device_id];
+        const devName = device?.name_by_user || device?.name;
+        if (devName && name.startsWith(devName)) {
+            const suffix = name.substring(devName.length).replace(/^[\s\-–]+/, '').trim();
+            if (suffix) return suffix;
+        }
+    }
+    return name;
+}
 // ---------- Mower activity mapping ----------
 const $ce06635095588d37$var$MOWER_ACTIVITY_MAP = {
     'OK_CUTTING': 'mower_cutting',
@@ -1413,18 +1431,7 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         return short || fallback;
     }
     _entityNameWithoutDevice(entityId, fallback) {
-        const state = this._hass.states[entityId];
-        const name = state?.attributes?.friendly_name || fallback;
-        const entityReg = (this._hass.entities || {})[entityId];
-        if (entityReg?.device_id) {
-            const device = (this._hass.devices || {})[entityReg.device_id];
-            const devName = device?.name_by_user || device?.name;
-            if (devName && name.startsWith(devName)) {
-                const suffix = name.substring(devName.length).replace(/^[\s\-–]+/, '').trim();
-                if (suffix) return suffix;
-            }
-        }
-        return name;
+        return $ce06635095588d37$export$ccfe21b3bda3e3be(this._hass, entityId, fallback);
     }
     _getGardenaDeviceId(entityId) {
         if (this._backend) return this._backend.getGardenaDeviceId(this._hass, entityId);
@@ -2072,7 +2079,10 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
           <span class="valve-zone-label">${zoneLabel}</span>
           ${this._renderPill(entityId, isActive, isOffline && !isActive || this._isPatchedIntegration === false, ()=>this._toggleValve(entityId, isActive))}
         </div>
-        <div class="valve-name" @click="${()=>this._fireMoreInfo(entityId)}">${shortName}</div>
+        <div class="valve-name-row">
+          <div class="valve-name" @click="${()=>this._fireMoreInfo(entityId)}">${shortName}</div>
+          ${this._renderValveSensors(entityId)}
+        </div>
         <div class="valve-status">
           ${isOffline && !isActive ? this._t('state_offline') : this._getValveStatusText(entityId, state, remaining)}
         </div>
@@ -2081,6 +2091,63 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
         </div>
         ${this._renderValveScheduleMini(entityId)}
         ${this._renderSchedulerValveMini(entityId)}
+      </div>
+    `;
+    }
+    // ---------- Per-valve sensor chips (valve_sensors config) ----------
+    _sensorChipIcon(state) {
+        switch(state?.attributes?.device_class){
+            case 'humidity':
+            case 'moisture':
+                return 'mdi:water-percent';
+            case 'temperature':
+                return 'mdi:thermometer';
+            case 'illuminance':
+                return 'mdi:brightness-5';
+            case 'battery':
+                return 'mdi:battery';
+            default:
+                return 'mdi:gauge';
+        }
+    }
+    _sensorChipClass(state) {
+        switch(state?.attributes?.device_class){
+            case 'humidity':
+            case 'moisture':
+                return 'vs-humidity';
+            case 'temperature':
+                return 'vs-temperature';
+            case 'illuminance':
+                return 'vs-illuminance';
+            default:
+                return '';
+        }
+    }
+    _renderValveSensors(entityId) {
+        const sensorIds = this.config?.valve_sensors?.[entityId];
+        if (!Array.isArray(sensorIds) || sensorIds.length === 0) return '';
+        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+      <div class="valve-sensors">
+        ${sensorIds.map((id)=>{
+            const st = this._hass.states[id];
+            const unavailable = !st || st.state === 'unavailable' || st.state === 'unknown';
+            let value = "\u2013";
+            if (!unavailable) try {
+                value = this._hass.formatEntityState(st);
+            } catch  {
+                const unit = st.attributes.unit_of_measurement;
+                value = unit ? `${st.state} ${unit}` : st.state;
+            }
+            return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+            <span class="valve-sensor ${this._sensorChipClass(st)} ${unavailable ? 'unavailable' : ''}"
+                  title="${st?.attributes?.friendly_name || id}"
+                  @click="${(e)=>{
+                e.stopPropagation();
+                this._fireMoreInfo(id);
+            }}">
+              <ha-icon icon="${this._sensorChipIcon(st)}"></ha-icon>${value}
+            </span>`;
+        })}
       </div>
     `;
     }
@@ -3201,156 +3268,9 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
     static get styles() {
         return (0, $06bdd16cbb4a41b3$export$8d80f9cac07cdb3)((0, (/*@__PURE__*/$parcel$interopDefault($4cf6573eae743e82$exports))));
     }
-    // ---------- Config form ----------
-    static getConfigForm() {
-        return {
-            schema: [
-                {
-                    name: "title",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_title"),
-                    selector: {
-                        text: {}
-                    }
-                },
-                {
-                    name: "sections",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_sections"),
-                    selector: {
-                        select: {
-                            multiple: true,
-                            options: [
-                                {
-                                    value: "mower",
-                                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "section_mower")
-                                },
-                                {
-                                    value: "valves",
-                                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "section_valves")
-                                },
-                                {
-                                    value: "socket",
-                                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "section_socket")
-                                },
-                                {
-                                    value: "history",
-                                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "section_history")
-                                }
-                            ]
-                        }
-                    }
-                },
-                {
-                    name: "show_header",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_show_header"),
-                    selector: {
-                        boolean: {}
-                    },
-                    default: true
-                },
-                {
-                    name: "show_history",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_show_history"),
-                    selector: {
-                        boolean: {}
-                    },
-                    default: true
-                },
-                {
-                    name: "show_schedules",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_show_schedules"),
-                    selector: {
-                        boolean: {}
-                    },
-                    default: true
-                },
-                {
-                    name: "show_scheduler_schedules",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_show_scheduler_schedules"),
-                    selector: {
-                        select: {
-                            options: [
-                                {
-                                    value: "mixed",
-                                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "scheduler_mode_mixed")
-                                },
-                                {
-                                    value: "separate",
-                                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "scheduler_mode_separate")
-                                }
-                            ]
-                        }
-                    }
-                },
-                {
-                    name: "default_duration",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_default_duration"),
-                    selector: {
-                        number: {
-                            min: 5,
-                            max: 120,
-                            step: 5,
-                            unit_of_measurement: "min",
-                            mode: "slider"
-                        }
-                    }
-                },
-                {
-                    name: "mower_entities",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_mower_entities"),
-                    selector: {
-                        entity: {
-                            filter: $ce06635095588d37$export$ca1603d2318473a8.map((integration)=>({
-                                    domain: "lawn_mower",
-                                    integration: integration
-                                })),
-                            multiple: true,
-                            reorder: true
-                        }
-                    }
-                },
-                {
-                    name: "valve_columns",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_valve_columns"),
-                    selector: {
-                        number: {
-                            min: 1,
-                            max: 3,
-                            step: 1,
-                            mode: "slider"
-                        }
-                    },
-                    default: 3
-                },
-                {
-                    name: "valve_entities",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_valve_entities"),
-                    selector: {
-                        entity: {
-                            filter: $ce06635095588d37$export$ca1603d2318473a8.map((integration)=>({
-                                    domain: "valve",
-                                    integration: integration
-                                })),
-                            multiple: true,
-                            reorder: true
-                        }
-                    }
-                },
-                {
-                    name: "socket_entities",
-                    label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(null, "config_socket_entities"),
-                    selector: {
-                        entity: {
-                            filter: $ce06635095588d37$export$ca1603d2318473a8.map((integration)=>({
-                                    domain: "switch",
-                                    integration: integration
-                                })),
-                            multiple: true,
-                            reorder: true
-                        }
-                    }
-                }
-            ]
-        };
+    // ---------- Config editor ----------
+    static getConfigElement() {
+        return document.createElement('gardena-smart-system-card-editor');
     }
     static getStubConfig(hass) {
         const allEntities = Object.values(hass.entities).filter((e)=>$ce06635095588d37$export$ca1603d2318473a8.includes(e.platform));
@@ -3362,6 +3282,530 @@ class $ce06635095588d37$export$4db43f2ac07d900b extends (0, $528e4332d1e3099e$ex
             socket_entities: byDomain('switch'),
             mower_entities: byDomain('lawn_mower')
         };
+    }
+}
+
+
+
+
+
+const $e620fbaea56fdbc6$var$ALL_SECTIONS = [
+    'mower',
+    'valves',
+    'socket',
+    'history'
+];
+class $e620fbaea56fdbc6$export$df1af08dc418f6a extends (0, $528e4332d1e3099e$export$3f2f9f5909897157) {
+    static get properties() {
+        return {
+            hass: {
+                attribute: false
+            },
+            // Sub-card editors set this to their configFields list; unset = full editor.
+            fields: {
+                attribute: false
+            },
+            _config: {
+                state: true
+            },
+            _expanded: {
+                state: true
+            },
+            _sensorRows: {
+                state: true
+            }
+        };
+    }
+    constructor(){
+        super();
+        // Panels default to expanded; this map only records explicit
+        // user/toggle overrides (disabled sections have no body to expand).
+        this._expanded = {};
+        this._sensorRows = [];
+    }
+    setConfig(config) {
+        this._config = config;
+        // Rebuild the sensor-assignment rows only when the config no longer
+        // matches what the current rows serialize to — this keeps rows without
+        // a chosen sensor alive across the config echo after every change.
+        const map = config.valve_sensors || {};
+        if (JSON.stringify(map) !== JSON.stringify(this._rowsToMap(this._sensorRows))) {
+            const rows = [];
+            for (const [valve, sensors] of Object.entries(map))for (const sensor of Array.isArray(sensors) ? sensors : [
+                sensors
+            ])rows.push({
+                sensor: sensor,
+                valve: valve
+            });
+            this._sensorRows = rows;
+        }
+    }
+    // ---------- Sensor assignment (valve_sensors) ----------
+    _rowsToMap(rows) {
+        const map = {};
+        for (const row of rows){
+            if (!row.sensor || !row.valve) continue;
+            (map[row.valve] = map[row.valve] || []).push(row.sensor);
+        }
+        return map;
+    }
+    _writeSensorRows(rows) {
+        this._sensorRows = rows;
+        const map = this._rowsToMap(rows);
+        const newConfig = {
+            ...this._config
+        };
+        if (Object.keys(map).length) newConfig.valve_sensors = map;
+        else delete newConfig.valve_sensors;
+        this._config = newConfig;
+        this._fireConfig(newConfig);
+    }
+    _sensorRowChanged(index, patch) {
+        this._writeSensorRows(this._sensorRows.map((row, i)=>i === index ? {
+                ...row,
+                ...patch
+            } : row));
+    }
+    // Valves the card displays: the configured list, or every discovered
+    // Gardena valve when the list is empty.
+    _valveOptions() {
+        let ids = this._config.valve_entities;
+        if (!ids?.length) ids = this._discoveredValves();
+        return ids.map((id)=>({
+                value: id,
+                label: (0, $ce06635095588d37$export$ccfe21b3bda3e3be)(this.hass, id, id)
+            }));
+    }
+    _has(field) {
+        return !this.fields || this.fields.includes(field);
+    }
+    // Sections currently enabled — no sections key means all of them. Sub-card
+    // editors have a fixed section, so the gate only applies to the full editor.
+    _activeSections() {
+        if (!this._has('sections')) return $e620fbaea56fdbc6$var$ALL_SECTIONS;
+        return Array.isArray(this._config.sections) ? this._config.sections : $e620fbaea56fdbc6$var$ALL_SECTIONS;
+    }
+    _sectionOn(section) {
+        if (!this._activeSections().includes(section)) return false;
+        // Legacy way of hiding the history section.
+        if (section === 'history' && this._config.show_history === false) return false;
+        return true;
+    }
+    _fireConfig(config) {
+        this.dispatchEvent(new CustomEvent('config-changed', {
+            bubbles: true,
+            composed: true,
+            detail: {
+                config: config
+            }
+        }));
+    }
+    // Values at their default (or empty) are removed instead of written, so the
+    // stored YAML only contains what the user actually changed.
+    _valueChanged(key, value, defaultValue) {
+        const newConfig = {
+            ...this._config,
+            [key]: value
+        };
+        if (value === defaultValue || value === '' || value === undefined || Array.isArray(value) && value.length === 0) delete newConfig[key];
+        if (key === 'valve_entities') this._pruneValveSensors(newConfig);
+        this._config = newConfig;
+        this._fireConfig(newConfig);
+    }
+    // Drop sensor assignments that point at a valve the card no longer shows
+    // (called when the valve list changes, so removing a zone takes its
+    // assignments along instead of leaving rows with a raw entity_id).
+    _pruneValveSensors(config) {
+        if (!config.valve_sensors) return;
+        const allowed = config.valve_entities?.length ? config.valve_entities : this._discoveredValves();
+        const map = {};
+        for (const [valve, sensors] of Object.entries(config.valve_sensors))if (allowed.includes(valve)) map[valve] = sensors;
+        if (Object.keys(map).length) config.valve_sensors = map;
+        else delete config.valve_sensors;
+        this._sensorRows = this._sensorRows.filter((row)=>!row.valve || allowed.includes(row.valve));
+    }
+    _discoveredValves() {
+        return Object.values(this.hass.entities || {}).filter((e)=>(0, $ce06635095588d37$export$ca1603d2318473a8).includes(e.platform) && e.entity_id.startsWith('valve.')).map((e)=>e.entity_id);
+    }
+    // show_* keys all default to true: on = no key, off = false.
+    _toggleChanged(key, checked) {
+        this._valueChanged(key, checked ? undefined : false);
+    }
+    // Each section group header carries its own on/off switch. All four on
+    // means "no restriction" and drops the key again.
+    _toggleSection(section, enabled) {
+        const set = new Set(this._activeSections());
+        if (enabled) set.add(section);
+        else set.delete(section);
+        const list = $e620fbaea56fdbc6$var$ALL_SECTIONS.filter((s)=>set.has(s));
+        const newConfig = {
+            ...this._config
+        };
+        if (list.length === $e620fbaea56fdbc6$var$ALL_SECTIONS.length) delete newConfig.sections;
+        else newConfig.sections = list;
+        if (section === 'history' && enabled) delete newConfig.show_history;
+        this._config = newConfig;
+        this._fireConfig(newConfig);
+        // Opening a section is almost always followed by configuring it.
+        this._expanded = {
+            ...this._expanded,
+            [section]: enabled
+        };
+    }
+    _setExpanded(key, ev) {
+        this._expanded = {
+            ...this._expanded,
+            [key]: ev.detail.expanded
+        };
+    }
+    // Section on/off as a header toggle; null when this editor has no
+    // sections picker (sub-cards) so the panel renders without a switch.
+    _sectionToggle(section) {
+        if (!this._has('sections')) return null;
+        return {
+            checked: this._sectionOn(section),
+            onChange: (checked)=>this._toggleSection(section, checked)
+        };
+    }
+    // One outlined expansion panel per group (the pattern HA's own editors
+    // use). An optional toggle sits in the header; while off, the panel is a
+    // plain non-collapsible row.
+    _renderPanel(key, labelKey, icon, content, toggle = null) {
+        if (!toggle && !content) return '';
+        const on = !toggle || toggle.checked;
+        const hasBody = !!content && on;
+        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+      <ha-expansion-panel outlined
+        .leftChevron=${true}
+        .expanded=${hasBody && (this._expanded[key] ?? true)}
+        .noCollapse=${!hasBody}
+        @expanded-changed=${(ev)=>this._setExpanded(key, ev)}>
+        <div slot="header" class="panel-header">
+          <ha-icon .icon=${icon}></ha-icon>
+          <span>${(0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, labelKey)}</span>
+          ${toggle ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+            <ha-switch
+              .checked=${toggle.checked}
+              @click=${(ev)=>ev.stopPropagation()}
+              @change=${(ev)=>toggle.onChange(ev.target.checked)}
+            ></ha-switch>
+          ` : ''}
+        </div>
+        ${hasBody ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`<div class="panel-content">${content}</div>` : ''}
+      </ha-expansion-panel>
+    `;
+    }
+    _entitySelector(domain) {
+        return {
+            entity: {
+                filter: (0, $ce06635095588d37$export$ca1603d2318473a8).map((integration)=>({
+                        domain: domain,
+                        integration: integration
+                    })),
+                multiple: true,
+                reorder: true
+            }
+        };
+    }
+    _renderSwitch(key, labelKey) {
+        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+      <div class="field row">
+        <ha-switch
+          .checked=${this._config[key] !== false}
+          @change=${(ev)=>this._toggleChanged(key, ev.target.checked)}
+        ></ha-switch>
+        <span>${(0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, labelKey)}</span>
+      </div>
+    `;
+    }
+    // Variante A rows: [sensor picker] → [zone dropdown] ✕
+    _renderSensorAssignment() {
+        const valveOptions = this._valveOptions();
+        const sensorSelector = {
+            entity: {
+                filter: [
+                    {
+                        domain: 'sensor',
+                        device_class: [
+                            'humidity',
+                            'moisture',
+                            'temperature',
+                            'illuminance'
+                        ]
+                    }
+                ]
+            }
+        };
+        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+      <div class="sub-label">${(0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, 'config_valve_sensors')}</div>
+      ${this._sensorRows.map((row, i)=>(0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        <div class="map-row">
+          <div class="map-sensor">
+            <ha-selector
+              .hass=${this.hass}
+              .selector=${sensorSelector}
+              .value=${row.sensor || ''}
+              @value-changed=${(ev)=>this._sensorRowChanged(i, {
+                    sensor: ev.detail.value
+                })}
+            ></ha-selector>
+          </div>
+          <span class="map-arrow">→</span>
+          <div class="map-zone">
+            <ha-selector
+              .hass=${this.hass}
+              .selector=${{
+                select: {
+                    mode: 'dropdown',
+                    options: valveOptions
+                }
+            }}
+              .value=${row.valve || ''}
+              @value-changed=${(ev)=>this._sensorRowChanged(i, {
+                    valve: ev.detail.value
+                })}
+            ></ha-selector>
+          </div>
+          <button class="row-remove"
+                  @click=${()=>this._writeSensorRows(this._sensorRows.filter((_, j)=>j !== i))}>✕</button>
+        </div>
+      `)}
+      <button class="add-btn"
+              @click=${()=>{
+            this._sensorRows = [
+                ...this._sensorRows,
+                {
+                    sensor: '',
+                    valve: valveOptions[0]?.value || ''
+                }
+            ];
+        }}>
+        ＋ ${(0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, 'config_valve_sensors_add')}
+      </button>
+    `;
+    }
+    _renderEntityList(key, labelKey, domain) {
+        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+      <div class="field">
+        <ha-selector
+          .hass=${this.hass}
+          .selector=${this._entitySelector(domain)}
+          .label=${(0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, labelKey)}
+          .value=${this._config[key] || []}
+          @value-changed=${(ev)=>this._valueChanged(key, ev.detail.value)}
+        ></ha-selector>
+      </div>
+    `;
+    }
+    render() {
+        if (!this.hass || !this._config) return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)``;
+        const generalContent = (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+      ${this._has('title') ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        <div class="field">
+          <ha-input
+            .label=${(0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, 'config_title')}
+            .value=${this._config.title || ''}
+            @input=${(ev)=>this._valueChanged('title', ev.target.value)}
+          ></ha-input>
+        </div>
+      ` : ''}
+      ${this._has('show_header') ? this._renderSwitch('show_header', 'config_show_header') : ''}
+      ${this._has('default_duration') && (this._sectionOn('valves') || this._sectionOn('socket')) ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        <div class="field">
+          <ha-selector
+            .hass=${this.hass}
+            .selector=${{
+            number: {
+                min: 5,
+                max: 120,
+                step: 5,
+                unit_of_measurement: 'min',
+                mode: 'slider'
+            }
+        }}
+            .label=${(0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, 'config_default_duration')}
+            .value=${this._config.default_duration ?? 30}
+            @value-changed=${(ev)=>this._valueChanged('default_duration', ev.detail.value, 30)}
+          ></ha-selector>
+        </div>
+      ` : ''}
+    `;
+        const schedulesContent = this._has('show_scheduler_schedules') ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+      <div class="field">
+        <ha-selector
+          .hass=${this.hass}
+          .selector=${{
+            select: {
+                mode: 'dropdown',
+                options: [
+                    {
+                        value: 'mixed',
+                        label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, 'scheduler_mode_mixed')
+                    },
+                    {
+                        value: 'separate',
+                        label: (0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, 'scheduler_mode_separate')
+                    }
+                ]
+            }
+        }}
+          .label=${(0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, 'config_show_scheduler_schedules')}
+          .value=${this._config.show_scheduler_schedules || 'mixed'}
+          @value-changed=${(ev)=>this._valueChanged('show_scheduler_schedules', ev.detail.value, 'mixed')}
+        ></ha-selector>
+      </div>
+    ` : null;
+        const schedulesToggle = this._has('show_schedules') ? {
+            checked: this._config.show_schedules !== false,
+            onChange: (checked)=>this._toggleChanged('show_schedules', checked)
+        } : null;
+        const valvesContent = this._has('valve_columns') || this._has('valve_entities') ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+      ${this._has('valve_columns') ? (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+        <div class="field">
+          <ha-selector
+            .hass=${this.hass}
+            .selector=${{
+            number: {
+                min: 1,
+                max: 3,
+                step: 1,
+                mode: 'slider'
+            }
+        }}
+            .label=${(0, $d8078e452c66bdbe$export$625550452a3fa3ec)(this.hass, 'config_valve_columns')}
+            .value=${this._config.valve_columns ?? 3}
+            @value-changed=${(ev)=>this._valueChanged('valve_columns', ev.detail.value, 3)}
+          ></ha-selector>
+        </div>
+      ` : ''}
+      ${this._has('valve_entities') ? this._renderEntityList('valve_entities', 'config_valve_entities', 'valve') : ''}
+      ${this._has('valve_sensors') ? this._renderSensorAssignment() : ''}
+    ` : null;
+        return (0, $d33ef1320595a3ac$export$c0bb0b647f701bb5)`
+      <div class="editor">
+        ${this._renderPanel('general', 'config_group_general', 'mdi:tune', generalContent)}
+
+        ${this._renderPanel('schedules', 'config_group_schedules', 'mdi:calendar-clock', schedulesContent, schedulesToggle)}
+
+        ${this._renderPanel('mower', 'section_mower', 'mdi:robot-mower', this._has('mower_entities') ? this._renderEntityList('mower_entities', 'config_mower_entities', 'lawn_mower') : null, this._sectionToggle('mower'))}
+
+        ${this._renderPanel('valves', 'section_valves', 'mdi:sprinkler-variant', valvesContent, this._sectionToggle('valves'))}
+
+        ${this._renderPanel('socket', 'section_socket', 'mdi:power-plug', this._has('socket_entities') ? this._renderEntityList('socket_entities', 'config_socket_entities', 'switch') : null, this._sectionToggle('socket'))}
+
+        ${this._renderPanel('history', 'section_history', 'mdi:chart-bar', null, this._sectionToggle('history'))}
+
+        <div class="build-info">
+          Gardena Smart System Card v${0, $ce06635095588d37$export$d5e7ce6d07daf10f} · Build ${0, $de15c9db4b7b9358$export$17b81730949de002}
+        </div>
+      </div>
+    `;
+    }
+    static get styles() {
+        return (0, $06bdd16cbb4a41b3$export$dbf350e5966cf602)`
+      .editor {
+        padding: 4px 0;
+      }
+      .field {
+        margin-bottom: 16px;
+      }
+      .field.row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      ha-input {
+        display: block;
+        width: 100%;
+      }
+      ha-expansion-panel {
+        display: block;
+        margin-bottom: 12px;
+      }
+      .panel-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
+        font-weight: 600;
+        padding: 4px 0;
+      }
+      .panel-header ha-icon {
+        color: var(--secondary-text-color, #888);
+        flex-shrink: 0;
+      }
+      .panel-header ha-switch {
+        margin-left: auto;
+        padding-right: 4px;
+      }
+      .panel-content {
+        padding: 12px 12px 4px;
+      }
+      .sub-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--secondary-text-color, #888);
+        margin: 16px 0 8px;
+      }
+      .map-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .map-sensor {
+        flex: 1;
+        min-width: 0;
+      }
+      .map-zone {
+        flex: 0 1 150px;
+        min-width: 110px;
+      }
+      .map-arrow {
+        color: var(--secondary-text-color, #888);
+        flex-shrink: 0;
+      }
+      .row-remove {
+        background: none;
+        border: none;
+        color: var(--secondary-text-color, #888);
+        font-size: 14px;
+        cursor: pointer;
+        padding: 4px;
+        flex-shrink: 0;
+      }
+      .row-remove:hover {
+        color: var(--error-color, #db4437);
+      }
+      .add-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: none;
+        cursor: pointer;
+        background: rgba(3, 169, 244, 0.12);
+        color: var(--primary-color, #03a9f4);
+        font: inherit;
+        font-weight: 500;
+        border-radius: 14px;
+        padding: 6px 14px;
+        margin: 2px 0 8px;
+      }
+      .add-btn:hover {
+        background: rgba(3, 169, 244, 0.22);
+      }
+      .panel-content .field:last-child {
+        margin-bottom: 8px;
+      }
+      .build-info {
+        margin-top: 16px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--secondary-text-color, #727272);
+        opacity: 0.8;
+      }
+    `;
     }
 }
 
@@ -3399,7 +3843,8 @@ const $9b0ec10db8f5b2c0$var$SUB_CARDS = [
             'show_schedules',
             'default_duration',
             'valve_columns',
-            'valve_entities'
+            'valve_entities',
+            'valve_sensors'
         ],
         suggestDomains: [
             'valve'
@@ -3449,11 +3894,10 @@ function $9b0ec10db8f5b2c0$var$createSubCardClass(def) {
                 sections: def.sections
             });
         }
-        static getConfigForm() {
-            const fullForm = (0, $ce06635095588d37$export$4db43f2ac07d900b).getConfigForm();
-            return {
-                schema: fullForm.schema.filter((f)=>def.configFields.includes(f.name))
-            };
+        static getConfigElement() {
+            const editor = document.createElement('gardena-smart-system-card-editor');
+            editor.fields = def.configFields;
+            return editor;
         }
         static getStubConfig(hass) {
             const full = (0, $ce06635095588d37$export$4db43f2ac07d900b).getStubConfig(hass);
@@ -3499,6 +3943,7 @@ function $9b0ec10db8f5b2c0$export$e0977bf6e2c8a92() {
 
 
 if (!customElements.get("gardena-smart-system-card")) customElements.define("gardena-smart-system-card", (0, $ce06635095588d37$export$4db43f2ac07d900b));
+if (!customElements.get("gardena-smart-system-card-editor")) customElements.define("gardena-smart-system-card-editor", (0, $e620fbaea56fdbc6$export$df1af08dc418f6a));
 window.customCards = window.customCards || [];
 window.customCards.push({
     type: "gardena-smart-system-card",
@@ -3519,6 +3964,6 @@ window.customCards.push({
     }
 });
 (0, $9b0ec10db8f5b2c0$export$e0977bf6e2c8a92)();
-console.info(`%c GARDENA-SMART-SYSTEM-CARD %c v${(0, $ce06635095588d37$export$d5e7ce6d07daf10f)} `, "color:#fff;background:#1c1c1c;padding:2px 6px;border-radius:4px 0 0 4px;font-weight:700", "color:#1c1c1c;background:#4caf50;padding:2px 6px;border-radius:0 4px 4px 0;font-weight:700");
+console.info(`%c GARDENA-SMART-SYSTEM-CARD %c v${(0, $ce06635095588d37$export$d5e7ce6d07daf10f)} \xb7 ${(0, $de15c9db4b7b9358$export$17b81730949de002)} `, "color:#fff;background:#1c1c1c;padding:2px 6px;border-radius:4px 0 0 4px;font-weight:700", "color:#1c1c1c;background:#4caf50;padding:2px 6px;border-radius:0 4px 4px 0;font-weight:700");
 
 
