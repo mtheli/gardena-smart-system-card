@@ -8,6 +8,7 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import styles from 'bundle-text:./gardena_smart_system_card.css';
 import { t } from './translations.js';
+import { formatClockTime, formatDayMonth, formatDateRange, firstWeekdayIndex } from './locale.js';
 import { ThecemBackend } from './backends/thecem.js';
 import { KayloehmannBackend } from './backends/kayloehmann.js';
 
@@ -1328,6 +1329,23 @@ export class GardenaSmartSystemCard extends LitElement {
   static SCHEDULE_WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
   static SCHEDULE_DAY_KEYS = ['schedule_day_mo', 'schedule_day_tu', 'schedule_day_we', 'schedule_day_th', 'schedule_day_fr', 'schedule_day_sa', 'schedule_day_su'];
 
+  /**
+   * The seven weekday chips, starting on the day the profile starts the week.
+   * The day name and its label are rotated together so a chip can never end
+   * up marked active under the neighbouring day's label.
+   */
+  _weekdayChips() {
+    // firstWeekdayIndex counts from Sunday, the two arrays above from Monday.
+    const offset = (firstWeekdayIndex(this._hass) + 6) % 7;
+    return Array.from({ length: 7 }, (_, n) => {
+      const i = (offset + n) % 7;
+      return {
+        day: GardenaSmartSystemCard.SCHEDULE_WEEKDAYS[i],
+        key: GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i],
+      };
+    });
+  }
+
   // ---------- Activity Helpers ----------
 
   /** Resolve mower/valve activity via device sensor lookup */
@@ -1496,10 +1514,10 @@ export class GardenaSmartSystemCard extends LitElement {
             <div class="schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
               <span class="schedule-time">${this._schedulerIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
               <span class="schedule-days">
-                ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                ${this._weekdayChips().map(({ day, key }) => {
                   const isActive = weekdays.includes(day);
                   const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
-                  return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                  return html`<span class="schedule-day ${cls}">${this._t(key)}</span>`;
                 })}
               </span>
               ${isPaused ? html`<span class="schedule-pause-badge">${this._t('schedule_paused')}</span>` : ''}
@@ -1525,10 +1543,10 @@ export class GardenaSmartSystemCard extends LitElement {
             <div class="valve-schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
               <span class="valve-schedule-time">${this._schedulerIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)}–${this._cleanTime(ev.end_at)}</span>
               <span class="schedule-days">
-                ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                ${this._weekdayChips().map(({ day, key }) => {
                   const isActive = weekdays.includes(day);
                   const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
-                  return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                  return html`<span class="schedule-day ${cls}">${this._t(key)}</span>`;
                 })}
               </span>
             </div>
@@ -1552,10 +1570,10 @@ export class GardenaSmartSystemCard extends LitElement {
           <div class="socket-schedule-mini ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
             <span class="schedule-time">${this._schedulerIcon(isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
             <span class="schedule-days">
-              ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+              ${this._weekdayChips().map(({ day, key }) => {
                 const isActive = weekdays.includes(day);
                 const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
-                return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                return html`<span class="schedule-day ${cls}">${this._t(key)}</span>`;
               })}
             </span>
             ${isPaused ? html`<span class="schedule-pause-badge">${this._t('schedule_paused')}</span>` : ''}
@@ -1699,10 +1717,10 @@ export class GardenaSmartSystemCard extends LitElement {
             <div class="schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
               <span class="schedule-time">${this._scheduleIconForEvent(ev, isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
               <span class="schedule-days">
-                ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                ${this._weekdayChips().map(({ day, key }) => {
                   const isActive = weekdays.includes(day);
                   const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
-                  return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                  return html`<span class="schedule-day ${cls}">${this._t(key)}</span>`;
                 })}
               </span>
               ${isPaused ? html`<span class="schedule-pause-badge">${ev.paused_until ? `${this._t('schedule_paused_until')} ${this._formatPauseDate(ev.paused_until)}` : this._t('schedule_paused')}</span>` : ''}
@@ -1729,10 +1747,10 @@ export class GardenaSmartSystemCard extends LitElement {
             <div class="valve-schedule-row ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
               <span class="valve-schedule-time">${this._scheduleIconForEvent(ev, isPaused, nowActive)}${this._cleanTime(ev.start_at)}–${this._cleanTime(ev.end_at)}</span>
               <span class="schedule-days">
-                ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+                ${this._weekdayChips().map(({ day, key }) => {
                   const isActive = weekdays.includes(day);
                   const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
-                  return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                  return html`<span class="schedule-day ${cls}">${this._t(key)}</span>`;
                 })}
               </span>
             </div>
@@ -1757,10 +1775,10 @@ export class GardenaSmartSystemCard extends LitElement {
           <div class="socket-schedule-mini ${nowActive ? 'now-active' : ''} ${isPaused ? 'schedule-paused' : ''}">
             <span class="schedule-time">${this._scheduleIconForEvent(ev, isPaused, nowActive)}${this._cleanTime(ev.start_at)} – ${this._cleanTime(ev.end_at)}</span>
             <span class="schedule-days">
-              ${GardenaSmartSystemCard.SCHEDULE_WEEKDAYS.map((day, i) => {
+              ${this._weekdayChips().map(({ day, key }) => {
                 const isActive = weekdays.includes(day);
                 const cls = isPaused && isActive ? 'paused' : isActive ? 'active' : 'inactive';
-                return html`<span class="schedule-day ${cls}">${this._t(GardenaSmartSystemCard.SCHEDULE_DAY_KEYS[i])}</span>`;
+                return html`<span class="schedule-day ${cls}">${this._t(key)}</span>`;
               })}
             </span>
             ${isPaused ? html`<span class="schedule-pause-badge">${ev.paused_until ? `${this._t('schedule_paused_until')} ${this._formatPauseDate(ev.paused_until)}` : this._t('schedule_paused')}</span>` : ''}
@@ -1772,7 +1790,7 @@ export class GardenaSmartSystemCard extends LitElement {
 
   _cleanTime(t) {
     if (!t) return '';
-    if (t.startsWith('MN+')) return t.substring(3);
+    if (t.startsWith('MN+')) return formatClockTime(this._hass, t.substring(3));
     if (t.startsWith('SR') || t.startsWith('SS')) {
       const symbol = t.startsWith('SR') ? '☀\uFE0E' : '☾';
       const offset = t.substring(2);
@@ -1782,13 +1800,12 @@ export class GardenaSmartSystemCard extends LitElement {
       const mins = h * 60 + (m || 0);
       return `${symbol}${sign}${mins}min`;
     }
-    return t;
+    return formatClockTime(this._hass, t);
   }
 
   _formatPauseDate(isoString) {
     try {
-      const d = new Date(isoString);
-      return `${d.getDate()}.${d.getMonth() + 1}.`;
+      return formatDayMonth(this._hass, new Date(isoString));
     } catch { return ''; }
   }
 
@@ -2030,7 +2047,7 @@ export class GardenaSmartSystemCard extends LitElement {
 
     const first = days[0].date;
     const last = days[days.length - 1].date;
-    const periodStr = `${first.getDate()}.–${last.getDate()}.${last.getMonth() + 1}. ${last.getFullYear()}`;
+    const periodStr = formatDateRange(this._hass, first, last);
 
     const chartHeight = 124;
     const gridSteps = 4;
@@ -2062,7 +2079,7 @@ export class GardenaSmartSystemCard extends LitElement {
               ${days.map((day, di) => {
                 const isToday = day.date.getDate() === today.getDate() && day.date.getMonth() === today.getMonth();
                 const dayTotal = dayTotals[di];
-                const dateStr = day.date.getDate() + '.' + (day.date.getMonth() + 1) + '.';
+                const dateStr = formatDayMonth(this._hass, day.date);
                 return html`
                   <div class="chart-bar-group ${isToday ? 'today' : ''}">
                     <div class="chart-stack">
