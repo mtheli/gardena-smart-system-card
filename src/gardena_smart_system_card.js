@@ -12,7 +12,7 @@ import { formatClockTime, formatDayMonth, formatDateRange, firstWeekdayIndex } f
 import { ThecemBackend } from './backends/thecem.js';
 import { KayloehmannBackend } from './backends/kayloehmann.js';
 
-export const CARD_VERSION = "0.10.0";
+export const CARD_VERSION = "0.11.0";
 // BUILD_DATE is stamped into src/build-info.js by scripts/gen_build_info.mjs,
 // which the "build"/"watch" scripts run first (the file is generated and
 // gitignored). Shown in the console banner so it is obvious whether a freshly
