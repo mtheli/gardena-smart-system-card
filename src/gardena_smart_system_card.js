@@ -1162,6 +1162,13 @@ export class GardenaSmartSystemCard extends LitElement {
           { key: 'mower_park_next', action: 'park_until_next_task' },
           { key: 'mower_park', action: 'park_until_further_notice' },
         ];
+      case 'idle':
+        // Stopped out in the garden: neither in the dock nor paused mid-task.
+        return [
+          { key: 'mower_start', action: 'start_override', primary: true, showDuration: true },
+          { key: 'mower_resume_schedule', action: 'start_automatic' },
+          { key: 'mower_park', action: 'park_until_further_notice' },
+        ];
       default:
         return [
           { key: 'mower_start', action: 'start_override', primary: true, showDuration: true },
@@ -1226,7 +1233,7 @@ export class GardenaSmartSystemCard extends LitElement {
     const isMowing = info.haState === 'mowing';
     const stateClass = isMowing ? 'active'
       : info.haState === 'error' ? 'error'
-      : info.haState === 'paused' ? 'paused'
+      : info.haState === 'paused' || info.haState === 'idle' ? 'paused'
       : 'docked';
 
     const { remaining, total } = this._getMowerRemaining(entityId, info);

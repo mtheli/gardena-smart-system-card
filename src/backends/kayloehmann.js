@@ -95,6 +95,13 @@ export class KayloehmannBackend {
           { key: 'mower_park_next', action: 'park_until_next_task' },
           { key: 'mower_park', action: 'park_until_further_notice' },
         ];
+      case 'idle':
+        // Stopped out in the garden: neither in the dock nor paused mid-task.
+        return [
+          { key: 'mower_start', action: 'start_override', primary: true, showDuration: true },
+          { key: 'mower_resume_schedule', action: 'start_automatic' },
+          { key: 'mower_park', action: 'park_until_further_notice' },
+        ];
       default:
         return [
           { key: 'mower_start', action: 'start_override', primary: true, showDuration: true },

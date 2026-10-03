@@ -74,6 +74,8 @@
   "error_cs_blocked": "Laddningsstationen blockerad",
   "mower_mowing": "Klipper",
   "mower_docked": "Dockad",
+  "mower_idle": "Stoppad",
+  "mower_returning": "Återvänder till docka",
 
   "mower_start": "Starta",
   "mower_resume_schedule": "Återuppta schema",

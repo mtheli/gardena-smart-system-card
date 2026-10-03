@@ -74,6 +74,8 @@
   "error_cs_blocked": "Ladestation blockiert",
   "mower_mowing": "Mäht",
   "mower_docked": "In Station",
+  "mower_idle": "Angehalten",
+  "mower_returning": "Rückkehr zur Station",
 
   "mower_start": "Starten",
   "mower_resume_schedule": "Zeitplan fortsetzen",
