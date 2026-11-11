@@ -24,7 +24,7 @@ The card can display schedules (time slots and weekdays) below each device. This
 
 ## Alternative: Scheduler Component
 
-If you prefer a visual schedule editor inside Home Assistant, you can use the [scheduler-component](https://github.com/nielsfaber/scheduler-component) together with the [scheduler-card](https://github.com/nielsfaber/scheduler-card). Both are available via HACS.
+If you prefer a visual schedule editor inside Home Assistant, you can use the [scheduler-component](https://github.com/nielsfaber/scheduler-component) together with the [scheduler-card](https://github.com/nielsfaber/scheduler-card). Both are available in the Marketplace.
 
 The Gardena Smart System Card **automatically detects** scheduler-component schedules (`switch.schedule_*` entities) that target Gardena devices and displays them in the schedule section. This works out of the box — no additional configuration needed on the Gardena card side.
 
