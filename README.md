@@ -128,9 +128,10 @@ The card is configured via the UI — just add it and all Gardena entities are a
 | show_scheduler_schedules | string | mixed        | Scheduler display: `mixed` or `separate`            |
 | default_duration| number   | 30                | Default duration in minutes for valves/sockets      |
 | valve_columns   | number   | 3                 | Number of valve columns per row (1–3)               |
-| mower_entities  | string[] | all               | Mowers to display, in display order (leave empty for all) |
-| valve_entities  | string[] | all               | Valve zones to display, in display order (leave empty for all) |
-| socket_entities | string[] | all               | Power sockets to display, in display order (leave empty for all) |
+| mower_entities  | string[] | all               | Mowers to display, in display order (omit the option for all; an empty list in YAML shows none) |
+| valve_entities  | string[] | all               | Valve zones to display, in display order (omit the option for all; an empty list in YAML shows none) |
+| valve_sensors   | object   | none              | Sensor readings shown on each valve zone: valve entity → list of sensor entities (see example below) |
+| socket_entities | string[] | all               | Power sockets to display, in display order (omit the option for all; an empty list in YAML shows none) |
 
 The entity lists control the display order: entries are shown in the order they appear in the list. In the visual editor you can reorder them via drag and drop (requires Home Assistant 2025.8 or newer).
 
@@ -160,6 +161,16 @@ Valves sub-card without header:
 type: custom:gardena-smart-valves-card
 show_header: false
 ```
+
+Sensor readings per valve zone (`valve_sensors`, full card and valves sub-card):
+```yaml
+type: custom:gardena-smart-valves-card
+valve_sensors:
+  valve.irrigation_control_valve_1:
+    - sensor.lawn_sensor_soil_humidity
+    - sensor.lawn_sensor_soil_temperature
+```
+Each key is a valve entity, each value a list of sensor entities. In the visual editor the assignment is under the valves section; it offers humidity, moisture, temperature and illuminance sensors.
 
 ## Supported Languages
 
